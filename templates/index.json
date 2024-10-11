@@ -15,9 +15,6 @@
         "parallax-1": {
             "type": "a-parallax-1",
         },
-        "content-2": {
-            "type": "a-content-2",
-        },
         "stats": {
             "type": "a-stats",
         },
@@ -31,7 +28,6 @@
         "categories",
         "content-1",
         "parallax-1",
-        "content-2",
         "stats",
         "image-banner-2"
     ]

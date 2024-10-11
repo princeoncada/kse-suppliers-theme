@@ -1,9 +1,33 @@
 <div>
-    <div>
-        {% for collection in collections %}
-            <div>
-                <img src="{{ collection.image }}" alt="amping">
-            </div>
-        {% endfor %}
+    <div class="x-py-[16px] md:x-py-[64px] x-text-center x-flex x-flex-col x-gap-[16px]">
+        <div class="x-text-[36px]">
+            Categories
+        </div>
+        <div class="carousel x-shadow-none" data-flickity='{ "groupCells": true, "wrapAround": true }'>
+            {% for collection in collections %}
+                <a href="{{ collection.url }}" class="carousel-cell x-p-[24px] x-flex x-flex-col x-gap-[24px] x-mr-[16px] x-rounded-[8px] x-border-[1.5px] x-border-gray-300">
+                    <div class="x-text-[24px]">{{ collection.title }}</div>
+                    <div>
+                        <img src="{{ collection.image.src | image_url: width: 400, height: 400 }}" alt="{{ collection.image.alt }}" width="400px" height="400px"/>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
     </div>
 </div>
+
+<style>
+
+.flickity-page-dots {
+  display: none;
+}
+
+.flickity-button {
+  background: transparent;
+}
+.flickity-prev-next-button {
+  width: 50px;
+  height: 50px;
+}
+
+</style>

@@ -9,11 +9,11 @@
  */
 {
   "sections": {
-    "text-banner": {
-      "type": "wws-text-banner",
+    "wws-content": {
+      "type": "wws-content",
   },
 },
   "order": [
-    "text-banner",
+"wws-content"
   ]
 }

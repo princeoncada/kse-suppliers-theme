@@ -683,6 +683,10 @@ video {
   height: 480px !important;
 }
 
+.x-h-\[100px\] {
+  height: 100px !important;
+}
+
 .x-w-\[200px\] {
   width: 200px !important;
 }
@@ -946,6 +950,11 @@ video {
   font-size: 250px !important;
 }
 
+.x-text-6xl {
+  font-size: 3.75rem !important;
+  line-height: 1 !important;
+}
+
 .x-leading-\[48px\] {
   line-height: 48px !important;
 }
@@ -991,8 +1000,68 @@ video {
     height: 240px !important;
   }
 
+  .md\:x-h-\[200px\] {
+    height: 200px !important;
+  }
+
+  .md\:x-h-\[150px\] {
+    height: 150px !important;
+  }
+
+  .md\:x-h-\[140px\] {
+    height: 140px !important;
+  }
+
+  .md\:x-h-\[120px\] {
+    height: 120px !important;
+  }
+
+  .md\:x-h-\[500\] {
+    height: 500 !important;
+  }
+
+  .md\:x-h-\[500px\] {
+    height: 500px !important;
+  }
+
   .md\:x-w-\[60\%\] {
     width: 60% !important;
+  }
+
+  .md\:x-w-\[150px\] {
+    width: 150px !important;
+  }
+
+  .md\:x-w-\[100px\] {
+    width: 100px !important;
+  }
+
+  .md\:x-w-\[120px\] {
+    width: 120px !important;
+  }
+
+  .md\:x-w-\[140px\] {
+    width: 140px !important;
+  }
+
+  .md\:x-w-\[500px\] {
+    width: 500px !important;
+  }
+
+  .md\:x-w-\[800px\] {
+    width: 800px !important;
+  }
+
+  .md\:x-max-w-\[700px\] {
+    max-width: 700px !important;
+  }
+
+  .md\:x-max-w-\[800px\] {
+    max-width: 800px !important;
+  }
+
+  .md\:x-max-w-\[500px\] {
+    max-width: 500px !important;
   }
 
   .md\:x-flex-row {
@@ -1020,6 +1089,24 @@ video {
   .md\:x-text-\[18px\] {
     font-size: 18px !important;
   }
+
+  .md\:x-text-\[20px\] {
+    font-size: 20px !important;
+  }
+
+  .md\:x-text-\[30px\] {
+    font-size: 30px !important;
+  }
+
+  .md\:x-text-6xl {
+    font-size: 3.75rem !important;
+    line-height: 1 !important;
+  }
+
+  .md\:x-text-5xl {
+    font-size: 3rem !important;
+    line-height: 1 !important;
+  }
 }
 
 @media (min-width: 1280px) {
@@ -1031,8 +1118,24 @@ video {
     height: 560px !important;
   }
 
+  .lg\:x-h-\[300px\] {
+    height: 300px !important;
+  }
+
+  .lg\:x-h-\[500px\] {
+    height: 500px !important;
+  }
+
   .lg\:x-w-\[50\%\] {
     width: 50% !important;
+  }
+
+  .lg\:x-w-\[200px\] {
+    width: 200px !important;
+  }
+
+  .lg\:x-w-\[800px\] {
+    width: 800px !important;
   }
 
   .lg\:x-max-w-\[1280px\] {
@@ -1041,6 +1144,14 @@ video {
 
   .lg\:x-gap-\[80px\] {
     gap: 80px !important;
+  }
+
+  .lg\:x-text-\[25px\] {
+    font-size: 25px !important;
+  }
+
+  .lg\:x-text-\[35px\] {
+    font-size: 35px !important;
   }
 }
 

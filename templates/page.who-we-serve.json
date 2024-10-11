@@ -9,11 +9,15 @@
  */
 {
   "sections": {
-    "text-banner": {
-      "type": "wws-text-banner",
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    }
   },
-},
   "order": [
-    "wws-text-banner",
+    "main"
   ]
 }

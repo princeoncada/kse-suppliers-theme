@@ -6,10 +6,13 @@ module.exports = {
 		"./**/*.liquid",
 		"./**/*.css",
 		"./**/*.html",
-		"./**/*.js"
 	],
 	theme: {
-		extend: {}
+		extend: {},
+        screens: {
+            'md': '990px',
+            'lg': '1280px'
+        }
 	},
 	plugins: [],
 }

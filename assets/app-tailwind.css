@@ -562,16 +562,44 @@ video {
   position: relative !important;
 }
 
+.x--inset-2 {
+  inset: -0.5rem !important;
+}
+
 .x-inset-0 {
   inset: 0px !important;
+}
+
+.x-inset-2 {
+  inset: 0.5rem !important;
 }
 
 .x-bottom-20 {
   bottom: 5rem !important;
 }
 
+.x-top-10 {
+  top: 2.5rem !important;
+}
+
+.x-top-\[-40px\] {
+  top: -40px !important;
+}
+
+.x-top-\[-50px\] {
+  top: -50px !important;
+}
+
+.x-top-\[-60px\] {
+  top: -60px !important;
+}
+
 .x-z-10 {
   z-index: 10 !important;
+}
+
+.x-z-\[1\] {
+  z-index: 1 !important;
 }
 
 .x-m-auto {
@@ -603,10 +631,6 @@ video {
   height: 14rem !important;
 }
 
-.x-h-\[110\%\] {
-  height: 110% !important;
-}
-
 .x-h-\[130\%\] {
   height: 130% !important;
 }
@@ -617,6 +641,10 @@ video {
 
 .x-h-\[20px\] {
   height: 20px !important;
+}
+
+.x-h-\[480px\] {
+  height: 480px !important;
 }
 
 .x-h-\[50px\] {
@@ -939,6 +967,10 @@ video {
     flex-direction: row !important;
   }
 
+  .md\:x-gap-\[64px\] {
+    gap: 64px !important;
+  }
+
   .md\:x-py-\[64px\] {
     padding-top: 64px !important;
     padding-bottom: 64px !important;
@@ -967,8 +999,12 @@ video {
     height: 560px !important;
   }
 
-  .lg\:x-w-\[50\%\] {
-    width: 50% !important;
+  .lg\:x-max-w-\[1280px\] {
+    max-width: 1280px !important;
+  }
+
+  .lg\:x-gap-\[80px\] {
+    gap: 80px !important;
   }
 }
 

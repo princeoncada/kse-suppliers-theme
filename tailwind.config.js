@@ -9,7 +9,8 @@ module.exports = {
 		"./**/*.js"
 	],
 	theme: {
-		extend: {}
-	},
+		extend: {
+		},
+	  },
 	plugins: [],
 }

@@ -1,14 +1,14 @@
 <div>
-    <div class="x-py-[16px] md:x-py-[64px] x-text-center x-flex x-flex-col x-gap-[16px]">
+    <div class="x-py-[16px] md:x-py-[64px] x-text-center x-flex x-flex-col x-gap-[16px] md:x-gap-[64px]">
         <div class="x-text-[36px]">
             Categories
         </div>
         <div class="carousel x-shadow-none" data-flickity='{ "groupCells": true, "wrapAround": true }'>
             {% for collection in collections %}
                 <a href="{{ collection.url }}" class="carousel-cell x-p-[24px] x-flex x-flex-col x-gap-[24px] x-mr-[16px] x-rounded-[8px] x-border-[1.5px] x-border-gray-300">
-                    <div class="x-text-[24px]">{{ collection.title }}</div>
+                    <div class="x-text-[18px]">{{ collection.title }}</div>
                     <div>
-                        <img src="{{ collection.image.src | image_url: width: 400, height: 400 }}" alt="{{ collection.image.alt }}" width="400px" height="400px"/>
+                        <img src="{{ collection.image.src | image_url: width: 400, height: 400 }}" alt="{{ collection.image.alt }}" width="350px" height="350px"/>
                     </div>
                 </a>
             {% endfor %}

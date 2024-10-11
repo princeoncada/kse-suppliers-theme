@@ -1,11 +1,11 @@
 <div class="x-relative x-flex x-flex-col x-items-center">
-    <a class="x-absolute x-bottom-20 x-z-10 x-bg-[#9e0b0f] x-flex x-flex-col x-justify-center x-items-center x-text-white x-h-[50px] x-w-[200px] x-text-[16px] x-rounded-[4px]">
+    <a href="{{ routes.collections_url }}" class="x-absolute x-bottom-20 x-z-[1] x-bg-[#9e0b0f] x-flex x-flex-col x-justify-center x-items-center x-text-white x-h-[50px] x-w-[200px] x-text-[16px] x-rounded-[4px]">
         <div>
             BROWSE PRODUCTS 
         </div>
     </a>
-    <div class="x-relative x-overflow-hidden x-h-[138px] md:x-h-[240px] lg:x-h-[560px] x-w-full">
-        <div class="parallax-banner x-absolute x-inset-0 x-w-full x-h-[110%] x-bg-cover x-bg-center"
+    <div class="x-relative x-overflow-hidden x-h-[480px] lg:x-h-[560px] x-w-full">
+        <div class="parallax-banner x-absolute x-inset-0 x-top-[-60px] x-w-full x-h-[130%] x-bg-cover x-bg-center"
             style="background-image: url({{ 'kse-banner-1.jpg' |  asset_img_url: '5000x5000' }});">
         </div>
     </div>
@@ -16,8 +16,8 @@
     document.addEventListener('scroll', function () {
         const parallaxSections = document.querySelectorAll('.parallax-banner');
         parallaxSections.forEach((parallax) => {
-            const speed = 0.4; // Adjust the speed for the desired parallax effect
-            const initialOffset = -70; // Offset to move the image down initially
+            const speed = 0.3; // Adjust the speed for the desired parallax effect
+            const initialOffset = 0; // Offset to move the image down initially
             const sectionTop = parallax.parentElement.offsetTop; // Get the top position of the parent element relative to the document
             const scrollPosition = window.scrollY;
             const windowHeight = window.innerHeight;

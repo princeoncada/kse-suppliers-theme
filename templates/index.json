@@ -1,0 +1,38 @@
+{
+    "sections": {
+        "text-banner": {
+            "type": "a-text-banner",
+        },
+        "image-banner": {
+            "type": "a-image-banner",
+        },
+        "categories": {
+            "type": "a-categories",
+        },
+        "content-1": {
+            "type": "a-content-1",
+        },
+        "parallax-1": {
+            "type": "a-parallax-1",
+        },
+        "content-2": {
+            "type": "a-content-2",
+        },
+        "stats": {
+            "type": "a-stats",
+        },
+        "image-banner-2": {
+            "type": "a-image-banner-2",
+        },
+    },
+    "order": [
+        "text-banner",
+        "image-banner",
+        "categories",
+        "content-1",
+        "parallax-1",
+        "content-2",
+        "stats",
+        "image-banner-2"
+    ]
+}

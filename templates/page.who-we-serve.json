@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "rich-text": {
+    "text-banner": {
       "type": "wws-text-banner",
   },
 },

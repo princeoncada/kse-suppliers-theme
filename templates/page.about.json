@@ -9,12 +9,12 @@
  */
  {
   "sections": {
-    "about-content": {
-      "type": "abt-content",
+    "main": {
+      "type": "about-main",
   },
 },
   "order": [
-"about-content"
+"main"
   ]
 }
 

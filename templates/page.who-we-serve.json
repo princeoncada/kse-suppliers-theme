@@ -9,11 +9,11 @@
  */
 {
   "sections": {
-    "wws-content": {
-      "type": "wws-content",
+    "main": {
+      "type": "who-we-serve-main",
   },
 },
   "order": [
-"wws-content"
+"main"
   ]
 }

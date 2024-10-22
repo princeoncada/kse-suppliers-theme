@@ -315,6 +315,11 @@
     {% sections 'header-group' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+        {% assign text_banner_content = "Keep Customers Sleeping Happy" %}
+        {% if template == "index" %}
+            {%  assign text_banner_content = "Comprehensive Wholesale Suppliers of Institutional Linen" %}
+        {% endif %}
+        {% render "custom-text-banner", content: text_banner_content %}
       {{ content_for_layout }}
     </main>
 

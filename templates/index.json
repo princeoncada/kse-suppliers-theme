@@ -1,8 +1,5 @@
 {
     "sections": {
-        "text-banner": {
-            "type": "a-text-banner",
-        },
         "image-banner": {
             "type": "a-image-banner",
         },
@@ -23,7 +20,6 @@
         },
     },
     "order": [
-        "text-banner",
         "image-banner",
         "categories",
         "content-1",

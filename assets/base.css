@@ -3598,3 +3598,14 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* Custom CSS */
+/* Centered Navigation Menu */
+
+@media screen and (min-width: 990px) {
+    .header--middle-left {
+        grid-template-areas: 'heading navigation icons';
+        grid-template-columns: 1fr auto 1fr;
+        column-gap: 2rem;
+    }    
+}

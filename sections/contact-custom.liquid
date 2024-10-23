@@ -1,0 +1,125 @@
+<div class="x-px-[24px]">
+    <div class="x-shadow-[0_1px_7px_rgba(0,0,0,0.5)] x-px-[12px] x-pt-[20px] x-max-w-[1254px] x-mx-auto md:x-px-[123px] md:x-pt-[48px] x-pb-[20px]">
+        <div class="x-mx-auto">
+            <div class="x-w-[75px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
+                <img src="{{ 'phone.png' | asset_url }}" alt="we serve" class="x-w-auto x-h-auto" width="100%" height="100%">
+            </div>
+        </div>
+        <div class="x-mx-auto x-pt-[20px]">
+            <div class="x-w-full x-h-auto x-flex x-justify-center x-items-center">
+                <div class="x-text-[23px] md:x-text-[43px] x-text-black x-text-center">LETS TALK LINENS</div>
+            </div>
+        </div>
+        <div class="x-mx-auto x-pt-[10px] x-pb-[50px]">
+            <div class="x-w-full x-h-auto x-flex x-justify-center x-items-center">
+                <div class="x-text-[18px] md:x-text-[28px] x-text-black x-text-center">CONNECT DIRECTLY WITH OUR SUPPLY EXPERTS TODAY</div>
+            </div>
+        </div>
+        {% form 'contact' %}
+        {{ form.errors | default_errors }}
+        <div class="x-w-full x-space-y-8 md:x-space-y-4 md:x-flex md:x-flex-wrap md:x-gap-6">
+            <div class="md:x-flex md:x-items-center md:x-w-full">
+            <label for="first-name" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Business Name:*</label>
+            <input type="text" required name="contact[first_name]" id="first-name" class="x-w-full x-border x-border-[#555] x-p-2  x-outline-none md:x-w-[80%]" />
+            </div>
+            <div class="md:x-flex md:x-items-center md:x-w-full">
+            <label for="last-name" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Contact Name:*</label>
+            <input type="text" name="contact[last_name]" id="last-name" class="x-w-full x-border x-border-[#555] x-p-2  x-outline-none  md:x-w-[80%]" />
+            </div>
+            <div class="md:x-flex md:x-items-center md:x-w-full">
+            <label for="phone" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Phone Number:</label>
+            <input type="tel" required name="contact[phone]" id="phone" class="x-w-full x-border x-border-[#555] x-p-2  x-outline-none md:x-w-[80%]" />
+            </div>
+            <div class="md:x-flex md:x-items-center md:x-w-full">
+            <label for="email" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Email Address:*</label>
+            <input type="email" required name="contact[email]" id="email" class="x-w-full x-border x-border-[#555] x-p-2  x-outline-none md:x-w-[80%]" />
+            </div>
+            <div class="md:x-flex md:x-items-center md:x-w-full">
+            <label for="message" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Comments:</label>
+            <textarea name="contact[body]" id="message" class="x-w-full x-h-[200px] x-border x-border-[#555] x-p-2  x-outline-none md:x-w-[80%]"></textarea>
+            </div>
+
+            <div class="x-mt-[20px] x-flex x-justify-center x-w-full">
+                <input type="submit" value="Submit" class="x-bg-[#000000] x-text-white x-py-[10px] x-px-[20px] x-font-bold" />
+            </div>
+        </div>
+        {% endform %}
+        <div class="x-mb-5 x-pt-[30px] md:x-mb-[10px]">
+            <hr style="border: 1px solid #000000;">
+        </div>
+          <div class="x-pt-[20px] x-w-full md:x-pb-[40px]">
+            <div class="x-flex x-flex-col md:x-flex-row x-justify-center x-gap-10 md:x-gap-[60px] x-mx-auto">
+              <div class="">
+                <div class="x-flex x-justify-center x-items-center x-w-full x-h-[100px]">
+                  <div class="x-w-[75px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
+                    <img src="{{ 'acon1.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
+                  </div>
+                </div>
+                <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">
+                    WRITE
+                </div>
+                <div class="x-max-w-[300px] md:x-max-w-[250px] x-mx-auto x-text-center x-pt-[10px]">
+                    PO BOX 635 Hillburn, NY 10931
+                </div>
+              </div>
+            
+              <div class="">
+                <div class="x-flex x-justify-center x-items-center x-w-full x-h-[100px]">
+                  <div class="x-w-[50px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
+                    <img src="{{ 'acon2.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
+                  </div>
+                </div>
+                <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">
+                    CALL
+                </div>
+                <div class="x-max-w-[300px] md:x-max-w-[250px] x-mx-auto x-text-center x-pt-[10px]">
+                    P. 866.23.LINEN (235.4636) F. 845.357.5732                
+                </div>
+              </div>
+            
+                <div class="">
+                    <div class="x-flex x-justify-center x-items-center x-w-full x-h-[100px]">
+                        <div class="x-w-[50px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
+                            <img src="{{ 'acon4.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
+                        </div>
+                    </div>
+                        <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">
+                            CONNECT
+                        </div>
+                        <div class="x-max-w-[300px] md:x-max-w-[250px] x-mx-auto x-text-center x-pt-[10px]">
+                            info@ksesuppliers.com                        
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="x-mb-5 x-pt-[10px] md:x-mb-[10px] lg:x-mb-[70px]">
+            <hr style="border: 1px solid #000000;">
+        </div>
+        <div class="x-pt-[20px] x-w-full md:x-pb-[40px]">
+            <div class="x-flex x-flex-col md:x-flex-row x-justify-center x-gap-10 md:x-gap-[60px] x-mx-auto">
+                <div class="">
+                    <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828] md:x-h-[20px]">
+                        East Coast Warehouse
+                    </div>
+                    <div class="x-max-w-[300px] md:x-max-w-[250px] x-mx-auto x-text-center x-pt-[10px]">
+                        230 Route 17<br>Hillburn, NY 10931
+                    </div>
+                </div>
+        
+                <div class="">
+                    <div class="x-block x-text-4xl x-mb-3 x-text-center x-text-[#951828] ">
+                        Coming Soon! <br>West Coast Warehouse
+                    </div>
+                    <div class="x-max-w-[300px] md:x-max-w-[250px] x-mx-auto x-text-center x-pt-[10px]">
+                        14020 183rd Street<br>La Palma, CA 90623
+                    </div>
+                </div>
+                <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828] md:x-w-[25%] md:x-h-[100px]">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        
+        
+  </div>
+</div>

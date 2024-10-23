@@ -6,7 +6,7 @@
             </div>
             <div class="x-flex x-flex-col md:x-flex-row md:x-gap-[32px]">
                 <div href="{{ product.url }}" class="x-w-full md:x-w-1/2 x-p-[4px]">
-                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]" src="{{ product.featured_image |  image_url: width: 400 }}" alt="{{ product.featured_image.alt }} width="100%" height="100%">
+                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]" src="{{ product.featured_image |  image_url: width: 400 }}" alt="{{ product.featured_image.alt }}" width="100%" height="100%">
                 </div>
                 <div class="x-flex x-flex-col x-gap-[20px] x-p-[16px] md:x-pl-[32px] md:x-w-1/2 x-text-[16px]">
                     <div>{{ product.description }}</div>

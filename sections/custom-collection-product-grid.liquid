@@ -1,0 +1,23 @@
+<section class="x-px-[16px]">
+    <div class="x-flex x-flex-col x-shadow-md md:x-shadow-xl x-max-w-[1440px] x-mx-auto x-rounded-b-lg">
+        <div>
+            <h1 class="x-text-center x-text-[32px] md:x-text-[48px] x-py-[16px] md:x-pt-[32px] x-text-[#a80505]">{{ collection.title }}</h1>
+            <div class="x-p-[16px] x-px-[32px] x-text-[14px] md:x-text-[18px] md:x-w-[80%] lg:x-w-[70%] md:x-mx-auto x-text-center">{{ collection.description }}</div>
+        </div>
+        <div class="md:x-gap-y-[48px] x-p-[16px] md:x-py-[48px] md:x-px-[32px]">
+            {% paginate collection.products by 2 %}
+                <div class="x-grid x-grid-cols-2 md:x-grid-cols-3 x-gap-[8px] md:x-gap-[32px]">
+                    {% comment %} {% assign current_product = all_products["economy-t130-sheets-pillowcases"] %}
+                    {% render 'custom-product-card', product: current_product %}
+                    {% render 'custom-product-card', product: current_product %}
+                    {% render 'custom-product-card', product: current_product %}
+                    {% render 'custom-product-card', product: current_product %} {% endcomment %}
+                    {% for product in collection.products %}
+                        {% render 'custom-product-card', product: product %}
+                    {% endfor %}
+                </div>
+                {% render 'custom-pagination', paginate: paginate %}
+            {% endpaginate %}
+        </div>
+    </div>
+</section>

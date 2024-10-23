@@ -6,7 +6,7 @@
         </div>
         <div class="md:x-gap-y-[48px] x-p-[16px] md:x-py-[48px] md:x-px-[32px]">
             {% paginate collection.products by 2 %}
-                <div class="x-grid x-grid-cols-2 md:x-grid-cols-3 x-gap-[8px] md:x-gap-[32px]">
+                <div class="x-grid x-grid-cols-1 md:x-grid-cols-3 x-gap-[8px] md:x-gap-[32px]">
                     {% comment %} {% assign current_product = all_products["economy-t130-sheets-pillowcases"] %}
                     {% render 'custom-product-card', product: current_product %}
                     {% render 'custom-product-card', product: current_product %}

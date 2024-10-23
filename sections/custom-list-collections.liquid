@@ -5,7 +5,7 @@
         </div>
         <div class="md:x-gap-y-[48px] x-p-[16px] md:x-py-[48px] md:x-px-[32px]">
             {% paginate collections by 9 %}
-                <div class="x-grid x-grid-cols-2 md:x-grid-cols-3 x-gap-[16px] md:x-gap-[32px]">
+                <div class="x-grid x-grid-cols-1 md:x-grid-cols-3 x-gap-[16px] md:x-gap-[32px]">
                 {% for collection in collections %}
                     {% render 'custom-card-collection', collection: collection %}
                 {% endfor %}

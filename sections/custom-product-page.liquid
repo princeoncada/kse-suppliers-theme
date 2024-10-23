@@ -60,7 +60,11 @@
                                     </div>
                                     <div class="x-pt-[16px]">
                                         <div>
-                                            {{ variant.price | money }}
+                                            {% if customer %}
+                                                {{ variant.price | money }}
+                                            {% else %}
+                                                <a href="/account/login?return_to={{ product.url | url_escape }}" class="x-text-[#ac1200] hover:x-underline">Login to view price</a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +104,13 @@
                                     <td class="x-p-[8px]">{{ variant_desc }}</td>
                                     <td class="x-p-[8px]">{{ variant_cut_size }}</td>
                                     <td class="x-p-[8px]">{{ variant_packing }}</td>
-                                    <td class="x-p-[8px]">{{ variant.price | money }}</td>
+                                    <td class="x-p-[8px]">
+                                        {% if customer %}
+                                            {{ variant.price | money }}
+                                        {% else %}
+                                            <a href="/account/login?return_to={{ product.url | url_escape }}" class="x-text-[#ac1200] hover:x-underline">Login to view price</a>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endif %}
                         {% endfor %}

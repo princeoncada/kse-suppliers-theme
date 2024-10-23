@@ -1,7 +1,7 @@
 <a href="{{ collection.url }}">
     <div class="x-w-full x-h-full x-border x-rounded-[8px] x-flex x-flex-col x-justify-between x-bg-white">
-        <h1 class="x-text-center x-p-[12px] md:x-py-[24px] x-text-[16px] md:x-text-[24px] x-flex-1 x-flex x-justify-center x-items-center">{{ collection.title }}</h1>
-        <div class="x-w-full x-p-[4px]">
+        <h1 class="x-text-center x-p-[12px] md:x-py-[24px] x-text-[16px] md:x-text-[24px]  x-flex x-justify-center x-items-center">{{ collection.title }}</h1>
+        <div class="x-w-full x-p-[4px] x-flex-1">
             <img class="x-object-contain x-w-full x-h-full" src="{{ collection.featured_image |  image_url: width: 400 }}" alt="{{ collection.featured_image.alt }} width="100%" height="100%">
         </div>
     </div>

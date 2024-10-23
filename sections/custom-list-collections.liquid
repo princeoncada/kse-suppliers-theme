@@ -1,0 +1,17 @@
+<section class="x-px-[16px]">
+    <div class="x-flex x-flex-col x-shadow-md md:x-shadow-xl x-max-w-[1440px] x-mx-auto x-rounded-b-lg">
+        <div>
+            <h1 class="x-text-center x-text-[32px] md:x-text-[48px] x-py-[16px] md:x-pt-[32px] x-text-[#a80505]">Categories</h1>
+        </div>
+        <div class="md:x-gap-y-[48px] x-p-[16px] md:x-py-[48px] md:x-px-[32px]">
+            {% paginate collections by 9 %}
+                <div class="x-grid x-grid-cols-2 md:x-grid-cols-3 x-gap-[16px] md:x-gap-[32px]">
+                {% for collection in collections %}
+                    {% render 'custom-card-collection', collection: collection %}
+                {% endfor %}
+                </div>
+                {% render 'custom-pagination', paginate: paginate %}
+            {% endpaginate %}
+        </div>
+    </div>
+</section>

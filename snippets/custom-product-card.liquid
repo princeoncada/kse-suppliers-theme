@@ -10,7 +10,7 @@
             <img class="x-object-contain x-w-full x-h-full" src="{{ product.featured_image |  image_url: width: 400 }}" alt="{{ product.featured_image.alt }} width="100%" height="100%">
         </a>
         {% if product.metafields.product.types.value.first != "Default" %}
-            <div class="x-p-[12px] md:x-px-[24px] lg:x-w-[80%] lg:x-mx-auto md:x-py-[24px] x-text-[12px] md:x-text-[16px] x-grid x-grid-cols-2 x-gap-x-[8px] x-gap-y-[4px]">
+            <div class="x-p-[12px] md:x-px-[16px] x-w-[80%] x-mx-auto md:x-py-[24px] x-text-[12px] md:x-text-[14px] x-grid x-grid-cols-2 x-gap-x-[8px] x-gap-y-[4px]">
                 {% for type in product.metafields.product.types.value %}
                     <a href="{{ product.url }}" class="x-text-[#86120e] hover:x-underline">{{ type }}</a>
                 {% endfor %}

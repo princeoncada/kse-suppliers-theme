@@ -122,6 +122,19 @@
         </label>
       </div>
 
+      <input type="hidden" name="return_to" value="">
+      
+      <script>
+        $(document).ready(function() {
+            let currentUrl = window.location.href;
+            if (currentUrl.includes('?')) {
+                let queryString = currentUrl.split('?')[1];
+                let returnTo = queryString.split('=')[1];
+                $('input[name="return_to"]').val(returnTo);
+            }
+        });
+      </script>
+
       {%- if form.password_needed -%}
         <div class="field">
           <input

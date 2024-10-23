@@ -1,57 +1,41 @@
 <div class="x-px-[24px]">
   <div class="x-shadow-[0_1px_7px_rgba(0,0,0,0.5)] x-px-[12px] x-pt-[20px] x-max-w-[1254px] x-mx-auto md:x-px-[123px] md:x-pt-[48px] x-pb-[20px]">
     <div class="x-mx-auto">
-      <div class="x-w-[55px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
+      <div class="x-w-[75px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
         <img src="{{ 'weserve.png' | asset_url }}" alt="we serve" class="x-w-auto x-h-auto" width="100%" height="100%">
       </div>
     </div>
     
-    <div class="x-mx-auto">
+    <div class="x-mx-auto x-pt-[20px]">
       <div class="x-w-full x-h-auto x-flex x-justify-center x-items-center">
         <div class="x-text-[23px] md:x-text-[43px] x-text-black x-text-center">SERVING YOU ACROSS 10 INDUSTRIES</div>
       </div>
     </div>
-    
 
-    <div class="x-flex x-justify-center x-items-center x-w-full x-mb-[30px] x-mt-[10px] md:x-hidden">
-      <div class="x-w-[1000px] x-h-auto x-flex x-justify-center x-items-center x-mx-auto">
-        <img src="{{ 'pillow.jpg' | asset_url }}" alt="pillow" class="" width="100%" height="100%">
+    {% comment %} dev: optimized use for flex divs, issue: image tearing on dynamic screen size change {% endcomment %}
+    <div class="x-mx-auto md:x-flex md:x-w-full md:x-mb-[30px] md:x-mt-[10px] md:x-overflow-hidden md:x-h-[400px]">
+      <div class="md:x-flex-1 x-flex x-justify-center x-items-center md:x-h-full">
+        <div class="x-w-full x-h-full x-max-w-[100%] x-flex x-justify-center x-items-center">
+          <img src="{{ 'pillow.jpg' | asset_url }}" alt="pillow" class="x-w-full x-h-full object-cover" width="100%" height="100%">
+        </div>
       </div>
-    </div>
-    
-    <div class="x-mx-auto md:x-hidden">
-      <div class="x-w-full x-bg-[#951828] x-flex x-justify-center x-items-center">
-        <div class="x-py-[20px] x-px-[20px]">
-          <div class="x-text-[12px] x-text-[#fff] x-text-center">WHATEVER YOUR NEEDS, WE'RE THE ONLY CONTACT YOU NEED</div>
-        </div>  
-      </div>
-    </div>
-    
-    <div class="x-hidden md:x-flex md:x-w-full md:x-mb-[30px] md:x-mt-[10px] md:x-overflow-hidden">
-      <div class="md:x-flex-1 md:x-h-[400px] md:x-flex md:x-justify-center md:x-items-center">
-        {% comment %}already works but i dont know how to do this part optimally, i got stucked so optimization is needed, ref to senior dev prince {% endcomment %}
-        <img src="{{ 'pillow.jpg' | asset_url }}" alt="pillow" class="md:x-w-full md:x-h-full object-cover" width="100%" height="100%">
-      </div>
-      <div class="md:x-w-[30%] md:x-h-[400px] md:x-bg-[#951828] md:x-flex md:x-justify-center md:x-items-center md:x-ml-[5px]">
-        <div class="x-py-[20px] x-px-[40px]">
-          <div class="x-text-[24px] x-text-[#fff] x-text-justify">
+      <div class="md:x-w-[30%] md:x-h-full x-bg-[#951828] md:x-flex md:x-justify-center md:x-items-center md:x-ml-[5px]">
+        <div class="x-py-[20px] x-px-[20px] md:x-px-[40px]">
+          <div class="x-text-[12px] x-text-[#fff] x-text-center md:x-text-[24px] md:x-text-justify">
             WHATEVER YOUR NEEDS, WE'RE THE ONLY CONTACT YOU NEED
           </div>
-        </div>  
+        </div>
       </div>
     </div>
     
     
-    
-    
-    
-  
-    <div class="x-mx-auto x-mt-[40px] ">
+ 
+    <div class="x-mx-auto x-pt-[40px] ">
       <div class="x-w-full x-h-auto x-flex x-justify-center x-items-center x-pb-[47px]">
         <div class="x-text-[25px] x-text-black x-text-center x-mb-3">THE SUPPLIER BEHIND THE SUPPLIERS</div>
       </div>
       <div class="md:x-pb-[75px]">
-        <div class="x-mx-auto x-mb-10 x-text-[14px] md:x-text-[17px]  x-text-justify">
+        <div class="x-mx-auto x-mb-10 x-text-[14px] md:x-text-[24px]  x-text-justify">
           KSE Suppliers is positioned in support of your business. Whether you’re a direct facility supplier or run your own laundry rental service, we are your single point of contact for reusable commercial linens and premium textiles—and totally personalized service.
           <br><br>
           Enjoy deep savings on reusable materials and garments of all shapes and sizes, including linens, towels, bedding, nursing garments, cleaning supplies and other institutional textiles.
@@ -69,8 +53,8 @@
               <img src="{{ 'icon4.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Hotels & Motels</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Hotels & Motels</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             We offer affordable bedding and bath solutions for budget motels, luxury suites, and everything in between
           </div>
         </div>
@@ -81,8 +65,8 @@
               <img src="{{ 'icon5.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Hospitals & Medical Centers</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Hospitals & Medical Centers</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             For healthcare operators we offer access to premium goods for clothing patients and maintaining safe, sanitary facilities</div>
         </div>
       
@@ -92,8 +76,8 @@
               <img src="{{ 'icon6.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Nursing & Group Homes</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Nursing & Group Homes</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             Supply independent and assisted living residences with soft, resilient bedding and assorted products at unbeatable prices</div>
         </div>
         <div class="">
@@ -102,8 +86,8 @@
               <img src="{{ 'icon7.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Correctional Facilities</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Correctional Facilities</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             Economy meets durability with our vast selection of sheets, linens, and other essential detention supplies
           </div>
         </div>
@@ -114,8 +98,8 @@
               <img src="{{ 'icon8.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Restaurants & Bars</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Restaurants & Bars</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             From the kitchen to the dining room, outfit an entire establishment with reusable napkins, aprons, towels and tablecloths</div>
         </div>
       
@@ -125,8 +109,8 @@
               <img src="{{ 'icon9.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Resorts & Country Clubs</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Resorts & Country Clubs</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             Complement 5-star service with luxury linens and other quality textiles at competitive wholesale prices</div>
         </div>
         <div class="">
@@ -135,8 +119,8 @@
               <img src="{{ 'icon10.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Commercial Launderers</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Commercial Launderers</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             Whether you wash for restaurants, hotels, or small local businesses, we have the most efficient, easy-care textile optionst
           </div>
         </div>
@@ -147,8 +131,8 @@
               <img src="{{ 'icon11.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Transitional Housing</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Transitional Housing</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             Discover economical solutions for keeping the needy safe, warm, clean, and comfortable in public shelters</div>
         </div>
       
@@ -158,8 +142,8 @@
               <img src="{{ 'icon12.png' | asset_url }}" alt="we serve" class="" width="100%" height="100%">
             </div>
           </div>
-          <div class="x-text-4xl x-mb-3 x-text-center x-text-[#951828]">Industrial Companies</div>
-          <div class="x-max-w-[300px] x-mx-auto x-text-center x-py-[10px]">
+          <div class="x-text-4xl x-mb-3 x-text-center md:x-text-start x-text-[#951828]">Industrial Companies</div>
+          <div class="x-max-w-[300px] x-mx-auto x-text-center md:x-text-start x-py-[10px]">
             When heavy-duty jobs require durable supplies, rely on KSE to meet all your complex textile needs</div>
         </div>
       </div>

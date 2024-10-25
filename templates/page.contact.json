@@ -10,7 +10,7 @@
  {
   "sections": {
     "main": {
-      "type": "contact-custom",
+      "type": "custom-contact",
   },
 },
   "order": [

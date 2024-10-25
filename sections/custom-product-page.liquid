@@ -2,121 +2,232 @@
     <div class="x-flex x-flex-col x-shadow-md md:x-shadow-xl x-max-w-[1440px] x-mx-auto x-rounded-b-lg">
         <div class="lg:x-w-[85%] lg:x-mx-auto">
             <div class="x-w-full">
-                <h1 class="x-text-start x-text-[28px] x-p-[16px] md:x-pt-[32px] x-text-[#a80505]">{{ product.title }}</h1>
+                <h1 class="x-text-start x-text-[28px] x-p-[16px] md:x-pt-[32px] x-text-[#a80505]">{{ product.title }}
+                </h1>
             </div>
             <div class="x-flex x-flex-col md:x-flex-row md:x-gap-[32px]">
                 <div href="{{ product.url }}" class="x-w-full md:x-w-1/2 x-p-[4px]">
-                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]" src="{{ product.featured_image |  image_url: width: 400 }}" alt="{{ product.featured_image.alt }}" width="100%" height="100%">
+                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
+                        src="{{ product.featured_image |  image_url: width: 400 }}"
+                        alt="{{ product.featured_image.alt }}" width="100%" height="100%">
                 </div>
                 <div class="x-flex x-flex-col x-gap-[20px] x-p-[16px] md:x-pl-[32px] md:x-w-1/2 x-text-[16px]">
                     <div>{{ product.description }}</div>
                     <ul>
                         {% for feature in product.metafields.custom.features.value %}
-                            <li class="x-flex x-items-center x-gap-[4px]"><i class='bx bx-radio-circle-marked x-text-[#9e0b0f] x-text-[12px]'></i>{{ feature }}</li>
+                        <li class="x-flex x-items-center x-gap-[4px]"><i
+                                class='bx bx-radio-circle-marked x-text-[#9e0b0f] x-text-[12px]'></i>{{ feature }}</li>
                         {% endfor %}
                     </ul>
                     <div class="x-flex x-items-center x-pt-[10px] x-text-[24px] x-gap-[4px]">
-                        See product listing below <i class='bx bx-down-arrow-alt x-leading-[0px] x-text-[36px] x-text-[#9e0b0f]'></i>
+                        See product listing below <i
+                            class='bx bx-down-arrow-alt x-leading-[0px] x-text-[36px] x-text-[#9e0b0f]'></i>
                     </div>
                 </div>
             </div>
         </div>
+
+        {% comment %} Mobile View {% endcomment %}
         <div class="x-border-t-[1px] x-border-[#ccc] x-py-[24px] x-flex x-flex-col x-gap-[32px] md:x-hidden">
             {% for product_type in product.metafields.product.types.value %}
+            <div>
                 <div>
-                    <div>
-                        <h1 class="x-text-center x-text-white x-bg-[#ac1200] x-text-[24px] x-py-[8px]">
-                            {% if product_type != "Default" %}
-                                {{ product_type }}
-                            {% endif %}
-                        </h1>
-                    </div>
-                    <div>
-                        {% for variant in product.variants %}
-                            {% assign variant_details = variant.metafields.custom %}
-                            {% assign variant_type = variant_details.type.value %}
-                            {% assign variant_desc = variant_details.description.value %}
-                            {% assign variant_cut_size = variant_details.cut_size.value %}
-                            {% assign variant_packing = variant_details.packing.value %}
-                            {% if variant_type == product_type %}
-                                <div class="x-p-[8px] x-border-t-[1px] x-border-b-[1px] x-border-[#ac1200] x-mt-[-1px]">
-                                    <div class="x-grid x-grid-cols-2 x-gap-y-[16px]">
-                                        <div>
-                                            <div class="x-font-semibold x-text-[#ac1200]">Item Code</div>
-                                            <div>{{ variant.title }}</div>
-                                        </div>
-                                        <div>
-                                            <div class="x-font-semibold x-text-[#ac1200]">Description</div>
-                                            <div>{{ variant_desc }}</div>
-                                        </div>
-                                        <div>
-                                            <div class="x-font-semibold x-text-[#ac1200]">Cut Size</div>
-                                            <div>{{ variant_cut_size }}</div>
-                                        </div>
-                                        <div>
-                                            <div class="x-font-semibold x-text-[#ac1200]">Packing</div>
-                                            <div>{{ variant_packing }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="x-pt-[16px]">
-                                        <div>
-                                            {% if customer %}
-                                                {{ variant.price | money }}
-                                            {% else %}
-                                                <a href="/account/login?return_to={{ product.url | url_escape }}" class="x-text-[#ac1200] hover:x-underline">Login to view price</a>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    <h1 class="x-text-center x-text-white x-bg-[#ac1200] x-text-[24px] x-py-[8px]">
+                        {% if product_type != "Default" %}
+                        {{ product_type }}
+                        {% endif %}
+                    </h1>
                 </div>
+                <div>
+                    {% for variant in product.variants %}
+                    {% assign variant_details = variant.metafields.custom %}
+                    {% assign variant_type = variant_details.type.value %}
+                    {% assign variant_desc = variant_details.description.value %}
+                    {% assign variant_cut_size = variant_details.cut_size.value %}
+                    {% assign variant_packing = variant_details.packing.value %}
+                    {% if variant_type == product_type %}
+                    <div class="x-p-[8px] x-border-t-[1px] x-border-b-[1px] x-border-[#ac1200] x-mt-[-1px]">
+                        <div class="x-grid x-grid-cols-2 x-gap-y-[16px]">
+                            <div>
+                                <div class="x-font-semibold x-text-[#ac1200]">Item Code</div>
+                                <div>{{ variant.title }}</div>
+                            </div>
+                            <div>
+                                <div class="x-font-semibold x-text-[#ac1200]">Description</div>
+                                <div>{{ variant_desc }}</div>
+                            </div>
+                            <div>
+                                <div class="x-font-semibold x-text-[#ac1200]">Cut Size</div>
+                                <div>{{ variant_cut_size }}</div>
+                            </div>
+                            <div>
+                                <div class="x-font-semibold x-text-[#ac1200]">Packing</div>
+                                <div>{{ variant_packing }}</div>
+                            </div>
+                            <div>
+                                {% if customer %}
+                                <div class="x-font-semibold x-text-[#ac1200]">Price</div>
+                                <div>{{ variant.price | money }}</div>
+                                {% else %}
+                                <a href="/account/login?return_to={{ product.url | url_escape }}"
+                                    class="x-text-[#ac1200] hover:x-underline">Login to view price</a>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if customer %}
+                                <button
+                                    class="add-to-cart x-w-full x-h-full x-bg-[#ac1200] hover:x-bg-[#721a10] x-text-white x-transition-colors x-duration-300 x-ease-in-out"
+                                    data-item="{{ product_type | append: " : " | append: variant.title }}"
+                                    data-variant-id="{{ variant.id }}">Add to Cart</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
             {% endfor %}
         </div>
+
+        {% comment %} Desktop View {% endcomment %}
         <div class="x-border-t-[1px] x-border-[#ccc] x-py-[48px] x-flex-col x-gap-[32px] x-hidden md:x-flex">
             {% for product_type in product.metafields.product.types.value %}
-                <div class="lg:x-w-[85%] lg:x-mx-auto">
-                    <div>
-                        <h1 class="x-text-[#ac1200] x-text-[24px] x-py-[8px] x-px-[16px]">
-                            {% if product_type != "Default" %}
-                                {{ product_type }}
-                            {% endif %}
-                        </h1>
-                    </div>
-                    <table class="x-w-full x-text-start">
-                        <tr class="x-h-[32px] x-text-white x-bg-[#ac1200]">
-                            <th class="x-text-start x-p-[8px] x-w-1/5">Item Code</th>
-                            <th class="x-text-start x-p-[8px] x-w-1/5">Description</th>
-                            <th class="x-text-start x-p-[8px] x-w-1/5">Cut Size</th>
-                            <th class="x-text-start x-p-[8px] x-w-1/5">Packing</th>
-                            <th class="x-text-start x-p-[8px] x-w-1/5">Price</th>
-                        </tr>
-                        {% for variant in product.variants %}
-                            {% assign variant_details = variant.metafields.custom %}
-                            {% assign variant_type = variant_details.type.value %}
-                            {% assign variant_desc = variant_details.description.value %}
-                            {% assign variant_cut_size = variant_details.cut_size.value %}
-                            {% assign variant_packing = variant_details.packing.value %}
-                            {% if variant_type == product_type %}
-                                <tr class="x-text-[20px]">
-                                    <td class="x-p-[8px]">{{ variant.title }}</td>
-                                    <td class="x-p-[8px]">{{ variant_desc }}</td>
-                                    <td class="x-p-[8px]">{{ variant_cut_size }}</td>
-                                    <td class="x-p-[8px]">{{ variant_packing }}</td>
-                                    <td class="x-p-[8px]">
-                                        {% if customer %}
-                                            {{ variant.price | money }}
-                                        {% else %}
-                                            <a href="/account/login?return_to={{ product.url | url_escape }}" class="x-text-[#ac1200] hover:x-underline">Login to view price</a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </table>
+            <div class="lg:x-w-[85%] lg:x-mx-auto">
+                <div>
+                    <h1 class="x-text-[#ac1200] x-text-[24px] x-py-[8px] x-px-[16px]">
+                        {% if product_type != "Default" %}
+                        {{ product_type }}
+                        {% endif %}
+                    </h1>
                 </div>
+                <table class="x-w-full x-text-start">
+                    <tr class="x-h-[32px] x-text-white x-bg-[#ac1200]">
+                        <th class="x-text-start x-p-[8px] x-w-1/5">Item Code</th>
+                        <th class="x-text-start x-p-[8px] x-w-1/5">Description</th>
+                        <th class="x-text-start x-p-[8px] x-w-1/5">Cut Size</th>
+                        <th class="x-text-start x-p-[8px] x-w-1/5">Packing</th>
+                        <th class="x-text-start x-p-[8px] x-w-1/5">Price</th>
+                    </tr>
+                    {% for variant in product.variants %}
+                    {% assign variant_details = variant.metafields.custom %}
+                    {% assign variant_type = variant_details.type.value %}
+                    {% assign variant_desc = variant_details.description.value %}
+                    {% assign variant_cut_size = variant_details.cut_size.value %}
+                    {% assign variant_packing = variant_details.packing.value %}
+                    {% if variant_type == product_type %}
+                    <tr class="x-text-[20px]">
+                        <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant.title }}</td>
+                        <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_desc }}</td>
+                        <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_cut_size }}</td>
+                        <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_packing }}</td>
+                        <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">
+                            {% if customer %}
+                            <div class="x-w-full x-h-full x-flex x-flex-row x-justify-between">
+                                <div class="x-flex x-items-center">{{ variant.price | money }}</div>
+                                <button
+                                    class="add-to-cart x-bg-[#ac1200] hover:x-bg-[#721a10] x-text-white x-px-[12px] x-py-[6px] x-text-[16px] x-transition-colors x-duration-300 x-ease-in-out"
+                                    data-item="{{ product_type | append: " : " | append: variant.title }}"
+                                    data-variant-id="{{ variant.id }}">Add
+                                    to Cart</button>
+                            </div>
+                            {% else %}
+                            <a href="/account/login?return_to={{ product.url | url_escape }}"
+                                class="x-text-[#ac1200] hover:x-underline">Login to view price</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
             {% endfor %}
         </div>
     </div>
 </section>
+
+<div id="cart-modal"
+    class="x-fixed x-inset-0 x-bg-black x-bg-opacity-50 x-hidden x-flex x-items-center x-justify-center x-z-10">
+    <div
+        class="x-bg-white x-shadow-lg x-w-[80%] lg:x-w-[25%] x-h-auto x-p-[24px] x-flex x-flex-col x-justify-between x-gap-[12px]">
+        <div>
+            <div class="x-text-[16px]">Add to Cart</div>
+            <div class="selected-item x-text-[24px] x-text-[#ac1200]">&nbsp;</div>
+        </div>
+
+        <div class="x-flex x-flex-col x-gap-[8px]">
+            <!-- Quantity Input -->
+            <div class="x-flex x-flex-col x-gap-[8px]">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" class="x-border x-w-full x-p-[8px]" min="1" value="1">
+            </div>
+
+            <input type="hidden" id="variant" value="">
+
+            <!-- Modal Buttons -->
+            <div class="x-flex x-justify-end x-gap-4">
+                <button id="cancel-btn"
+                    class="x-py-[8px] x-px-[16px] x-border-[1px] x-border-black x-text-black hover:x-bg-black hover:x-text-white x-transition-colors x-duration-300 x-ease-in-out">Cancel</button>
+                <button id="confirm-add-btn" class="x-bg-[#ac1200] x-text-white x-py-[8px] x-px-[16px] hover:x-bg-[#721a10] x-transition-colors x-duration-300 x-ease-in-out">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Show modal when Add to Cart button is clicked
+        $('.add-to-cart').on('click', function () {
+            $('#cart-modal').removeClass('x-hidden');
+            $('.selected-item').text($(this).data('item'));
+            $('body').addClass('x-overflow-hidden'); // Disable scrolling
+            $('#variant').val($(this).data('variant-id'));
+        });
+
+        // Hide modal when Cancel button is clicked
+        $('#cancel-btn').on('click', function () {
+            $('#cart-modal').addClass('x-hidden');
+            $('body').removeClass('x-overflow-hidden'); // Enable scrolling
+            $('#quantity').val(1);
+            $('#variant').val('');
+        });
+
+        // Confirm adding to cart and hide modal
+        $('#confirm-add-btn').on('click', function () {
+
+            // Perform the add to cart action here (e.g., AJAX request)
+            console.log($('#variant').val(), $('#quantity').val());
+            $.ajax({
+                url: '/cart/add.js',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: $('#variant').val(),
+                    quantity: $('#quantity').val(),
+                }),
+                success: function () {
+                    console.log('Added to cart successfully.');
+                },
+                error: function (error) {
+                    console.log('Error: ', error);
+                }
+            });
+
+            // Hide modal after confirming
+            $('#cart-modal').addClass('x-hidden');
+            $('body').removeClass('x-overflow-hidden'); // Enable scrolling
+            $('#quantity').val(1);
+            $('#variant').val('');
+        });
+
+        // Hide modal if clicking outside of it
+        $('#cart-modal').on('click', function (e) {
+            if ($(e.target).is('#cart-modal')) {
+                $('#cart-modal').addClass('x-hidden');
+                $('body').removeClass('x-overflow-hidden'); // Enable scrolling
+                $('#quantity').val(1);
+                $('#variant').val('');
+            }
+        });
+    });
+</script>

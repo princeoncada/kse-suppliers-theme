@@ -1,3 +1,5 @@
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
 <section class="x-px-[16px]">
     <div class="x-flex x-flex-col x-shadow-md md:x-shadow-xl x-max-w-[1440px] x-mx-auto x-rounded-b-lg">
         <div class="lg:x-w-[85%] lg:x-mx-auto">
@@ -162,15 +164,31 @@
                 <input type="number" id="quantity" class="x-border x-w-full x-p-[8px]" min="1" value="1">
             </div>
 
-            <input type="hidden" id="variant" value="">
+            {% comment %} <input type="hidden" id="variant" name="id" value=""> {% endcomment %}
 
             <!-- Modal Buttons -->
             <div class="x-flex x-justify-end x-gap-4">
-                <button id="cancel-btn"
+                <button id="cancel-btn" type="button"
                     class="x-py-[8px] x-px-[16px] x-border-[1px] x-border-black x-text-black hover:x-bg-black hover:x-text-white x-transition-colors x-duration-300 x-ease-in-out">Cancel</button>
-                <button id="confirm-add-btn" class="x-bg-[#ac1200] x-text-white x-py-[8px] x-px-[16px] hover:x-bg-[#721a10] x-transition-colors x-duration-300 x-ease-in-out">Add</button>
+                <button id="confirm-add-btn" type="submit"
+                    >Add</button>
             </div>
         </div>
+
+
+            <div class="x-flex x-flex-col x-gap-[8px]">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" class="x-border x-w-full x-p-[8px]" min="1" value="1">
+            </div>
+            <input type="hidden" name="id" id="variant"  value="" class="product-variant-id">
+    
+            <div class="product-form__buttons">
+                <button type="submit" name="add">
+                    <div class="x-bg-[#ac1200] x-text-white x-py-[8px] x-px-[16px] hover:x-bg-[#721a10] x-transition-colors x-duration-300 x-ease-in-out x-flex x-items-center x-gap-[16px]">
+                        Add {%- render 'loading-spinner' -%}
+                    </div>
+                </button>
+            </div>
     </div>
 </div>
 
@@ -195,24 +213,6 @@
         // Confirm adding to cart and hide modal
         $('#confirm-add-btn').on('click', function () {
 
-            // Perform the add to cart action here (e.g., AJAX request)
-            console.log($('#variant').val(), $('#quantity').val());
-            $.ajax({
-                url: '/cart/add.js',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    id: $('#variant').val(),
-                    quantity: $('#quantity').val(),
-                }),
-                success: function () {
-                    console.log('Added to cart successfully.');
-                },
-                error: function (error) {
-                    console.log('Error: ', error);
-                }
-            });
-
             // Hide modal after confirming
             $('#cart-modal').addClass('x-hidden');
             $('body').removeClass('x-overflow-hidden'); // Enable scrolling
@@ -230,4 +230,28 @@
             }
         });
     });
+
+    function refreshCartDrawer() {
+        $.ajax({
+            url: '',
+            success: function (data) {
+                // Parse the returned HTML to extract cart drawer content
+                // console.log(data)
+
+                // create a new div and append data to it
+                let cartDrawer = document.createElement('div');
+                cartDrawer.innerHTML = data;
+                let whatWeNeed = cartDrawer.querySelector('.cart-drawer')
+                $('cart-drawer').html(whatWeNeed);
+
+                $('.cart-drawer__overlay').on("click", function () {
+                    $('cart-drawer').removeClass('active');
+                    $('body').removeClass('overflow-hidden');
+                });
+            },
+            error: function (error) {
+                console.log('Error fetching cart content:', error);
+            }
+        });
+    }
 </script>

@@ -144,8 +144,10 @@ class CartItems extends HTMLElement {
   }
 
   updateQuantity(line, quantity, name, variantId) {
-    this.enableLoading(line);
+    this.enableLoading(line); // Runs a method called enableLoading which basically disables the cart items and shows a loading spinner
 
+    // The body of the fetch request is a JSON object that contains the line, quantity, sections, and sections_url
+    // In the case of CartRemoveButton, the quantity is set to 0, which is why the item is removed from the cart
     const body = JSON.stringify({
       line,
       quantity,
@@ -153,37 +155,54 @@ class CartItems extends HTMLElement {
       sections_url: window.location.pathname,
     });
 
+    // The fetch request is made to the cart_change_url, which is defined in the routes object in the cart.liquid file
+    // The fetchConfig function comes directly from global.js and is used to set the headers of the fetch request
     fetch(`${routes.cart_change_url}`, { ...fetchConfig(), ...{ body } })
       .then((response) => {
-        return response.text();
+        // returns a response object which is usually receieved after a fetch request is made. 
+        // The usual contents of a response object are headers, status, and body.
+        // Not really as important than the next .then() method
+        return response.text(); // The text() method returns a promise that resolves with the body of the response as a string
       })
       .then((state) => {
+        // The state is the body of the response, which is currently a string.
+        // The JSON.parse() method is used to parse the string and convert it into a JavaScript object.
         const parsedState = JSON.parse(state);
+
+        // The quantityElement is the input element that contains the quantity of the item in the cart
+        // Quantity-${line} is the index of the item in the cart drawer
         const quantityElement =
           document.getElementById(`Quantity-${line}`) || document.getElementById(`Drawer-quantity-${line}`);
+
+        // The items variable is a NodeList of all the items in the cart
         const items = document.querySelectorAll('.cart-item');
 
+        // If the parsedState object contains an errors key, then the quantity of the item is set to the value of the quantity attribute
         if (parsedState.errors) {
-          quantityElement.value = quantityElement.getAttribute('value');
-          this.updateLiveRegions(line, parsedState.errors);
-          return;
+          quantityElement.value = quantityElement.getAttribute('value'); // The value of the quantity element is set to the value of the quantity attribute
+          this.updateLiveRegions(line, parsedState.errors); // The updateLiveRegions method is called with the line and the error message (LOOK INTO UPDATE LIVE REGIONS)
+          return; // The return statement is used to stop the execution and end the function
         }
 
+        // If the parsedState object contains an item_count key and the value of the item_count key is 0, then the cart is empty
+        // The classList.toggle() method is used to toggle the is-empty class on the cart-items element
         this.classList.toggle('is-empty', parsedState.item_count === 0);
         const cartDrawerWrapper = document.querySelector('cart-drawer');
         const cartFooter = document.getElementById('main-cart-footer');
 
         if (cartFooter) cartFooter.classList.toggle('is-empty', parsedState.item_count === 0);
+
+        // The cartDrawerWrapper variable is used to select the cart-drawer element and toggle the is-empty class on it if the item_count is 0
         if (cartDrawerWrapper) cartDrawerWrapper.classList.toggle('is-empty', parsedState.item_count === 0);
 
+        // The getSectionsToRender() method returns an array of objects that contain the id, section, and selector of the sections to render
         this.getSectionsToRender().forEach((section) => {
-          const elementToReplace =
-            document.getElementById(section.id).querySelector(section.selector) || document.getElementById(section.id);
-          elementToReplace.innerHTML = this.getSectionInnerHTML(
-            parsedState.sections[section.section],
-            section.selector
-          );
+            // The elementToReplace variable is used to select the element that needs to be replaced
+            const elementToReplace = document.getElementById(section.id).querySelector(section.selector) || document.getElementById(section.id);
+            // The innerHTML of the elementToReplace is set to the innerHTML of the section in the parsedState object
+            elementToReplace.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.section], section.selector);
         });
+
         const updatedValue = parsedState.items[line - 1] ? parsedState.items[line - 1].quantity : undefined;
         let message = '';
         if (items.length === parsedState.items.length && updatedValue !== parseInt(quantityElement.value)) {
@@ -236,6 +255,9 @@ class CartItems extends HTMLElement {
   }
 
   getSectionInnerHTML(html, selector) {
+    // first create a new DOMParser object and use the parseFromString method to parse the html string
+    // the querySelector method is then used to select the element with the selector inside the parsed html
+    // the innerHTML of the selected element is then returned
     return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
   }
 

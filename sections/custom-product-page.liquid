@@ -1,5 +1,3 @@
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-
 <section class="x-px-[16px]">
     <div class="x-flex x-flex-col x-shadow-md md:x-shadow-xl x-max-w-[1440px] x-mx-auto x-rounded-b-lg">
         <div class="lg:x-w-[85%] lg:x-mx-auto">
@@ -145,8 +143,18 @@
             </div>
             {% endfor %}
         </div>
+
+
+        <div>
+            <button class="clear-cart">CLEAR THE CART</button>
+        </div>
+        <div>
+            <button class="details-cart">CART DETAILS</button>
+        </div>
     </div>
 </section>
+
+
 
 <div id="cart-modal"
     class="x-fixed x-inset-0 x-bg-black x-bg-opacity-50 x-hidden x-flex x-items-center x-justify-center x-z-10">
@@ -161,34 +169,20 @@
             <!-- Quantity Input -->
             <div class="x-flex x-flex-col x-gap-[8px]">
                 <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" class="x-border x-w-full x-p-[8px]" min="1" value="1">
+                <input type="number" id="quantity" name="quantity" class="x-border x-w-full x-p-[8px]" min="1"
+                    value="1">
             </div>
 
-            {% comment %} <input type="hidden" id="variant" name="id" value=""> {% endcomment %}
+            <input type="hidden" id="variant" name="id" value="">
 
             <!-- Modal Buttons -->
             <div class="x-flex x-justify-end x-gap-4">
                 <button id="cancel-btn" type="button"
                     class="x-py-[8px] x-px-[16px] x-border-[1px] x-border-black x-text-black hover:x-bg-black hover:x-text-white x-transition-colors x-duration-300 x-ease-in-out">Cancel</button>
                 <button id="confirm-add-btn" type="submit"
-                    >Add</button>
+                    class="x-bg-[#ac1200] x-text-white x-py-[8px] x-px-[16px] hover:x-bg-[#721a10] x-transition-colors x-duration-300 x-ease-in-out">Add</button>
             </div>
         </div>
-
-
-            <div class="x-flex x-flex-col x-gap-[8px]">
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" class="x-border x-w-full x-p-[8px]" min="1" value="1">
-            </div>
-            <input type="hidden" name="id" id="variant"  value="" class="product-variant-id">
-    
-            <div class="product-form__buttons">
-                <button type="submit" name="add">
-                    <div class="x-bg-[#ac1200] x-text-white x-py-[8px] x-px-[16px] hover:x-bg-[#721a10] x-transition-colors x-duration-300 x-ease-in-out x-flex x-items-center x-gap-[16px]">
-                        Add {%- render 'loading-spinner' -%}
-                    </div>
-                </button>
-            </div>
     </div>
 </div>
 
@@ -212,8 +206,11 @@
 
         // Confirm adding to cart and hide modal
         $('#confirm-add-btn').on('click', function () {
+            let variant_id = $('#variant').val();
+            let amount = $('#quantity').val();
 
-            // Hide modal after confirming
+            addItemToCart(variant_id, amount);
+
             $('#cart-modal').addClass('x-hidden');
             $('body').removeClass('x-overflow-hidden'); // Enable scrolling
             $('#quantity').val(1);
@@ -229,29 +226,147 @@
                 $('#variant').val('');
             }
         });
+
+        $('.clear-cart').on('click', function () {
+
+            // console.log('Clearing the cart');
+            clearCart();
+
+            
+        });
     });
 
-    function refreshCartDrawer() {
-        $.ajax({
-            url: '',
-            success: function (data) {
-                // Parse the returned HTML to extract cart drawer content
-                // console.log(data)
+    function addItemToCart(variant_id, amount) {
+        let cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer'),
+            formData = {
+                items: [
+                    {
+                        id: variant_id,
+                        quantity: amount
+                    }
+                ],
+                sections: cart.getSectionsToRender().map(section => section.id)
+            };
+        cart.setActiveElement(document.activeElement);
 
-                // create a new div and append data to it
-                let cartDrawer = document.createElement('div');
-                cartDrawer.innerHTML = data;
-                let whatWeNeed = cartDrawer.querySelector('.cart-drawer')
-                $('cart-drawer').html(whatWeNeed);
+        const config = fetchConfig('json');
+        config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        config.body = JSON.stringify(formData);
 
-                $('.cart-drawer__overlay').on("click", function () {
-                    $('cart-drawer').removeClass('active');
-                    $('body').removeClass('overflow-hidden');
-                });
-            },
-            error: function (error) {
-                console.log('Error fetching cart content:', error);
+        fetch(`${routes.cart_add_url}`, config).then(response => response.json()).then(
+            response => {
+
+                // console.log(response)
+
+                if (response.errors) {
+                    publish(
+                        PUB_SUB_EVENTS.cartError,
+                        {
+                            source: 'product-form',
+                            productVariantId: variant_id,
+                            errors: response.errors,
+                            message: response.errors
+                        }
+                    );
+                    let errorMessageWrapper = document.querySelector('.product-form__error-message-wrapper');
+                    if (!errorMessageWrapper) return;
+                    let errorMessage = errorMessageWrapper.querySelector('.product-form__error-message');
+                    errorMessageWrapper.toggleAttribute('hidden', !errorMessage),
+                        errorMessage &&
+                        (errorMessage.textContent = response.errors)
+                } else {
+                    publish(
+                        PUB_SUB_EVENTS.cartUpdate,
+                        {
+                            source: 'product-form',
+                            productVariantId: variant_id
+                        }
+                    );
+                    let cartObj = {};
+                    Object.assign(cartObj, response.items[0]),
+                        Object.assign(cartObj, {
+                            sections: response.sections
+                        }),
+
+                        cart.renderContents(cartObj),
+                        cart.classList.remove('is-empty'),
+                        trapFocus(
+                            document.getElementById('CartDrawer'),
+                            document.getElementById('CartDrawer')
+                        )
+                }
             }
-        });
+        )
     }
+
+    function clearCart() {
+        let cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer'),
+            formData = {
+                sections: cart.getSectionsToRender().map(section => section.id)
+            };
+        cart.setActiveElement(document.activeElement);
+
+        const config = fetchConfig('json');
+        config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        config.body = JSON.stringify(formData);
+
+        fetch(`/cart/clear`, config).then(response => response.json()).then(
+            response => {
+                if (response.errors) {
+                    publish(
+                        PUB_SUB_EVENTS.cartError,
+                        {
+                            source: 'product-form',
+                            productVariantId: variant_id,
+                            errors: response.errors,
+                            message: response.errors
+                        }
+                    );
+                    let errorMessageWrapper = document.querySelector('.product-form__error-message-wrapper');
+                    if (!errorMessageWrapper) return;
+                    let errorMessage = errorMessageWrapper.querySelector('.product-form__error-message');
+                    errorMessageWrapper.toggleAttribute('hidden', !errorMessage),
+                        errorMessage &&
+                        (errorMessage.textContent = response.errors)
+                } else {
+
+                    publish(
+                        PUB_SUB_EVENTS.cartUpdate,
+                        {
+                            source: 'product-form',
+                        }
+                    );
+
+                    cartObj = {
+                        items: [],
+                        sections: response.sections
+                    };
+
+                    cart.renderContents(cartObj);
+                    
+
+                    trapFocus(
+                        document.getElementById('CartDrawer'),
+                        document.getElementById('CartDrawer')
+                    )
+
+                    cart.classList.add('is-empty');
+                    cart.classList.add('active');
+                }
+            }
+        )
+    }
+
+    $(document).ready(function () {
+        $('.details-cart').on('click', function () {
+            getCurrentCart().then(cart => {
+                console.log(cart);
+            });
+        });
+    });
+
+    function getCurrentCart() {
+        return fetch('/cart.js', fetchConfig('json')).then(response => response.json());
+    }
+
 </script>

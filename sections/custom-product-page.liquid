@@ -143,14 +143,6 @@
             </div>
             {% endfor %}
         </div>
-
-
-        <div>
-            <button class="clear-cart">CLEAR THE CART</button>
-        </div>
-        <div>
-            <button class="details-cart">CART DETAILS</button>
-        </div>
     </div>
 </section>
 
@@ -226,14 +218,6 @@
                 $('#variant').val('');
             }
         });
-
-        $('.clear-cart').on('click', function () {
-
-            // console.log('Clearing the cart');
-            clearCart();
-
-            
-        });
     });
 
     function addItemToCart(variant_id, amount) {
@@ -294,9 +278,52 @@
                             document.getElementById('CartDrawer'),
                             document.getElementById('CartDrawer')
                         )
+
+                    $('button[name="save-to-draft"]').on('click', function () {
+                        saveToDraft();
+                        clearCart();
+                    });
                 }
             }
         )
+    }
+
+    function draftSavedFeedback() {
+        let emptyCartContainer = $('div.cart-drawer__empty-content');
+        let emptyCartContent = emptyCartContainer.html();
+        emptyCartContainer.html('<i class="bx bx-loader-alt bx-spin x-text-[24px] x-text-[#ac1200]"></i>');
+
+        setTimeout(() => {
+            emptyCartContainer.html('<p>Your cart has been saved to draft.</p>');
+        }, 2000);
+
+        setTimeout(() => {
+            emptyCartContainer.html(emptyCartContent);
+        }, 4000);
+    }
+
+    function saveToDraft() {
+        let cartItems = [];
+        fetch('/cart.js', { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+            .then(response => response.json())
+            .then(state => {
+                cartItems = state.items.map(item => ({ variantId: item.variant_id, quantity: item.quantity }));
+                return submitDraftOrder(cartItems);
+            })
+    }
+
+    function submitDraftOrder(cartItems) {
+        const customerId = "{{ customer.id }}";
+        const currentUserId = `gid://shopify/Customer/${customerId}`;
+        const mutation = `mutation { createDraftOrder(customerId: "${currentUserId}", lineItems: [${cartItems.map(item => `{ variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }`).join(',')}], shippingAddress: { address1: "123 Main St", city: "Los Angeles", province: "California", country: "United States", zip: "90001" }, metafields: [{ namespace: "global", key: "note", value: "Special Instructions", type: "string" }], note: "Special instructions for the order") { id createdAt lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
+
+        return fetch('https://1a8a-158-62-77-86.ngrok-free.app/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: mutation })
+        }).then(response => response.json());
     }
 
     function clearCart() {
@@ -343,7 +370,7 @@
                     };
 
                     cart.renderContents(cartObj);
-                    
+
 
                     trapFocus(
                         document.getElementById('CartDrawer'),
@@ -352,51 +379,10 @@
 
                     cart.classList.add('is-empty');
                     cart.classList.add('active');
+
+                    draftSavedFeedback();
                 }
             }
         )
     }
-
-    $(document).ready(function () {
-        $('.details-cart').on('click', function () {
-            saveToDraft().then(cart => {
-                let responseObj = cart.items;
-                let cartItems = [];
-
-                responseObj.forEach(item => {
-                    cartItems.push({
-                        variantId: item.variant_id,
-                        quantity: item.quantity
-                    });
-                });
-
-                sendDraftOrder(cartItems).then(response => {
-                console.log(response);
-                });
-            });
-        });
-    });
-
-    function saveToDraft() {
-    return fetch('/cart.js', { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-        .then(response => response.json());
-}
-
-    function sendDraftOrder(cartItems) {
-        const customerId = {{ customer.id }};
-        const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const mutation = `mutation { createDraftOrder(customerId: "${currentUserId}", lineItems: [${cartItems.map(item => `{ variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }`).join(',')}], shippingAddress: { address1: "123 Main St", city: "Los Angeles", province: "California", country: "United States", zip: "90001" }, metafields: [{ namespace: "global", key: "note", value: "Special Instructions", type: "string" }], note: "Special instructions for the order") { id createdAt lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
-
-        return fetch(' https://1a8a-158-62-77-86.ngrok-free.app/graphql', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query: mutation })
-    }).then(response => response.json());
-
-        //prince code
-        // return fetch('/cart.js', fetchConfig('json')).then(response => response.json());
-    }
-
 </script>

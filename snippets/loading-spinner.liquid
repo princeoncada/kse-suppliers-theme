@@ -7,6 +7,6 @@
   {% render 'loading-spinner' %}
 {% endcomment %}
 
-<div class="{% if class %}{{ class }}{% else %}loading__spinner hidden{% endif %}">
-  {{ 'loading-spinner.svg' | inline_asset_content }}
+<div class="{% if class %}{{ class }}{% else %}loading__spinner hidden{% endif %} x-relative x-hidden">
+    {{ 'loading-spinner.svg' | inline_asset_content }}
 </div>

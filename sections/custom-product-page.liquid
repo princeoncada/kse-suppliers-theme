@@ -359,13 +359,23 @@
 
     $(document).ready(function () {
         $('.details-cart').on('click', function () {
-            getCurrentCart().then(cart => {
-                console.log(cart);
+            saveToDraft().then(cart => {
+                let responseObj = cart.items;
+                let cartItems = [];
+
+                responseObj.forEach(item => {
+                    cartItems.push({
+                        variantId: item.variant_id,
+                        quantity: item.quantity
+                    });
+                });
+
+                console.log(cartItems);
             });
         });
     });
 
-    function getCurrentCart() {
+    function saveToDraft() {
         return fetch('/cart.js', fetchConfig('json')).then(response => response.json());
     }
 

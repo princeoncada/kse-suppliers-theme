@@ -387,7 +387,13 @@
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
     
-    
-    
+    <script>
+        $(document).ready(function(){
+            $('button[name="save-to-draft"]').on('click', function () {
+                saveToDraft();
+                clearCart();
+            });
+        });
+    </script>
   </body>
 </html>

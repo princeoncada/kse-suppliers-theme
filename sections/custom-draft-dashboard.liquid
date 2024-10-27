@@ -1,14 +1,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<div class="md:x-w-[700px] x-justify-center x-mx-auto x-pt-[40px] x-hidden">
+<div class="md:x-w-[700px] x-justify-center x-mx-auto x-pt-[40px]">
     <div class="x-dropdown x-mb-4 x-flex x-justify-end">
-        <select id="order-type-dropdown" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
+        <select id="order-type-dropdown-old" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
             <option value="">Loading...</option>
         </select>
     </div>
 
     <div class="x-dropdown x-mb-4 x-flex x-justify-end">
-        <select id="shipping-address-dropdown" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
+        <select id="shipping-address-dropdown-old" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
             <option value="">Loading...</option>
         </select>
     </div>
@@ -62,19 +62,20 @@
             <div class="x-flex x-flex-col x-gap-[16px] md:x-text-[18px]">
                 <div class="x-flex x-flex-col x-gap-[8px]">
                     <div class="x-w-full">
-                        <select class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none" name="" id="">
-                            <option value="">Draft Orders</option>
+                        <select id="order-type-dropdown" class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
+                            <option value="">Loading...</option>
                         </select>
                     </div>
                     <div class="x-w-full">
-                        <select class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none" name="" id="">
-                            <option value="">Shipping Addresses</option>
+                        <select id="shipping-address-dropdown" class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
+                            <option value="">Loading...</option>
                         </select>
                     </div>
                 </div>
                 <div class="products x-pt-[1px]">
                     <div class="x-flex x-flex-row x-mt-[-1px]">
-                        <div class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
+                        <div
+                            class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
                             <div>
                                 <div>Product: <span>Microfiber Bar Mops</span></div>
                                 <div>Variant: <span>TMBM1418BLU</span></div>
@@ -86,18 +87,24 @@
                         </div>
                         <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
                             <div class="x-border-b-[1px] x-p-[8px] md:x-p-[16px]">Subtotal</div>
-                            <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$100.00</div>
+                            <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$100.00
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="x-grid x-grid-cols-[80%_20%]">
                     <div class="buttons x-flex x-flex-col">
-                        <button class="x-flex-1 x-border x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Request Shipping Quote</button>
-                        <button class="x-flex-1 x-border x-border-t-0 x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Place Order</button>
+                        <button
+                            class="x-flex-1 x-border x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Request
+                            Shipping Quote</button>
+                        <button
+                            class="x-flex-1 x-border x-border-t-0 x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Place
+                            Order</button>
                     </div>
                     <div class="x-text-center x-flex x-flex-col x-border x-border-l-0">
                         <div class="x-border-b-[1px] x-p-[8px] md:x-p-[16px]">Total</div>
-                        <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$300.00</div>
+                        <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$300.00
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,32 +113,32 @@
 </section>
 
 <script>
-    const customerId = {{ customer.id }};
+    const customerId = "{{ customer.id }}";
 
     $(document).ready(() => {
         populateOrderTypeDropdown();
         populateShippingAddressDropdown();
         $("#order-type-dropdown, #shipping-address-dropdown").change(async () => {
-        updateContentBox();
-        checkAndDisableShippingButton();
+            updateContentBox();
+            checkAndDisableShippingButton();
         });
     });
 
-$(".request-shipping").click(() => {
-    const draftOrderId = getSelectedDraftOrderId();
-    const userId = {{ customer.id }};
-    const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
+    $(".request-shipping").click(() => {
+        const draftOrderId = getSelectedDraftOrderId();
+        const userId = "{{ customer.id }}";
+        const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
 
-    if (!isShippingRequested(draftOrderId)) {
-        requestShipping(draftOrderId, userId, selectedAddress);
-        setShippingRequested(draftOrderId); 
-        disableShippingButton();
-    } else {
-        alert("Shipping fee request has already been made for this order.");
-    }
-});
+        if (!isShippingRequested(draftOrderId)) {
+            requestShipping(draftOrderId, userId, selectedAddress);
+            setShippingRequested(draftOrderId);
+            disableShippingButton();
+        } else {
+            alert("Shipping fee request has already been made for this order.");
+        }
+    });
 
-$(".place-order").click(async function () {
+    $(".place-order").click(async function () {
         const draftOrderId = getSelectedDraftOrderId();
         console.log("place-order clicked", draftOrderId);
         await completeDraftOrder(draftOrderId);
@@ -363,7 +370,7 @@ $(".place-order").click(async function () {
                 body: JSON.stringify({ query }),
             });
             const result = await response.json();
-            return result.data.checkForShippingFee; 
+            return result.data.checkForShippingFee;
         } catch (error) {
             console.error("Error checking for shipping fee:", error);
         }
@@ -420,7 +427,7 @@ $(".place-order").click(async function () {
         if (selectedOrder.id) {
             const draftOrderId = selectedOrder.id.split('/').pop();
             shippingCost = await checkForShippingFee(draftOrderId);
-            
+
             if (shippingCost !== null && shippingCost !== undefined) {
                 shippingCost = parseFloat(shippingCost.toString().replace(/[^0-9.]/g, '')) || 0;
             } else {
@@ -447,41 +454,41 @@ $(".place-order").click(async function () {
             });
 
             $("#order-total").text(`$${total.toFixed(2)}`);
-            
-        if (shippingCost > 0) {
-            $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
-            $("#shipping-cost-row").css("display", "table-row");
-            $("#grand-total-row").css("display", "table-row");
 
-            const grandTotal = total + shippingCost;
-            $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
+            if (shippingCost > 0) {
+                $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
+                $("#shipping-cost-row").css("display", "table-row");
+                $("#grand-total-row").css("display", "table-row");
 
-            $(".request-shipping")
-                .prop("disabled", true)
-                .text("Shipping Included")
-                .removeClass("x-bg-white x-text-black")
-                .addClass("x-bg-black x-text-white");
-        } else {
-            $("#shipping-cost-row").css("display", "none");
-            $("#grand-total-row").css("display", "none");
-            $("#grand-total").text(`$${total.toFixed(2)}`);
+                const grandTotal = total + shippingCost;
+                $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
 
-            // Check if shipping was already requested
-            const draftOrderId = getSelectedDraftOrderId();
-            if (isShippingRequested(draftOrderId)) {
                 $(".request-shipping")
                     .prop("disabled", true)
-                    .text("Shipping Fee Requested")
+                    .text("Shipping Included")
                     .removeClass("x-bg-white x-text-black")
                     .addClass("x-bg-black x-text-white");
             } else {
-                $(".request-shipping")
-                    .prop("disabled", false)
-                    .text("Request Shipping Quote")
-                    .removeClass("x-bg-black x-text-white")
-                    .addClass("x-bg-white x-text-black");
+                $("#shipping-cost-row").css("display", "none");
+                $("#grand-total-row").css("display", "none");
+                $("#grand-total").text(`$${total.toFixed(2)}`);
+
+                // Check if shipping was already requested
+                const draftOrderId = getSelectedDraftOrderId();
+                if (isShippingRequested(draftOrderId)) {
+                    $(".request-shipping")
+                        .prop("disabled", true)
+                        .text("Shipping Fee Requested")
+                        .removeClass("x-bg-white x-text-black")
+                        .addClass("x-bg-black x-text-white");
+                } else {
+                    $(".request-shipping")
+                        .prop("disabled", false)
+                        .text("Request Shipping Quote")
+                        .removeClass("x-bg-black x-text-white")
+                        .addClass("x-bg-white x-text-black");
+                }
             }
-        }
 
         } else {
             console.warn("No line items found in the selected order.");

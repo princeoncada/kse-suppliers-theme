@@ -1,100 +1,229 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<div class="md:x-w-[700px] x-justify-center x-mx-auto x-pt-[40px]">
-    <div class="x-dropdown x-mb-4 x-flex x-justify-end">
-        <select id="order-type-dropdown" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
-            <option value="">Loading...</option>
-        </select>
-    </div>
+<section class="draft-section x-w-full">
+    <div class="md:x-w-[700px] x-mx-auto x-pt-[40px] x-hidden">
+        <div class="x-dropdown x-mb-4 x-flex x-justify-end">
+            <select id="order-type-dropdown" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
+                <option value="">Loading...</option>
+            </select>
+        </div>
+        
+        <div class="x-dropdown x-mb-4 x-flex x-justify-end">
+            <select id="shipping-address-dropdown" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
+                <option value="">Loading...</option>
+            </select>
+        </div>
     
-    <div class="x-dropdown x-mb-4 x-flex x-justify-end">
-        <select id="shipping-address-dropdown" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
-            <option value="">Loading...</option>
-        </select>
+        <div class="content-box x-border x-border-gray-300 x-rounded x-bg-white x-mb-4">
+            <div id="mobile-order-cards" class=" custom-md:x-hidden">
+                <!-- Order items will be displayed here -->
+            </div>
+            <table class="order-table x-w-full x-border-collapse x-table-auto x-hidden custom-md:x-table">
+                    <tr>
+                        <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Product</th>
+                        <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Variant</th>
+                        <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Price Per Item</th>
+                        <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Quantity</th>
+                        <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Subtotal</th>
+                    </tr>
+                <tbody id="order-items">
+                </tbody>
+                    <tr>
+                        <td colspan="4" class="x-font-bold x-text-right x-p-4">Total:</td>
+                        <td id="order-total" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
+                    </tr>
+                    <tr id="shipping-cost-row" style="display: none;">
+                        <td colspan="4" class="x-font-bold x-text-right x-p-4">Shipping:</td>
+                        <td id="shipping-cost" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
+                    </tr>
+                    <tr id="grand-total-row" style=" display: none;">
+                        <td colspan="4" class="x-font-bold x-text-right x-p-4">Total with Shipping:</td>
+                        <td id="grand-total" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
+                    </tr>
+            </table>
+            <div class="x-flex x-justify-end x-mt-4 x-p-4">
+                <button class="request-shipping x-border-[1px] x-border-black x-bg-white x-text-black  x-px-6 x-py-2 ">
+                    Request Shipping
+                </button>
+            </div>
+            <div class="x-flex x-justify-end x-mt-4 x-p-4">
+                <button class="place-order x-border-[1px] x-border-black x-bg-white x-text-black x-px-6 x-py-2 ">
+                    Place Order
+                </button>
+            </div>
+        </div>
     </div>
+    <div class="x-flex md:x-w-[700px] x-justify-center x-mx-auto x-pt-[40px]">
+        <div>No draft orders as of the moment</div>
+    </div>
+</section>
 
-    <div class="content-box x-border x-border-gray-300 x-rounded x-bg-white x-mb-4">
-        <div id="mobile-order-cards" class=" custom-md:x-hidden">
-            <!-- Order items will be displayed here -->
-        </div>
-        <table class="order-table x-w-full x-border-collapse x-table-auto x-hidden custom-md:x-table">
-                <tr>
-                    <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Product</th>
-                    <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Variant</th>
-                    <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Price Per Item</th>
-                    <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Quantity</th>
-                    <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Subtotal</th>
-                </tr>
-            <tbody id="order-items">
-            </tbody>
-                <tr>
-                    <td colspan="4" class="x-font-bold x-text-right x-p-4">Total:</td>
-                    <td id="order-total" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
-                </tr>
-                <tr id="shipping-cost-row" style="display: none;">
-                    <td colspan="4" class="x-font-bold x-text-right x-p-4">Shipping:</td>
-                    <td id="shipping-cost" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
-                </tr>
-                <tr id="grand-total-row" style=" display: none;">
-                    <td colspan="4" class="x-font-bold x-text-right x-p-4">Total with Shipping:</td>
-                    <td id="grand-total" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
-                </tr>
-        </table>
-        <div class="x-flex x-justify-end x-mt-4 x-p-4">
-            <button class="request-shipping x-border-[1px] x-border-black x-bg-white x-text-black  x-px-6 x-py-2 ">
-                Request Shipping
-            </button>
-        </div>
-        <div class="x-flex x-justify-end x-mt-4 x-p-4">
-            <button class="place-order x-border-[1px] x-border-black x-bg-white x-text-black x-px-6 x-py-2 ">
-                Place Order
-            </button>
-        </div>
-    </div>
-</div>
 
 <script>
     const customerId = {{ customer.id }};
 
     $(document).ready(() => {
-    populateOrderTypeDropdown();
-    populateShippingAddressDropdown();
-    $("#order-type-dropdown, #shipping-address-dropdown").change(() => {
+        populateOrderTypeDropdown();
+        populateShippingAddressDropdown();
+        $("#order-type-dropdown, #shipping-address-dropdown").change(async () => {
         updateContentBox();
         checkAndDisableShippingButton();
+        });
     });
-});
 
 $(".request-shipping").click(() => {
     const draftOrderId = getSelectedDraftOrderId();
     const userId = {{ customer.id }};
+    const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
 
     if (!isShippingRequested(draftOrderId)) {
-        requestShipping(draftOrderId, userId);
-        setShippingRequested(draftOrderId); // Save request in local storage
+        requestShipping(draftOrderId, userId, selectedAddress);
+        setShippingRequested(draftOrderId); 
         disableShippingButton();
     } else {
         alert("Shipping fee request has already been made for this order.");
     }
 });
 
-    function checkAndDisableShippingButton() {
-    const draftOrderId = getSelectedDraftOrderId();
-    if (isShippingRequested(draftOrderId)) {
-        disableShippingButton();
+$(".place-order").click(async function () {
+        const draftOrderId = getSelectedDraftOrderId();
+        console.log("place-order clicked", draftOrderId);
+        await completeDraftOrder(draftOrderId);
+
+    });
+
+
+    async function checkDraftOrderStatus(draftOrderId) {
+        const query = `
+            query {
+                isDraftOrderCompleted(id: "${draftOrderId}")
+            }
+        `;
+
+        try {
+            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query }),
+            });
+            const result = await response.json();
+            return result.data.isDraftOrderCompleted;
+        } catch (error) {
+            console.error("Error checking draft order status:", error);
+        }
     }
-}
+
+    async function updateCompleteOrderButton(draftOrderId) {
+        const isCompleted = await checkDraftOrderStatus(draftOrderId);
+        const completeOrderButton = $(".place-order");
+
+        if (isCompleted) {
+            completeOrderButton.prop("disabled", true).text("Order Completed").removeClass("x-bg-white x-text-black").addClass("x-bg-gray-500 x-text-white");
+        } else {
+            completeOrderButton.prop("disabled", false).text("Place Order").removeClass("x-bg-gray-500 x-text-white").addClass("x-bg-white x-text-black");
+        }
+    }
+
+    async function completeDraftOrder(draftOrderId) {
+        // Get the selected shipping address details from the dropdown
+        const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
+
+        const completeMutation = `
+            mutation {
+                completeDraftOrder(id: "${draftOrderId}", shippingAddress: {
+                    address1: "${selectedAddress.addressText.split(',')[0] || ''}",
+                    city: "${selectedAddress.addressText.split(',')[1] || ''}",
+                    province: "${selectedAddress.province || ''}",
+                    country: "${selectedAddress.country || ''}",
+                    zip: "${selectedAddress.zip || ''}"
+                })
+            }
+        `;
+
+        const deleteMutation = `
+            mutation {
+                deleteDraftOrder(id: "${draftOrderId}")
+            }
+        `;
+
+        try {
+            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: completeMutation }),
+            });
+
+            const result = await response.json();
+
+            if (result.data?.completeDraftOrder) {
+                alert("Order completed successfully.");
+                $(".place-order").prop("disabled", true).text("Order Completed");
+
+                // Now delete the draft order
+                const deleteResponse = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ query: deleteMutation }),
+                });
+
+                const deleteResult = await deleteResponse.json();
+
+                if (deleteResult.data?.deleteDraftOrder) {
+                    console.log(deleteResult.data.deleteDraftOrder); // Log success message
+                    window.location.reload();
+                } else {
+                    alert("Failed to delete the draft order after completion.");
+                }
+            } else {
+                alert("Failed to complete the order.");
+            }
+        } catch (error) {
+            console.error("Error completing draft order:", error);
+            alert("An error occurred while completing the order.");
+        }
+    }
+
+    function checkAndDisableShippingButton() {
+        const draftOrderId = getSelectedDraftOrderId();
+        if (isShippingRequested(draftOrderId)) {
+            disableShippingButton();
+        }
+    }
 
     function getSelectedDraftOrderId() {
         const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
         return selectedOrder?.id?.split('/').pop();
     }
 
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+    }
+
+    function getCookie(name) {
+        const nameEQ = `${name}=`;
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }
+
     function isShippingRequested(draftOrderId) {
-    return localStorage.getItem(`shippingRequested_${draftOrderId}`) === "1";
+        return getCookie(`shippingRequested_${draftOrderId}`) === "1";
     }
 
     function setShippingRequested(draftOrderId) {
-        localStorage.setItem(`shippingRequested_${draftOrderId}`, "1");
+        setCookie(`shippingRequested_${draftOrderId}`, "1", 3); // Cookie expires in 3 days
     }
 
     function disableShippingButton() {
@@ -102,7 +231,6 @@ $(".request-shipping").click(() => {
             .removeClass("x-bg-white x-text-black")
             .addClass("x-bg-black x-text-white");
     }
-
 
     async function fetchData(query) {
         try {
@@ -125,7 +253,6 @@ $(".request-shipping").click(() => {
         const query = `query { draftOrders { id createdAt customerId lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
 
         const data = await fetchData(query);
-        console.log(data);
         const dropdown = $("#order-type-dropdown");
         dropdown.empty(); // Clear existing options
 
@@ -142,10 +269,13 @@ $(".request-shipping").click(() => {
 
             if (orders.length > 0) {
                 dropdown.val(JSON.stringify(orders[0]));
+                $(".draft-section > div:first-child").removeClass("x-hidden");
+                $(".draft-section > div:last-child").addClass("x-hidden");
                 updateContentBox();
             }
         } else {
-            dropdown.html("<option value=''>No orders found</option>");
+            $(".draft-section > div:first-child").addClass("x-hidden");
+            $(".draft-section > div:last-child").removeClass("x-hidden");
         }
     }
 
@@ -160,7 +290,13 @@ $(".request-shipping").click(() => {
             const user = data.data.user;
             $.each(user.addresses, (index, address) => {
                 const addressText = `${address.address1}, ${address.city}`;
-                const option = $("<option>").val(JSON.stringify({ userId: user.id, addressText })).text(`${user.firstName} ${user.lastName} - ${addressText}`);
+                const option = $("<option>").val(JSON.stringify({
+                    userId: user.id,
+                    addressText,
+                    province: address.province,
+                    country: address.country,
+                    zip: address.zip
+                })).text(`${user.firstName} ${user.lastName} - ${addressText}`);
                 dropdown.append(option);
             });
         } else {
@@ -168,142 +304,145 @@ $(".request-shipping").click(() => {
         }
     }
 
+    async function checkForShippingFee(draftOrderId) {
+        const query = `query { checkForShippingFee(draftOrderId: "${draftOrderId}") }`;
 
-async function checkForShippingFee(draftOrderId) {
-    const query = `query { checkForShippingFee(draftOrderId: "${draftOrderId}") }`;
-
-    try {
-        const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ query }),
-        });
-        const result = await response.json();
-        return result.data.checkForShippingFee; 
-    } catch (error) {
-        console.error("Error checking for shipping fee:", error);
-    }
-}
-
-async function requestShipping(draftOrderId, userId) {
-    const mutation = `
-        mutation {
-        requestShippingFee(userId: "${userId}", draftOrderId: "${draftOrderId}")
-        }
-    `;
-
-    try {
-        const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: mutation }),
-        });
-
-        const result = await response.json();
-        console.log("Shipping Request Response:", result);
-
-        if (result.data.requestShippingFee) {
-        alert("Shipping request email sent successfully.");
-        } else {
-        alert("Failed to send shipping request email.");
-        }
-    } catch (error) {
-        console.error("Error sending shipping request:", error);
-    }
-}
-
-async function updateContentBox() {
-    const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
-    const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
-
-    const orderItems = $("#order-items");
-    orderItems.empty();
-
-    let total = 0;
-
-    let shippingCost = 0;
-    if (selectedOrder.id) {
-        const draftOrderId = selectedOrder.id.split('/').pop();
-        shippingCost = await checkForShippingFee(draftOrderId);
-        
-        if (shippingCost !== null && shippingCost !== undefined) {
-            shippingCost = parseFloat(shippingCost.toString().replace(/[^0-9.]/g, '')) || 0;
-        } else {
-            shippingCost = 0;
+        try {
+            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query }),
+            });
+            const result = await response.json();
+            return result.data.checkForShippingFee; 
+        } catch (error) {
+            console.error("Error checking for shipping fee:", error);
         }
     }
 
-    console.log("Shipping Cost:", shippingCost);
+    async function requestShipping(draftOrderId, userId, selectedAddress) {
+        const mutation = `
+            mutation {
+                requestShippingFee(
+                    userId: "${userId}",
+                    draftOrderId: "${draftOrderId}",
+                    shippingAddress: {
+                        address1: "${selectedAddress.addressText.split(',')[0] || ''}",
+                        city: "${selectedAddress.addressText.split(',')[1] || ''}",
+                        province: "${selectedAddress.province || ''}",
+                        country: "${selectedAddress.country || ''}",
+                        zip: "${selectedAddress.zip || ''}"
+                    }
+                )
+            }
+        `;
 
-    if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
-        $.each(selectedOrder.lineItems, (index, item) => {
-            const pricePerItem = parseFloat(item.price || 0);
-            const subtotal = pricePerItem * item.quantity;
-            total += subtotal;
+        try {
+            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: mutation }),
+            });
 
-            const row = `
-                <tr>
-                    <td class="x-py-2 x-px-4">${item.title}</td>
-                    <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
-                    <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
-                    <td class="x-py-2 x-px-4">${item.quantity}</td>
-                    <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
-                </tr>`;
-            orderItems.append(row);
-        });
+            const result = await response.json();
 
-        $("#order-total").text(`$${total.toFixed(2)}`);
-        console.log("shippingCost", shippingCost);
-        
-            if (shippingCost > 0) {
-        console.log("Displaying shipping cost");
-        $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
-        $("#shipping-cost-row").css("display", "table-row");
-        $("#grand-total-row").css("display", "table-row");
+            if (result.data?.requestShippingFee) {
+                alert("Shipping request email sent successfully.");
+            } else {
+                alert("Failed to send shipping request email.");
+            }
+        } catch (error) {
+            console.error("Error sending shipping request:", error);
+        }
+    }
 
-        const grandTotal = total + shippingCost;
-        $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
+    async function updateContentBox() {
+        const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
+        const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
 
-        // Set button to "Shipping Included" as shipping cost is available
-        $(".request-shipping")
-            .prop("disabled", true)
-            .text("Shipping Included")
-            .removeClass("x-bg-white x-text-black")
-            .addClass("x-bg-black x-text-white");
-    } else {
-        console.log("Hiding shipping cost row");
-        $("#shipping-cost-row").css("display", "none");
-        $("#grand-total-row").css("display", "none");
-        $("#grand-total").text(`$${total.toFixed(2)}`);
+        const orderItems = $("#order-items");
+        orderItems.empty();
 
-        // Check if shipping was already requested
-        const draftOrderId = getSelectedDraftOrderId();
-        if (isShippingRequested(draftOrderId)) {
+        let total = 0;
+
+        let shippingCost = 0;
+        if (selectedOrder.id) {
+            const draftOrderId = selectedOrder.id.split('/').pop();
+            shippingCost = await checkForShippingFee(draftOrderId);
+            
+            if (shippingCost !== null && shippingCost !== undefined) {
+                shippingCost = parseFloat(shippingCost.toString().replace(/[^0-9.]/g, '')) || 0;
+            } else {
+                shippingCost = 0;
+            }
+        }
+
+
+        if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
+            $.each(selectedOrder.lineItems, (index, item) => {
+                const pricePerItem = parseFloat(item.price || 0);
+                const subtotal = pricePerItem * item.quantity;
+                total += subtotal;
+
+                const row = `
+                    <tr>
+                        <td class="x-py-2 x-px-4">${item.title}</td>
+                        <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
+                        <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
+                        <td class="x-py-2 x-px-4">${item.quantity}</td>
+                        <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
+                    </tr>`;
+                orderItems.append(row);
+            });
+
+            $("#order-total").text(`$${total.toFixed(2)}`);
+            
+        if (shippingCost > 0) {
+            $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
+            $("#shipping-cost-row").css("display", "table-row");
+            $("#grand-total-row").css("display", "table-row");
+
+            const grandTotal = total + shippingCost;
+            $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
+
             $(".request-shipping")
                 .prop("disabled", true)
-                .text("Shipping Fee Requested")
+                .text("Shipping Included")
                 .removeClass("x-bg-white x-text-black")
                 .addClass("x-bg-black x-text-white");
         } else {
-            $(".request-shipping")
-                .prop("disabled", false)
-                .text("Request Shipping Quote")
-                .removeClass("x-bg-black x-text-white")
-                .addClass("x-bg-white x-text-black");
+            $("#shipping-cost-row").css("display", "none");
+            $("#grand-total-row").css("display", "none");
+            $("#grand-total").text(`$${total.toFixed(2)}`);
+
+            // Check if shipping was already requested
+            const draftOrderId = getSelectedDraftOrderId();
+            if (isShippingRequested(draftOrderId)) {
+                $(".request-shipping")
+                    .prop("disabled", true)
+                    .text("Shipping Fee Requested")
+                    .removeClass("x-bg-white x-text-black")
+                    .addClass("x-bg-black x-text-white");
+            } else {
+                $(".request-shipping")
+                    .prop("disabled", false)
+                    .text("Request Shipping Quote")
+                    .removeClass("x-bg-black x-text-white")
+                    .addClass("x-bg-white x-text-black");
+            }
+        }
+
+        } else {
+            console.warn("No line items found in the selected order.");
+            orderItems.html("<tr><td colspan='5' class='x-text-center x-py-4'>No items to display.</td></tr>");
+            $("#order-total").text("$0.00");
+            $("#shipping-cost-row").hide();
+            $("#grand-total").text("$0.00");
         }
     }
-
-    } else {
-        console.warn("No line items found in the selected order.");
-        orderItems.html("<tr><td colspan='5' class='x-text-center x-py-4'>No items to display.</td></tr>");
-        $("#order-total").text("$0.00");
-        $("#shipping-cost-row").hide();
-        $("#grand-total").text("$0.00");
-    }
-}
 
 </script>

@@ -387,7 +387,7 @@
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const mutation = `mutation { createDraftOrder(customerId: "${currentUserId}", lineItems: [${cartItems.map(item => `{ variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }`).join(',')}], shippingAddress: { address1: "123 Main St", city: "Los Angeles", province: "California", country: "United States", zip: "90001" }, metafields: [{ namespace: "global", key: "note", value: "Special Instructions", type: "string" }], note: "Special instructions for the order") { id createdAt lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
 
-        return fetch(' https://1a8a-158-62-77-86.ngrok-free.app/graphql', {
+        return fetch(' https://99b7-158-62-77-223.ngrok-free.app/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

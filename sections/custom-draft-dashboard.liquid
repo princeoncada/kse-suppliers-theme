@@ -100,7 +100,7 @@ $(".place-order").click(async function () {
         `;
 
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -148,7 +148,7 @@ $(".place-order").click(async function () {
         `;
 
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -163,7 +163,7 @@ $(".place-order").click(async function () {
                 $(".place-order").prop("disabled", true).text("Order Completed");
 
                 // Now delete the draft order
-                const deleteResponse = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+                const deleteResponse = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -234,7 +234,7 @@ $(".place-order").click(async function () {
 
     async function fetchData(query) {
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -308,7 +308,7 @@ $(".place-order").click(async function () {
         const query = `query { checkForShippingFee(draftOrderId: "${draftOrderId}") }`;
 
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -340,7 +340,7 @@ $(".place-order").click(async function () {
         `;
 
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -105,30 +105,135 @@
     </div>
 </section>
 
-{% comment %} <script>
+<script>
     const customerId = {{ customer.id }};
 
     $(document).ready(() => {
         populateOrderTypeDropdown();
         populateShippingAddressDropdown();
-        $("#order-type-dropdown, #shipping-address-dropdown").change(() => {
-            updateContentBox();
-            checkAndDisableShippingButton();
+        $("#order-type-dropdown, #shipping-address-dropdown").change(async () => {
+        updateContentBox();
+        checkAndDisableShippingButton();
         });
     });
 
-    $(".request-shipping").click(() => {
-        const draftOrderId = getSelectedDraftOrderId();
-        const userId = {{ customer.id }};
+$(".request-shipping").click(() => {
+    const draftOrderId = getSelectedDraftOrderId();
+    const userId = {{ customer.id }};
+    const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
 
-        if (!isShippingRequested(draftOrderId)) {
-            requestShipping(draftOrderId, userId);
-            setShippingRequested(draftOrderId); // Save request in local storage
-            disableShippingButton();
-        } else {
-            alert("Shipping fee request has already been made for this order.");
-        }
+    if (!isShippingRequested(draftOrderId)) {
+        requestShipping(draftOrderId, userId, selectedAddress);
+        setShippingRequested(draftOrderId); 
+        disableShippingButton();
+    } else {
+        alert("Shipping fee request has already been made for this order.");
+    }
+});
+
+$(".place-order").click(async function () {
+        const draftOrderId = getSelectedDraftOrderId();
+        console.log("place-order clicked", draftOrderId);
+        await completeDraftOrder(draftOrderId);
+
     });
+
+
+    async function checkDraftOrderStatus(draftOrderId) {
+        const query = `
+            query {
+                isDraftOrderCompleted(id: "${draftOrderId}")
+            }
+        `;
+
+        try {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query }),
+            });
+            const result = await response.json();
+            return result.data.isDraftOrderCompleted;
+        } catch (error) {
+            console.error("Error checking draft order status:", error);
+        }
+    }
+
+    async function updateCompleteOrderButton(draftOrderId) {
+        const isCompleted = await checkDraftOrderStatus(draftOrderId);
+        const completeOrderButton = $(".place-order");
+
+        if (isCompleted) {
+            completeOrderButton.prop("disabled", true).text("Order Completed").removeClass("x-bg-white x-text-black").addClass("x-bg-gray-500 x-text-white");
+        } else {
+            completeOrderButton.prop("disabled", false).text("Place Order").removeClass("x-bg-gray-500 x-text-white").addClass("x-bg-white x-text-black");
+        }
+    }
+
+    async function completeDraftOrder(draftOrderId) {
+        // Get the selected shipping address details from the dropdown
+        const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
+
+        const completeMutation = `
+            mutation {
+                completeDraftOrder(id: "${draftOrderId}", shippingAddress: {
+                    address1: "${selectedAddress.addressText.split(',')[0] || ''}",
+                    city: "${selectedAddress.addressText.split(',')[1] || ''}",
+                    province: "${selectedAddress.province || ''}",
+                    country: "${selectedAddress.country || ''}",
+                    zip: "${selectedAddress.zip || ''}"
+                })
+            }
+        `;
+
+        const deleteMutation = `
+            mutation {
+                deleteDraftOrder(id: "${draftOrderId}")
+            }
+        `;
+
+        try {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: completeMutation }),
+            });
+
+            const result = await response.json();
+
+            if (result.data?.completeDraftOrder) {
+                alert("Order completed successfully.");
+                $(".place-order").prop("disabled", true).text("Order Completed");
+
+                // Now delete the draft order
+                const deleteResponse = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ query: deleteMutation }),
+                });
+
+                const deleteResult = await deleteResponse.json();
+
+                if (deleteResult.data?.deleteDraftOrder) {
+                    console.log(deleteResult.data.deleteDraftOrder); // Log success message
+                    window.location.reload();
+                } else {
+                    alert("Failed to delete the draft order after completion.");
+                }
+            } else {
+                alert("Failed to complete the order.");
+            }
+        } catch (error) {
+            console.error("Error completing draft order:", error);
+            alert("An error occurred while completing the order.");
+        }
+    }
 
     function checkAndDisableShippingButton() {
         const draftOrderId = getSelectedDraftOrderId();
@@ -142,12 +247,30 @@
         return selectedOrder?.id?.split('/').pop();
     }
 
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+    }
+
+    function getCookie(name) {
+        const nameEQ = `${name}=`;
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }
+
     function isShippingRequested(draftOrderId) {
-        return localStorage.getItem(`shippingRequested_${draftOrderId}`) === "1";
+        return getCookie(`shippingRequested_${draftOrderId}`) === "1";
     }
 
     function setShippingRequested(draftOrderId) {
-        localStorage.setItem(`shippingRequested_${draftOrderId}`, "1");
+        setCookie(`shippingRequested_${draftOrderId}`, "1", 3); // Cookie expires in 3 days
     }
 
     function disableShippingButton() {
@@ -156,10 +279,9 @@
             .addClass("x-bg-black x-text-white");
     }
 
-
     async function fetchData(query) {
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -178,7 +300,6 @@
         const query = `query { draftOrders { id createdAt customerId lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
 
         const data = await fetchData(query);
-        console.log(data);
         const dropdown = $("#order-type-dropdown");
         dropdown.empty(); // Clear existing options
 
@@ -195,10 +316,13 @@
 
             if (orders.length > 0) {
                 dropdown.val(JSON.stringify(orders[0]));
+                $(".draft-section > div:first-child").removeClass("x-hidden");
+                $(".draft-section > div:last-child").addClass("x-hidden");
                 updateContentBox();
             }
         } else {
-            dropdown.html("<option value=''>No orders found</option>");
+            $(".draft-section > div:first-child").addClass("x-hidden");
+            $(".draft-section > div:last-child").removeClass("x-hidden");
         }
     }
 
@@ -213,7 +337,13 @@
             const user = data.data.user;
             $.each(user.addresses, (index, address) => {
                 const addressText = `${address.address1}, ${address.city}`;
-                const option = $("<option>").val(JSON.stringify({ userId: user.id, addressText })).text(`${user.firstName} ${user.lastName} - ${addressText}`);
+                const option = $("<option>").val(JSON.stringify({
+                    userId: user.id,
+                    addressText,
+                    province: address.province,
+                    country: address.country,
+                    zip: address.zip
+                })).text(`${user.firstName} ${user.lastName} - ${addressText}`);
                 dropdown.append(option);
             });
         } else {
@@ -221,12 +351,11 @@
         }
     }
 
-
     async function checkForShippingFee(draftOrderId) {
         const query = `query { checkForShippingFee(draftOrderId: "${draftOrderId}") }`;
 
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -234,21 +363,31 @@
                 body: JSON.stringify({ query }),
             });
             const result = await response.json();
-            return result.data.checkForShippingFee;
+            return result.data.checkForShippingFee; 
         } catch (error) {
             console.error("Error checking for shipping fee:", error);
         }
     }
 
-    async function requestShipping(draftOrderId, userId) {
+    async function requestShipping(draftOrderId, userId, selectedAddress) {
         const mutation = `
             mutation {
-                requestShippingFee(userId: "${userId}", draftOrderId: "${draftOrderId}")
+                requestShippingFee(
+                    userId: "${userId}",
+                    draftOrderId: "${draftOrderId}",
+                    shippingAddress: {
+                        address1: "${selectedAddress.addressText.split(',')[0] || ''}",
+                        city: "${selectedAddress.addressText.split(',')[1] || ''}",
+                        province: "${selectedAddress.province || ''}",
+                        country: "${selectedAddress.country || ''}",
+                        zip: "${selectedAddress.zip || ''}"
+                    }
+                )
             }
         `;
 
         try {
-            const response = await fetch("https://1a8a-158-62-77-86.ngrok-free.app/graphql", {
+            const response = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -257,9 +396,8 @@
             });
 
             const result = await response.json();
-            console.log("Shipping Request Response:", result);
 
-            if (result.data.requestShippingFee) {
+            if (result.data?.requestShippingFee) {
                 alert("Shipping request email sent successfully.");
             } else {
                 alert("Failed to send shipping request email.");
@@ -282,7 +420,7 @@
         if (selectedOrder.id) {
             const draftOrderId = selectedOrder.id.split('/').pop();
             shippingCost = await checkForShippingFee(draftOrderId);
-
+            
             if (shippingCost !== null && shippingCost !== undefined) {
                 shippingCost = parseFloat(shippingCost.toString().replace(/[^0-9.]/g, '')) || 0;
             } else {
@@ -290,7 +428,6 @@
             }
         }
 
-        console.log("Shipping Cost:", shippingCost);
 
         if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
             $.each(selectedOrder.lineItems, (index, item) => {
@@ -299,56 +436,52 @@
                 total += subtotal;
 
                 const row = `
-                <tr>
-                    <td class="x-py-2 x-px-4">${item.title}</td>
-                    <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
-                    <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
-                    <td class="x-py-2 x-px-4">${item.quantity}</td>
-                    <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
-                </tr>`;
+                    <tr>
+                        <td class="x-py-2 x-px-4">${item.title}</td>
+                        <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
+                        <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
+                        <td class="x-py-2 x-px-4">${item.quantity}</td>
+                        <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
+                    </tr>`;
                 orderItems.append(row);
             });
 
             $("#order-total").text(`$${total.toFixed(2)}`);
-            console.log("shippingCost", shippingCost);
+            
+        if (shippingCost > 0) {
+            $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
+            $("#shipping-cost-row").css("display", "table-row");
+            $("#grand-total-row").css("display", "table-row");
 
-            if (shippingCost > 0) {
-                console.log("Displaying shipping cost");
-                $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
-                $("#shipping-cost-row").css("display", "table-row");
-                $("#grand-total-row").css("display", "table-row");
+            const grandTotal = total + shippingCost;
+            $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
 
-                const grandTotal = total + shippingCost;
-                $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
+            $(".request-shipping")
+                .prop("disabled", true)
+                .text("Shipping Included")
+                .removeClass("x-bg-white x-text-black")
+                .addClass("x-bg-black x-text-white");
+        } else {
+            $("#shipping-cost-row").css("display", "none");
+            $("#grand-total-row").css("display", "none");
+            $("#grand-total").text(`$${total.toFixed(2)}`);
 
-                // Set button to "Shipping Included" as shipping cost is available
+            // Check if shipping was already requested
+            const draftOrderId = getSelectedDraftOrderId();
+            if (isShippingRequested(draftOrderId)) {
                 $(".request-shipping")
                     .prop("disabled", true)
-                    .text("Shipping Included")
+                    .text("Shipping Fee Requested")
                     .removeClass("x-bg-white x-text-black")
                     .addClass("x-bg-black x-text-white");
             } else {
-                console.log("Hiding shipping cost row");
-                $("#shipping-cost-row").css("display", "none");
-                $("#grand-total-row").css("display", "none");
-                $("#grand-total").text(`$${total.toFixed(2)}`);
-
-                // Check if shipping was already requested
-                const draftOrderId = getSelectedDraftOrderId();
-                if (isShippingRequested(draftOrderId)) {
-                    $(".request-shipping")
-                        .prop("disabled", true)
-                        .text("Shipping Fee Requested")
-                        .removeClass("x-bg-white x-text-black")
-                        .addClass("x-bg-black x-text-white");
-                } else {
-                    $(".request-shipping")
-                        .prop("disabled", false)
-                        .text("Request Shipping Quote")
-                        .removeClass("x-bg-black x-text-white")
-                        .addClass("x-bg-white x-text-black");
-                }
+                $(".request-shipping")
+                    .prop("disabled", false)
+                    .text("Request Shipping Quote")
+                    .removeClass("x-bg-black x-text-white")
+                    .addClass("x-bg-white x-text-black");
             }
+        }
 
         } else {
             console.warn("No line items found in the selected order.");
@@ -359,4 +492,4 @@
         }
     }
 
-</script> {% endcomment %}
+</script>

@@ -1,109 +1,72 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<div class="md:x-w-[700px] x-justify-center x-mx-auto x-pt-[40px]">
-    <div class="x-dropdown x-mb-4 x-flex x-justify-end">
-        <select id="order-type-dropdown-old" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
-            <option value="">Loading...</option>
-        </select>
-    </div>
-
-    <div class="x-dropdown x-mb-4 x-flex x-justify-end">
-        <select id="shipping-address-dropdown-old" class="x-w-auto x-p-2 x-border x-border-gray-300 x-rounded">
-            <option value="">Loading...</option>
-        </select>
-    </div>
-
-    <div class="content-box x-border x-border-gray-300 x-rounded x-bg-white x-mb-4">
-        <div id="mobile-order-cards" class=" custom-md:x-hidden">
-            <!-- Order items will be displayed here -->
-        </div>
-        <table class="order-table x-w-full x-border-collapse x-table-auto x-hidden custom-md:x-table">
-            <tr>
-                <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Product</th>
-                <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Variant</th>
-                <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Price Per Item</th>
-                <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Quantity</th>
-                <th class="x-p-4  x-border-slate-200 x-text-[12px] x-font-normal x-text-left">Subtotal</th>
-            </tr>
-            <tbody id="order-items">
-            </tbody>
-            <tr>
-                <td colspan="4" class="x-font-bold x-text-right x-p-4">Total:</td>
-                <td id="order-total" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
-            </tr>
-            <tr id="shipping-cost-row" style="display: none;">
-                <td colspan="4" class="x-font-bold x-text-right x-p-4">Shipping:</td>
-                <td id="shipping-cost" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
-            </tr>
-            <tr id="grand-total-row" style=" display: none;">
-                <td colspan="4" class="x-font-bold x-text-right x-p-4">Total with Shipping:</td>
-                <td id="grand-total" class="x-font-bold x-p-4 x-text-[24px]">$0.00</td>
-            </tr>
-        </table>
-        <div class="x-flex x-justify-end x-mt-4 x-p-4">
-            <button class="request-shipping x-border-[1px] x-border-black x-bg-white x-text-black  x-px-6 x-py-2 ">
-                Request Shipping
-            </button>
-        </div>
-        <div class="x-flex x-justify-end x-mt-4 x-p-4">
-            <button class="place-order x-border-[1px] x-border-black x-bg-white x-text-black x-px-6 x-py-2 ">
-                Place Order
-            </button>
-        </div>
-    </div>
-</div>
-
 <section>
     <div class="x-max-w-[1440px] x-mx-auto">
         <div class="x-p-[16px] md:x-p-[50px]">
             <h1 class="x-text-[24px] md:x-text-[32px] x-mb-[8px] md:x-mb-[16px]">
                 Draft Orders
             </h1>
-            <div class="x-flex x-flex-col x-gap-[16px] md:x-text-[18px]">
-                <div class="x-flex x-flex-col x-gap-[8px]">
-                    <div class="x-w-full">
-                        <select id="order-type-dropdown" class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
-                            <option value="">Loading...</option>
-                        </select>
-                    </div>
-                    <div class="x-w-full">
-                        <select id="shipping-address-dropdown" class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
-                            <option value="">Loading...</option>
-                        </select>
+            <div class="dashboard">
+                <div class="x-border-t-[1px] x-pt-[12px]">
+                    <div class="md:x-text-[18px]">
+                        No draft orders found.
                     </div>
                 </div>
-                <div class="products x-pt-[1px]">
-                    <div class="x-flex x-flex-row x-mt-[-1px]">
-                        <div
-                            class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
-                            <div>
-                                <div>Product: <span>Microfiber Bar Mops</span></div>
-                                <div>Variant: <span>TMBM1418BLU</span></div>
-                            </div>
-                            <div>
-                                <div>Price: <span>$30.00</span></div>
-                                <div>Quantity: <span>10</span></div>
-                            </div>
+                <div class="x-flex-col x-gap-[16px] md:x-text-[18px]" style="display: none;">
+                    <div class="x-flex x-flex-col x-gap-[8px]">
+                        <div class="x-w-full">
+                            <select id="order-type-dropdown"
+                                class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
+                                <option value="">Loading...</option>
+                            </select>
                         </div>
-                        <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
-                            <div class="x-border-b-[1px] x-p-[8px] md:x-p-[16px]">Subtotal</div>
-                            <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$100.00
-                            </div>
+                        <div class="x-w-full">
+                            <select id="shipping-address-dropdown"
+                                class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
+                                <option value="">Loading...</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="x-grid x-grid-cols-[80%_20%]">
-                    <div class="buttons x-flex x-flex-col">
-                        <button
-                            class="x-flex-1 x-border x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Request
-                            Shipping Quote</button>
-                        <button
-                            class="x-flex-1 x-border x-border-t-0 x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Place
-                            Order</button>
+                    <div>
+                        <div class="">
+                            <div class="x-flex x-flex-row x-mb-[-1px]">
+                                <div
+                                    class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
+                                    <div>
+                                        <div>Draft Items</div>
+                                    </div>
+                                </div>
+                                <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
+                                    <div class="x-p-[8px] md:x-p-[16px]">Subtotal</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-items x-pt-[1px]">
+                            <!-- Order items will be displayed here -->
+                        </div>
                     </div>
-                    <div class="x-text-center x-flex x-flex-col x-border x-border-l-0">
-                        <div class="x-border-b-[1px] x-p-[8px] md:x-p-[16px]">Total</div>
-                        <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$300.00
+                    <div class="x-grid x-grid-cols-[80%_20%]">
+                        <div class="buttons x-flex x-flex-col">
+                            <button
+                                class="request-shipping x-flex-1 x-border x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Request
+                                Shipping Quote</button>
+                            <button
+                                class="place-order x-flex-1 x-border x-border-t-0 x-py-[16px] hover:x-bg-black hover:x-text-white hover:x-border-black x-transition-colors x-duration-300 x-ease-in-out">Place
+                                Order</button>
+                        </div>
+                        <div class="x-text-center x-flex x-flex-col x-border x-border-l-0">
+                            <div class="x-border-b-[1px] x-p-[8px] md:x-p-[16px]">Total</div>
+                            <div class="x-p-[8px] x-flex x-flex-col x-items-center x-justify-center x-h-full">
+                                <div>
+                                    <div id="order-total">$0.00</div>
+                                    <div id="shipping-cost" class="x-hidden">$0.00 / Shipping</div>
+                                </div>
+                                <div id="total-divider"
+                                    class="x-w-full md:x-w-[80%] x-h-[1px] x-border-b-[1px] x-border-0 x-my-[8px] x-hidden">
+                                    &nbsp;
+                                </div>
+                                <div id="grand-total" class="x-hidden">$0.00 / Grand</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -139,10 +102,9 @@
     });
 
     $(".place-order").click(async function () {
+        $(".place-order").prop("disabled", true).text("Placing Order...");
         const draftOrderId = getSelectedDraftOrderId();
-        console.log("place-order clicked", draftOrderId);
         await completeDraftOrder(draftOrderId);
-
     });
 
 
@@ -214,7 +176,7 @@
 
             if (result.data?.completeDraftOrder) {
                 alert("Order completed successfully.");
-                $(".place-order").prop("disabled", true).text("Order Completed");
+                $(".place-order").text("Order Completed");
 
                 // Now delete the draft order
                 const deleteResponse = await fetch("https://99b7-158-62-77-223.ngrok-free.app/graphql", {
@@ -307,6 +269,7 @@
         const query = `query { draftOrders { id createdAt customerId lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
 
         const data = await fetchData(query);
+
         const dropdown = $("#order-type-dropdown");
         dropdown.empty(); // Clear existing options
 
@@ -323,13 +286,14 @@
 
             if (orders.length > 0) {
                 dropdown.val(JSON.stringify(orders[0]));
-                $(".draft-section > div:first-child").removeClass("x-hidden");
-                $(".draft-section > div:last-child").addClass("x-hidden");
+
+                $(".dashboard > div:first-child").css("display", "none");
+                $(".dashboard > div:last-child").css("display", "flex");
                 updateContentBox();
+            } else {
+                $(".dashboard > div:last-child").css("display", "none");
+                $(".dashboard > div:first-child").css("display", "flex");
             }
-        } else {
-            $(".draft-section > div:first-child").addClass("x-hidden");
-            $(".draft-section > div:last-child").removeClass("x-hidden");
         }
     }
 
@@ -418,6 +382,9 @@
         const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
         const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
 
+        const newOrderItems = $(".order-items");
+        newOrderItems.empty();
+
         const orderItems = $("#order-items");
         orderItems.empty();
 
@@ -442,36 +409,67 @@
                 const subtotal = pricePerItem * item.quantity;
                 total += subtotal;
 
-                const row = `
-                    <tr>
-                        <td class="x-py-2 x-px-4">${item.title}</td>
-                        <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
-                        <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
-                        <td class="x-py-2 x-px-4">${item.quantity}</td>
-                        <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
-                    </tr>`;
-                orderItems.append(row);
+                const orderItem = `
+                    <div class="x-flex x-flex-row x-mt-[-1px]">
+                        <div
+                            class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
+                            <div>
+                                <div>Product: <span>${item.title}</span></div>
+                                <div>Variant: <span>${item.variant_title}</span></div>
+                            </div>
+                            <div>
+                                <div>Price: <span>$${pricePerItem.toFixed(2)}</span></div>
+                                <div>Quantity: <span>${item.quantity}</span></div>
+                            </div>
+                        </div>
+                        <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
+                            <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$${subtotal.toFixed(2)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                newOrderItems.append(orderItem);
+
+                // const row = `
+                //     <tr>
+                //         <td class="x-py-2 x-px-4">${item.title}</td>
+                //         <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
+                //         <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
+                //         <td class="x-py-2 x-px-4">${item.quantity}</td>
+                //         <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
+                //     </tr>`;
+                // orderItems.append(row);
             });
 
             $("#order-total").text(`$${total.toFixed(2)}`);
 
             if (shippingCost > 0) {
-                $("#shipping-cost").text(`$${shippingCost.toFixed(2)}`);
-                $("#shipping-cost-row").css("display", "table-row");
-                $("#grand-total-row").css("display", "table-row");
+                $("#shipping-cost").text(`$${shippingCost.toFixed(2)} - Shipping`);
+                $("#shipping-cost").removeClass("x-hidden");
+
+                $("#total-divider").removeClass("x-hidden");
+
+                // $("#shipping-cost-row").css("display", "table-row");
+                // $("#grand-total-row").css("display", "table-row");
 
                 const grandTotal = total + shippingCost;
                 $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
+                $("#grand-total").removeClass("x-hidden");
 
                 $(".request-shipping")
                     .prop("disabled", true)
                     .text("Shipping Included")
-                    .removeClass("x-bg-white x-text-black")
-                    .addClass("x-bg-black x-text-white");
+                    .removeClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black")
+                    .addClass("x-bg-gray-200");
             } else {
-                $("#shipping-cost-row").css("display", "none");
-                $("#grand-total-row").css("display", "none");
-                $("#grand-total").text(`$${total.toFixed(2)}`);
+
+                $("#shipping-cost").addClass("x-hidden");
+                $("#total-divider").addClass("x-hidden");
+                $("#grand-total").addClass("x-hidden");
+
+                // $("#shipping-cost-row").css("display", "none");
+                // $("#grand-total-row").css("display", "none");
 
                 // Check if shipping was already requested
                 const draftOrderId = getSelectedDraftOrderId();
@@ -479,14 +477,14 @@
                     $(".request-shipping")
                         .prop("disabled", true)
                         .text("Shipping Fee Requested")
-                        .removeClass("x-bg-white x-text-black")
+                        .removeClass("x-bg-white")
                         .addClass("x-bg-black x-text-white");
                 } else {
                     $(".request-shipping")
                         .prop("disabled", false)
                         .text("Request Shipping Quote")
                         .removeClass("x-bg-black x-text-white")
-                        .addClass("x-bg-white x-text-black");
+                        .addClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black");
                 }
             }
 

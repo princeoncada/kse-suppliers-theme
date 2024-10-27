@@ -143,14 +143,6 @@
             </div>
             {% endfor %}
         </div>
-
-
-        <div>
-            <button class="clear-cart">CLEAR THE CART</button>
-        </div>
-        <div>
-            <button class="details-cart">CART DETAILS</button>
-        </div>
     </div>
 </section>
 
@@ -188,6 +180,10 @@
 
 <script>
     $(document).ready(function () {
+        eventListeners();
+    });
+
+    function eventListeners() {
         // Show modal when Add to Cart button is clicked
         $('.add-to-cart').on('click', function () {
             $('#cart-modal').removeClass('x-hidden');
@@ -226,177 +222,208 @@
                 $('#variant').val('');
             }
         });
-
-        $('.clear-cart').on('click', function () {
-
-            // console.log('Clearing the cart');
-            clearCart();
-
-            
-        });
-    });
+    }
 
     function addItemToCart(variant_id, amount) {
-        let cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer'),
-            formData = {
-                items: [
+        console.log("{{ customer.default_address }}")
+        let cart = $('cart-notification').length ? $('cart-notification') : $('cart-drawer');
+
+        let formData = {
+            items: [{
+                id: variant_id,
+                quantity: amount
+            }],
+            sections: cart[0].getSectionsToRender().map(section => section.id)
+        };
+
+        const config = {
+            url: routes.cart_add_url,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            dataType: 'json',
+            data: JSON.stringify(formData)
+        };
+
+        $.ajax(config).done(function (response) {
+            if (response.errors) {
+                publish(
+                    PUB_SUB_EVENTS.cartError,
                     {
-                        id: variant_id,
-                        quantity: amount
+                        source: 'product-form',
+                        productVariantId: variant_id,
+                        errors: response.errors,
+                        message: response.errors
                     }
-                ],
-                sections: cart.getSectionsToRender().map(section => section.id)
-            };
-        cart.setActiveElement(document.activeElement);
+                );
 
-        const config = fetchConfig('json');
-        config.headers['X-Requested-With'] = 'XMLHttpRequest';
-        config.body = JSON.stringify(formData);
+                let errorMessageWrapper = $('.product-form__error-message-wrapper');
+                if (!errorMessageWrapper) return;
 
-        fetch(`${routes.cart_add_url}`, config).then(response => response.json()).then(
-            response => {
+                let errorMessage = errorMessageWrapper.find('.product-form__error-message');
+                errorMessageWrapper.attr('hidden', !errorMessage.length);
+                if (errorMessage.length) errorMessage.text(response.errors);
+            } else {
+                publish(
+                    PUB_SUB_EVENTS.cartUpdate,
+                    {
+                        source: 'product-form',
+                        productVariantId: variant_id
+                    }
+                );
 
-                // console.log(response)
+                let cartObj = {};
+                $.extend(cartObj, response.items[0], { sections: response.sections });
 
-                if (response.errors) {
-                    publish(
-                        PUB_SUB_EVENTS.cartError,
-                        {
-                            source: 'product-form',
-                            productVariantId: variant_id,
-                            errors: response.errors,
-                            message: response.errors
-                        }
-                    );
-                    let errorMessageWrapper = document.querySelector('.product-form__error-message-wrapper');
-                    if (!errorMessageWrapper) return;
-                    let errorMessage = errorMessageWrapper.querySelector('.product-form__error-message');
-                    errorMessageWrapper.toggleAttribute('hidden', !errorMessage),
-                        errorMessage &&
-                        (errorMessage.textContent = response.errors)
-                } else {
-                    publish(
-                        PUB_SUB_EVENTS.cartUpdate,
-                        {
-                            source: 'product-form',
-                            productVariantId: variant_id
-                        }
-                    );
-                    let cartObj = {};
-                    Object.assign(cartObj, response.items[0]),
-                        Object.assign(cartObj, {
-                            sections: response.sections
-                        }),
+                cart[0].renderContents(cartObj);
+                cart.removeClass('is-empty');
 
-                        cart.renderContents(cartObj),
-                        cart.classList.remove('is-empty'),
-                        trapFocus(
-                            document.getElementById('CartDrawer'),
-                            document.getElementById('CartDrawer')
-                        )
-                }
+                trapFocus(
+                    $('#CartDrawer')[0],
+                    $('#CartDrawer')[0]
+                );
+
+                $('button[name="save-to-draft"]').on('click', function () {
+                    saveToDraft();
+                    clearCart();
+                });
             }
-        )
+        })
+    }
+
+    function draftSavedFeedback() {
+        let emptyCartContainer = $('div.cart-drawer__empty-content');
+        let emptyCartContent = emptyCartContainer.html();
+        emptyCartContainer.html('<i class="bx bx-loader-alt bx-spin x-text-[24px] x-text-[#ac1200]"></i>');
+
+        setTimeout(() => {
+            emptyCartContainer.html('<p>Your cart has been saved to draft.</p>');
+        }, 2000);
+
+        setTimeout(() => {
+            emptyCartContainer.html(emptyCartContent);
+        }, 4000);
+    }
+
+    function saveToDraft() {
+        const customerId = "{{ customer.id }}";
+        const currentUserId = `gid://shopify/Customer/${customerId}`;
+
+        // Fetch the current cart items
+        $.ajax({
+            url: '/cart.js',
+            method: 'GET',
+            contentType: 'application/json'
+        }).done(function (state) {
+            // Handle success
+            let stateObj = JSON.parse(state);
+            const cartItems = stateObj.items.map(item => ({
+                variantId: item.variant_id,
+                quantity: item.quantity
+            }));
+
+            // Create the GraphQL mutation string with customer's default shipping address
+            const mutation = `
+                mutation {
+                    createDraftOrder(
+                        customerId: "${currentUserId}",
+                        lineItems: [${cartItems.map(item => `{ variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }`).join(',')}],
+                        shippingAddress: {
+                            address1: "${'{{ customer.default_address.address1 }}'}",
+                            city: "${'{{ customer.default_address.city }}'}",
+                            province: "${'{{ customer.default_address.province }}'}",
+                            country: "${'{{ customer.default_address.country }}'}",
+                            zip: "${'{{ customer.default_address.zip }}'}"
+                        }
+                    ) {
+                        id
+                    }
+                }
+            `;
+
+            // Send the draft order request
+            $.ajax({
+                url: 'https://1a8a-158-62-77-86.ngrok-free.app/graphql',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ query: mutation })
+            }).done(function (response) {
+                // Handle success
+                console.log('Draft Order Response:', response);
+            }).fail(function (error) {
+                // Handle error
+                console.error('Error creating draft order:', error);
+            });
+
+        }).fail(function (error) {
+            // Handle error
+            console.error('Error fetching cart items:', error);
+        });
     }
 
     function clearCart() {
-        let cart = document.querySelector('cart-notification') || document.querySelector('cart-drawer'),
-            formData = {
-                sections: cart.getSectionsToRender().map(section => section.id)
-            };
-        cart.setActiveElement(document.activeElement);
+        let cart = $('cart-notification').length ? $('cart-notification') : $('cart-drawer');
 
-        const config = fetchConfig('json');
-        config.headers['X-Requested-With'] = 'XMLHttpRequest';
-        config.body = JSON.stringify(formData);
+        let formData = {
+            sections: cart[0].getSectionsToRender().map(section => section.id)
+        };
 
-        fetch(`/cart/clear`, config).then(response => response.json()).then(
-            response => {
-                if (response.errors) {
-                    publish(
-                        PUB_SUB_EVENTS.cartError,
-                        {
-                            source: 'product-form',
-                            productVariantId: variant_id,
-                            errors: response.errors,
-                            message: response.errors
-                        }
-                    );
-                    let errorMessageWrapper = document.querySelector('.product-form__error-message-wrapper');
-                    if (!errorMessageWrapper) return;
-                    let errorMessage = errorMessageWrapper.querySelector('.product-form__error-message');
-                    errorMessageWrapper.toggleAttribute('hidden', !errorMessage),
-                        errorMessage &&
-                        (errorMessage.textContent = response.errors)
-                } else {
+        const config = {
+            url: '/cart/clear',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            dataType: 'json',
+            data: JSON.stringify(formData)
+        };
 
-                    publish(
-                        PUB_SUB_EVENTS.cartUpdate,
-                        {
-                            source: 'product-form',
-                        }
-                    );
+        $.ajax(config).done(function (response) {
+            if (response.errors) {
+                publish(
+                    PUB_SUB_EVENTS.cartError,
+                    {
+                        source: 'product-form',
+                        productVariantId: variant_id,
+                        errors: response.errors,
+                        message: response.errors
+                    }
+                );
 
-                    cartObj = {
-                        items: [],
-                        sections: response.sections
-                    };
+                let errorMessageWrapper = $('.product-form__error-message-wrapper');
+                if (!errorMessageWrapper) return;
 
-                    cart.renderContents(cartObj);
-                    
+                let errorMessage = errorMessageWrapper.find('.product-form__error-message');
+                errorMessageWrapper.attr('hidden', !errorMessage.length);
+                if (errorMessage.length) errorMessage.text(response.errors);
+            } else {
+                publish(
+                    PUB_SUB_EVENTS.cartUpdate,
+                    {
+                        source: 'product-form'
+                    }
+                );
 
-                    trapFocus(
-                        document.getElementById('CartDrawer'),
-                        document.getElementById('CartDrawer')
-                    )
+                let cartObj = {
+                    items: [],
+                    sections: response.sections
+                };
 
-                    cart.classList.add('is-empty');
-                    cart.classList.add('active');
-                }
+                cart[0].renderContents(cartObj);
+
+                trapFocus(
+                    $('#CartDrawer')[0],
+                    $('#CartDrawer')[0]
+                );
+
+                cart.addClass('is-empty');
+                cart.addClass('active');
+
+                draftSavedFeedback();
             }
-        )
+        })
     }
-
-    $(document).ready(function () {
-        $('.details-cart').on('click', function () {
-            saveToDraft().then(cart => {
-                let responseObj = cart.items;
-                let cartItems = [];
-
-                responseObj.forEach(item => {
-                    cartItems.push({
-                        variantId: item.variant_id,
-                        quantity: item.quantity
-                    });
-                });
-
-                sendDraftOrder(cartItems).then(response => {
-                console.log(response);
-                });
-            });
-        });
-    });
-
-    function saveToDraft() {
-    return fetch('/cart.js', { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-        .then(response => response.json());
-}
-
-    function sendDraftOrder(cartItems) {
-        const customerId = {{ customer.id }};
-        const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const mutation = `mutation { createDraftOrder(customerId: "${currentUserId}", lineItems: [${cartItems.map(item => `{ variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }`).join(',')}], shippingAddress: { address1: "123 Main St", city: "Los Angeles", province: "California", country: "United States", zip: "90001" }, metafields: [{ namespace: "global", key: "note", value: "Special Instructions", type: "string" }], note: "Special instructions for the order") { id createdAt lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
-
-        return fetch(' https://99b7-158-62-77-223.ngrok-free.app/graphql', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query: mutation })
-    }).then(response => response.json());
-
-        //prince code
-        // return fetch('/cart.js', fetchConfig('json')).then(response => response.json());
-    }
-
 </script>

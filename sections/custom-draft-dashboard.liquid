@@ -266,7 +266,7 @@
 
     async function populateOrderTypeDropdown() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const query = `query { draftOrders { id createdAt customerId lineItems { title quantity price } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
+        const query = `query { draftOrders { id createdAt customerId lineItems { title quantity price variant_title } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
 
         const data = await fetchData(query);
 

@@ -506,12 +506,12 @@
         <!-- CTAs -->
     
         <div class="x-flex x-flex-col x-gap-[12px]">
-            <div class="cart__ctas" {{ block.shopify_attributes }}>
+            {% comment %} <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button type="submit" id="CartDrawer-Checkout" class="cart__checkout-button button" name="checkout"
                     form="CartDrawer-Form" {% if cart==empty %} disabled {% endif %}>
                     {{ 'sections.cart.checkout' | t }}
                 </button>
-            </div>
+            </div> {% endcomment %}
             <div class="cart__ctas">
                 <button 
                     type="button" 

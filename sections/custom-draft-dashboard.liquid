@@ -20,11 +20,14 @@
                                 <option value="">Loading...</option>
                             </select>
                         </div>
-                        <div class="x-w-full">
+                        <div class="shipping-address-container x-w-full x-flex x-flex-col x-gap-[8px]">
                             <select id="shipping-address-dropdown"
                                 class="x-w-full x-h-full x-p-[8px] md:x-p-[16px] x-border x-outline-none x-shadow-none">
                                 <option value="">Loading...</option>
                             </select>
+                            <div class="default-address-container x-border x-p-[8px]" style="display: none;">
+                                i am a default container
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -281,6 +284,8 @@
                 const formattedDate = new Date(order.createdAt).toLocaleDateString(); // Format createdAt date
 
                 const option = $("<option>").val(JSON.stringify(order)).text(`Order ID: ${orderId} - Date: ${formattedDate}`);
+                //
+                //
                 dropdown.append(option);
             });
 
@@ -340,61 +345,21 @@
         }
     }
 
-    async function requestShipping(draftOrderId, userId, selectedAddress) {
-        const mutation = `
-            mutation {
-                requestShippingFee(
-                    userId: "${userId}",
-                    draftOrderId: "${draftOrderId}",
-                    shippingAddress: {
-                        address1: "${selectedAddress.addressText.split(',')[0] || ''}",
-                        city: "${selectedAddress.addressText.split(',')[1] || ''}",
-                        province: "${selectedAddress.province || ''}",
-                        country: "${selectedAddress.country || ''}",
-                        zip: "${selectedAddress.zip || ''}"
-                    }
-                )
-            }
-        `;
-
-        try {
-            const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ query: mutation }),
-            });
-
-            const result = await response.json();
-
-            if (result.data?.requestShippingFee) {
-                alert("Shipping request email sent successfully.");
-            } else {
-                alert("Failed to send shipping request email.");
-            }
-        } catch (error) {
-            console.error("Error sending shipping request:", error);
-        }
-    }
-
     async function updateContentBox() {
-    const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
-    const newOrderItems = $(".order-items");
-    newOrderItems.empty();
-    const orderItems = $("#order-items");
-    orderItems.empty();
+        const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
+        const draftOrderId = selectedOrder.id ? selectedOrder.id.split('/').pop() : null;
 
-    let total = 0;
-    let shippingCost = 0;
+        const newOrderItems = $(".order-items");
+        newOrderItems.empty();
 
-    if (selectedOrder.id) {
-        const draftOrderId = selectedOrder.id.split('/').pop();
-        
-        // Fetch the full draft order details, including the shipping address
-        const draftOrderDetails = await getDraftOrderById(draftOrderId);
+        const orderItems = $("#order-items");
+        orderItems.empty();
 
-        if (draftOrderDetails && draftOrderDetails.shippingAddress) {
+        let total = 0;
+
+        let shippingCost = 0;
+        if (selectedOrder.id) {
+            const draftOrderId = selectedOrder.id.split('/').pop();
             shippingCost = await checkForShippingFee(draftOrderId);
 
             if (shippingCost !== null && shippingCost !== undefined) {
@@ -402,69 +367,102 @@
             } else {
                 shippingCost = 0;
             }
+        }
+
+
+        if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
+            $.each(selectedOrder.lineItems, (index, item) => {
+                const pricePerItem = parseFloat(item.price || 0);
+                const subtotal = pricePerItem * item.quantity;
+                total += subtotal;
+
+                const orderItem = `
+                    <div class="x-flex x-flex-row x-mt-[-1px]">
+                        <div
+                            class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
+                            <div>
+                                <div>Product: <span>${item.title}</span></div>
+                                <div>Variant: <span>${item.variant_title}</span></div>
+                            </div>
+                            <div>
+                                <div>Price: <span>$${pricePerItem.toFixed(2)}</span></div>
+                                <div>Quantity: <span>${item.quantity}</span></div>
+                            </div>
+                        </div>
+                        <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
+                            <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$${subtotal.toFixed(2)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                newOrderItems.append(orderItem);
+
+            });
+
+            $("#order-total").text(`$${total.toFixed(2)}`);
 
             if (shippingCost > 0) {
-                const { address1, city, province, country, zip } = draftOrderDetails.shippingAddress;
-                
-                $("#shipping-cost").text(`$${shippingCost.toFixed(2)} - Shipping`).removeClass("x-hidden");
-                $("#total-divider, #grand-total").removeClass("x-hidden");
+            // If shipping is already included, fetch the shipping address and lock the dropdown
+            const draftOrderData = await fetchDraftOrderById(draftOrderId);
+            console.log("Draft order data:", draftOrderData);
+
+                $("#shipping-cost").text(`$${shippingCost.toFixed(2)} - Shipping`);
+                $("#shipping-cost").removeClass("x-hidden");
+
+                $("#total-divider").removeClass("x-hidden");
 
                 const grandTotal = total + shippingCost;
                 $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
-                $(".request-shipping").prop("disabled", true).text("Shipping Included")
-                    .removeClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black").addClass("x-bg-gray-200");
+                $("#grand-total").removeClass("x-hidden");
 
-                // Display only the invoice shipping address and disable the dropdown
-                $("#shipping-address-dropdown").empty().append(`<option>${address1}, ${city}, ${province}, ${country}, ${zip}</option>`);
-                $("#shipping-address-dropdown").prop("disabled", true);
+                
+                $(".request-shipping")
+                    .prop("disabled", true)
+                    .text("Shipping Included")
+                    .removeClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black")
+                    .addClass("x-bg-gray-200");
+                $("#shipping-address-dropdown").css("display", "none");
+                $(".default-address-container").text("Ship to address: " + draftOrderData?.data?.getDraftOrder?.shippingAddress?.address1 + ", " + draftOrderData?.data?.getDraftOrder?.shippingAddress?.city + ", " + draftOrderData?.data?.getDraftOrder?.shippingAddress?.province + ", " + draftOrderData?.data?.getDraftOrder?.shippingAddress?.country + ", " + draftOrderData?.data?.getDraftOrder?.shippingAddress?.zip);
+                $(".default-address-container").css("display", "block");
+            } else {
+                $("#shipping-cost").addClass("x-hidden");
+                $("#total-divider").addClass("x-hidden");
+                $("#grand-total").addClass("x-hidden");
+                
+                // Check if shipping was already requested
+                const draftOrderId = getSelectedDraftOrderId();
+                if (isShippingRequested(draftOrderId)) {
+                    $(".request-shipping")
+                        .prop("disabled", true)
+                        .text("Shipping Fee Requested")
+                        .removeClass("x-bg-white")
+                        .addClass("x-bg-black x-text-white");
+                } else {
+                    $(".request-shipping")
+                        .prop("disabled", false)
+                        .text("Request Shipping Quote")
+                        .removeClass("x-bg-black x-text-white")
+                        .addClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black");
+                }
+                $("#shipping-address-dropdown").css("display", "block");
+                $(".default-address-container").css("display", "none");
             }
+
+        } else {
+            console.warn("No line items found in the selected order.");
+            orderItems.html("<tr><td colspan='5' class='x-text-center x-py-4'>No items to display.</td></tr>");
+            $("#order-total").text("$0.00");
+            $("#shipping-cost-row").hide();
+            $("#grand-total").text("$0.00");
         }
     }
 
-    // Existing logic for line items
-    if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
-        $.each(selectedOrder.lineItems, (index, item) => {
-            const pricePerItem = parseFloat(item.price || 0);
-            const subtotal = pricePerItem * item.quantity;
-            total += subtotal;
-
-            const orderItem = `
-                <div class="x-flex x-flex-row x-mt-[-1px]">
-                    <div
-                        class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
-                        <div>
-                            <div>Product: <span>${item.title}</span></div>
-                            <div>Variant: <span>${item.variant_title}</span></div>
-                        </div>
-                        <div>
-                            <div>Price: <span>$${pricePerItem.toFixed(2)}</span></div>
-                            <div>Quantity: <span>${item.quantity}</span></div>
-                        </div>
-                    </div>
-                    <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
-                        <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$${subtotal.toFixed(2)}
-                        </div>
-                    </div>
-                </div>
-            `;
-            newOrderItems.append(orderItem);
-        });
-
-        $("#order-total").text(`$${total.toFixed(2)}`);
-    } else {
-        console.warn("No line items found in the selected order.");
-        orderItems.html("<tr><td colspan='5' class='x-text-center x-py-4'>No items to display.</td></tr>");
-        $("#order-total").text("$0.00");
-        $("#shipping-cost-row").hide();
-        $("#grand-total").text("$0.00");
-    }
-}
-
-// Helper function to fetch a draft order by ID
-async function getDraftOrderById(draftOrderId) {
+// Helper function to fetch draft order by ID
+async function fetchDraftOrderById(draftOrderId) {
     const query = `
-        query {
-            getDraftOrder(id: "${draftOrderId}") {
+        query($id: String!) {
+            getDraftOrder(id: $id) {
                 id
                 shippingAddress {
                     address1
@@ -476,21 +474,11 @@ async function getDraftOrderById(draftOrderId) {
             }
         }
     `;
-
-    try {
-        const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ query })
-        });
-
-        const result = await response.json();
-        return result.data.getDraftOrder;
-    } catch (error) {
-        console.error("Error fetching draft order:", error);
-    }
+    const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables: { id: draftOrderId } })
+    });
+    return response.json();
 }
-
 </script>

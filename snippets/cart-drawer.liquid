@@ -492,11 +492,15 @@
               </ul>
             {%- endif -%}
           </div>
-
-          <div class="totals x-pb-[32px]" role="status">
-            <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-            <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
-          </div>
+            <div class="x-pb-[24px] x-flex x-flex-col x-gap-[12px]">
+                <div class="totals" role="status">
+                    <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
+                    <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                </div>
+                <div class="save_to_draft-error-container x-text-red-700 x-text-[14px]" style="display: none;">
+                    &nbsp;
+                </div>
+            </div>
         </div>
 
         <!-- CTAs -->
@@ -523,3 +527,4 @@
     </div>
   </div>
 </cart-drawer>
+

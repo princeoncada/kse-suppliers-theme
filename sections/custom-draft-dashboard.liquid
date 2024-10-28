@@ -81,7 +81,7 @@
     $(document).ready(() => {
         populateOrderTypeDropdown();
         populateShippingAddressDropdown();
-        $("#order-type-dropdown, #shipping-address-dropdown").change(async () => {
+        $("#order-type-dropdown").change(async () => {
             updateContentBox();
             checkAndDisableShippingButton();
         });
@@ -379,20 +379,22 @@
     }
 
     async function updateContentBox() {
-        const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
-        const selectedAddress = JSON.parse($("#shipping-address-dropdown").val() || '{}');
+    const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
+    const newOrderItems = $(".order-items");
+    newOrderItems.empty();
+    const orderItems = $("#order-items");
+    orderItems.empty();
 
-        const newOrderItems = $(".order-items");
-        newOrderItems.empty();
+    let total = 0;
+    let shippingCost = 0;
 
-        const orderItems = $("#order-items");
-        orderItems.empty();
+    if (selectedOrder.id) {
+        const draftOrderId = selectedOrder.id.split('/').pop();
+        
+        // Fetch the full draft order details, including the shipping address
+        const draftOrderDetails = await getDraftOrderById(draftOrderId);
 
-        let total = 0;
-
-        let shippingCost = 0;
-        if (selectedOrder.id) {
-            const draftOrderId = selectedOrder.id.split('/').pop();
+        if (draftOrderDetails && draftOrderDetails.shippingAddress) {
             shippingCost = await checkForShippingFee(draftOrderId);
 
             if (shippingCost !== null && shippingCost !== undefined) {
@@ -400,100 +402,95 @@
             } else {
                 shippingCost = 0;
             }
-        }
-
-
-        if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
-            $.each(selectedOrder.lineItems, (index, item) => {
-                const pricePerItem = parseFloat(item.price || 0);
-                const subtotal = pricePerItem * item.quantity;
-                total += subtotal;
-
-                const orderItem = `
-                    <div class="x-flex x-flex-row x-mt-[-1px]">
-                        <div
-                            class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
-                            <div>
-                                <div>Product: <span>${item.title}</span></div>
-                                <div>Variant: <span>${item.variant_title}</span></div>
-                            </div>
-                            <div>
-                                <div>Price: <span>$${pricePerItem.toFixed(2)}</span></div>
-                                <div>Quantity: <span>${item.quantity}</span></div>
-                            </div>
-                        </div>
-                        <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
-                            <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$${subtotal.toFixed(2)}
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                newOrderItems.append(orderItem);
-
-                // const row = `
-                //     <tr>
-                //         <td class="x-py-2 x-px-4">${item.title}</td>
-                //         <td class="x-py-2 x-px-4">${item.variant_title || "Variant"}</td>
-                //         <td class="x-py-2 x-px-4">$${pricePerItem.toFixed(2)}</td>
-                //         <td class="x-py-2 x-px-4">${item.quantity}</td>
-                //         <td class="x-py-2 x-px-4">$${subtotal.toFixed(2)}</td>
-                //     </tr>`;
-                // orderItems.append(row);
-            });
-
-            $("#order-total").text(`$${total.toFixed(2)}`);
 
             if (shippingCost > 0) {
-                $("#shipping-cost").text(`$${shippingCost.toFixed(2)} - Shipping`);
-                $("#shipping-cost").removeClass("x-hidden");
-
-                $("#total-divider").removeClass("x-hidden");
-
-                // $("#shipping-cost-row").css("display", "table-row");
-                // $("#grand-total-row").css("display", "table-row");
+                const { address1, city, province, country, zip } = draftOrderDetails.shippingAddress;
+                
+                $("#shipping-cost").text(`$${shippingCost.toFixed(2)} - Shipping`).removeClass("x-hidden");
+                $("#total-divider, #grand-total").removeClass("x-hidden");
 
                 const grandTotal = total + shippingCost;
                 $("#grand-total").text(`$${grandTotal.toFixed(2)}`);
-                $("#grand-total").removeClass("x-hidden");
+                $(".request-shipping").prop("disabled", true).text("Shipping Included")
+                    .removeClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black").addClass("x-bg-gray-200");
 
-                $(".request-shipping")
-                    .prop("disabled", true)
-                    .text("Shipping Included")
-                    .removeClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black")
-                    .addClass("x-bg-gray-200");
-            } else {
-
-                $("#shipping-cost").addClass("x-hidden");
-                $("#total-divider").addClass("x-hidden");
-                $("#grand-total").addClass("x-hidden");
-
-                // $("#shipping-cost-row").css("display", "none");
-                // $("#grand-total-row").css("display", "none");
-
-                // Check if shipping was already requested
-                const draftOrderId = getSelectedDraftOrderId();
-                if (isShippingRequested(draftOrderId)) {
-                    $(".request-shipping")
-                        .prop("disabled", true)
-                        .text("Shipping Fee Requested")
-                        .removeClass("x-bg-white")
-                        .addClass("x-bg-black x-text-white");
-                } else {
-                    $(".request-shipping")
-                        .prop("disabled", false)
-                        .text("Request Shipping Quote")
-                        .removeClass("x-bg-black x-text-white")
-                        .addClass("x-bg-white hover:x-bg-black hover:x-text-white hover:x-border-black");
-                }
+                // Display only the invoice shipping address and disable the dropdown
+                $("#shipping-address-dropdown").empty().append(`<option>${address1}, ${city}, ${province}, ${country}, ${zip}</option>`);
+                $("#shipping-address-dropdown").prop("disabled", true);
             }
-
-        } else {
-            console.warn("No line items found in the selected order.");
-            orderItems.html("<tr><td colspan='5' class='x-text-center x-py-4'>No items to display.</td></tr>");
-            $("#order-total").text("$0.00");
-            $("#shipping-cost-row").hide();
-            $("#grand-total").text("$0.00");
         }
     }
+
+    // Existing logic for line items
+    if (selectedOrder.lineItems && selectedOrder.lineItems.length > 0) {
+        $.each(selectedOrder.lineItems, (index, item) => {
+            const pricePerItem = parseFloat(item.price || 0);
+            const subtotal = pricePerItem * item.quantity;
+            total += subtotal;
+
+            const orderItem = `
+                <div class="x-flex x-flex-row x-mt-[-1px]">
+                    <div
+                        class="x-w-4/5 x-border x-p-[8px] md:x-p-[16px] x-flex x-flex-col x-gap-[8px] md:x-gap-[16px]">
+                        <div>
+                            <div>Product: <span>${item.title}</span></div>
+                            <div>Variant: <span>${item.variant_title}</span></div>
+                        </div>
+                        <div>
+                            <div>Price: <span>$${pricePerItem.toFixed(2)}</span></div>
+                            <div>Quantity: <span>${item.quantity}</span></div>
+                        </div>
+                    </div>
+                    <div class="x-w-1/5 x-text-center x-flex x-flex-col x-border x-border-l-0">
+                        <div class="x-flex-1 x-flex x-items-center x-justify-center x-p-[8px] md:x-p-[16px]">$${subtotal.toFixed(2)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            newOrderItems.append(orderItem);
+        });
+
+        $("#order-total").text(`$${total.toFixed(2)}`);
+    } else {
+        console.warn("No line items found in the selected order.");
+        orderItems.html("<tr><td colspan='5' class='x-text-center x-py-4'>No items to display.</td></tr>");
+        $("#order-total").text("$0.00");
+        $("#shipping-cost-row").hide();
+        $("#grand-total").text("$0.00");
+    }
+}
+
+// Helper function to fetch a draft order by ID
+async function getDraftOrderById(draftOrderId) {
+    const query = `
+        query {
+            getDraftOrder(id: "${draftOrderId}") {
+                id
+                shippingAddress {
+                    address1
+                    city
+                    province
+                    country
+                    zip
+                }
+            }
+        }
+    `;
+
+    try {
+        const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query })
+        });
+
+        const result = await response.json();
+        return result.data.getDraftOrder;
+    } catch (error) {
+        console.error("Error fetching draft order:", error);
+    }
+}
+
 </script>

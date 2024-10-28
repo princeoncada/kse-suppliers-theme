@@ -1425,12 +1425,12 @@ video {
   padding-bottom: 20px !important;
 }
 
-.x-pb-\[25px\] {
-  padding-bottom: 25px !important;
+.x-pb-\[24px\] {
+  padding-bottom: 24px !important;
 }
 
-.x-pb-\[32px\] {
-  padding-bottom: 32px !important;
+.x-pb-\[25px\] {
+  padding-bottom: 25px !important;
 }
 
 .x-pb-\[47px\] {
@@ -1654,6 +1654,11 @@ video {
 .x-text-gray-700 {
   --tw-text-opacity: 1 !important;
   color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
+}
+
+.x-text-red-700 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(185 28 28 / var(--tw-text-opacity)) !important;
 }
 
 .x-text-slate-500 {

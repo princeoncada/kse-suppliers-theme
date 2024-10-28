@@ -239,7 +239,6 @@ class CartItems extends HTMLElement {
         // attach event listeners to the save-to-draft button after the cart has been re-rendered
         $('button[name="save-to-draft"]').on('click', function () {
             saveToDraft();
-            clearCart();
         });
       });
   }

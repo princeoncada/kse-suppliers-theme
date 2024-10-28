@@ -386,8 +386,20 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
-    
-    
-    
+
+    <script>
+        window.ShopifyData = {
+            customerId: "{{ customer.id }}",
+            defaultAddress: {
+                address1: "{{ customer.default_address.address1 }}",
+                city: "{{ customer.default_address.city }}",
+                province: "{{ customer.default_address.province }}",
+                country: "{{ customer.default_address.country }}",
+                zip: "{{ customer.default_address.zip }}"
+            }
+        };
+    </script>
+
+    <script src="{{ 'save-to-draft.js' | asset_url }}" defer></script>
   </body>
 </html>

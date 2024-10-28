@@ -2,9 +2,13 @@
   "sections": {
     "main": {
       "type": "main-account"
-    }
+    },
+    "draft-dashboard": {
+        "type": "custom-draft-dashboard",
+    },
   },
   "order": [
-    "main"
+    "draft-dashboard",
+    "main",
   ]
 }

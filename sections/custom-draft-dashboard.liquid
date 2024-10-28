@@ -277,7 +277,8 @@
         dropdown.empty(); // Clear existing options
 
         if (data && data.data && data.data.draftOrders) {
-            const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId);
+            const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
+            console.log(orders);
 
             $.each(orders, (index, order) => {
                 const orderId = order.id.split('/').pop(); // Extract numeric ID

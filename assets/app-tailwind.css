@@ -664,6 +664,10 @@ video {
   margin-bottom: 1.5rem !important;
 }
 
+.x-mb-\[-1px\] {
+  margin-bottom: -1px !important;
+}
+
 .x-mb-\[24px\] {
   margin-bottom: 24px !important;
 }
@@ -710,10 +714,6 @@ video {
 
 .x-mt-\[48px\] {
   margin-top: 48px !important;
-}
-
-.x-mb-\[-1px\] {
-  margin-bottom: -1px !important;
 }
 
 .x-block {
@@ -2078,10 +2078,6 @@ video {
 
   .md\:x-text-\[48px\] {
     font-size: 48px !important;
-  }
-
-  .md\:x-text-\[\] {
-    color:  !important;
   }
 
   .md\:x-shadow-xl {

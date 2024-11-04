@@ -197,13 +197,29 @@
             }
         `;
 
-        const deleteMutation = `
+        const tagMutation = `
             mutation {
-                deleteDraftOrder(id: "${draftOrderId}")
+                createDraftOrderTag(draftOrderId: "${draftOrderId}", tag: "Placed")
             }
         `;
 
         try {
+            const tagResponse = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: tagMutation }),
+            });
+
+            const tagResult = await tagResponse.json();
+            if (tagResult.data?.createDraftOrderTag) {
+                console.log("Order tagged as Placed.");
+            } else {
+                console.warn("Failed to tag the draft order as Placed.");
+                return; 
+            }
+
             const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
@@ -217,25 +233,9 @@
             if (result.data?.completeDraftOrder) {
                 alert("Order completed successfully.");
                 $(".place-order").text("Order Completed");
-
-                // Now delete the draft order
-                const deleteResponse = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ query: deleteMutation }),
-                });
-
-                const deleteResult = await deleteResponse.json();
-
-                if (deleteResult.data?.deleteDraftOrder) {
-                    console.log(deleteResult.data.deleteDraftOrder); // Log success message
-                    window.location.reload();
-                } else {
-                    alert("Failed to delete the draft order after completion.");
-                }
-            } else {
+                window.location.reload();
+            }
+            else {
                 alert("Failed to complete the order.");
             }
         } catch (error) {
@@ -251,7 +251,6 @@
         }
     }
     
-
     function getSelectedDraftOrderId() {
         const selectedOrder = JSON.parse($("#order-type-dropdown").val() || '{}');
         return selectedOrder?.id?.split('/').pop();
@@ -308,28 +307,33 @@
     async function populateOrderTypeDropdown() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `query { draftOrders { id createdAt customerId lineItems { title quantity price variant_title } metafields { id namespace key value } shippingAddress { address1 city province country zip } } }`;
-
-        const data = await fetchData(query);
-
         const dropdown = $("#order-type-dropdown");
         dropdown.empty(); // Clear existing options
 
+        const data = await fetchData(query);
+
         if (data && data.data && data.data.draftOrders) {
             const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
-            console.log(orders);
 
-            $.each(orders, (index, order) => {
+            for (const order of orders) {
                 const orderId = order.id.split('/').pop(); // Extract numeric ID
-                const formattedDate = new Date(order.createdAt).toLocaleDateString(); // Format createdAt date
 
+                // Check if the draft order has the "Placed" tag
+                const tagQuery = `query { getDraftOrderTags(draftOrderId: "${orderId}"){tag}}`;
+                const tagData = await fetchData(tagQuery);
+                const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed");
+
+                // Skip this order if it has the "Placed" tag
+                if (hasPlacedTag) continue;
+
+                // Format createdAt date and add to dropdown only if it doesn’t have the "Placed" tag
+                const formattedDate = new Date(order.createdAt).toLocaleDateString();
                 const option = $("<option>").val(JSON.stringify(order)).text(`Order ID: ${orderId} - Date: ${formattedDate}`);
-                //
-                //
                 dropdown.append(option);
-            });
+            }
 
-            if (orders.length > 0) {
-                dropdown.val(JSON.stringify(orders[0]));
+            if (dropdown.children().length > 0) {
+                dropdown.val(dropdown.children().first().val());
 
                 $(".dashboard > div:first-child").css("display", "none");
                 $(".dashboard > div:last-child").css("display", "flex");
@@ -340,7 +344,7 @@
             }
         }
     }
-
+    
     async function populateShippingAddressDropdown() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `{user(id: "${currentUserId}") {id firstName lastName addresses {address1 address2 city province country zip}}}`;
@@ -498,26 +502,26 @@
     }
 
 // Helper function to fetch draft order by ID
-async function fetchDraftOrderById(draftOrderId) {
-    const query = `
-        query($id: String!) {
-            getDraftOrder(id: $id) {
-                id
-                shippingAddress {
-                    address1
-                    city
-                    province
-                    country
-                    zip
+    async function fetchDraftOrderById(draftOrderId) {
+        const query = `
+            query($id: String!) {
+                getDraftOrder(id: $id) {
+                    id
+                    shippingAddress {
+                        address1
+                        city
+                        province
+                        country
+                        zip
+                    }
                 }
             }
-        }
-    `;
-    const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, variables: { id: draftOrderId } })
-    });
-    return response.json();
-}
+        `;
+        const response = await fetch("https://d129-222-127-191-146.ngrok-free.app/graphql", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query, variables: { id: draftOrderId } })
+        });
+        return response.json();
+    }
 </script>

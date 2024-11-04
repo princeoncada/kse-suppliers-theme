@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -401,5 +402,14 @@
     </script>
 
     <script src="{{ 'save-to-draft.js' | asset_url }}" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <style>
+      .translate-up-20[data-aos='fade-up'] {
+        transform: translate3d(0, 20px, 0);
+      }
+    </style>
   </body>
 </html>

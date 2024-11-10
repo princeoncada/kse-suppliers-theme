@@ -42,10 +42,15 @@
                   {{- 'icon-close.svg' | inline_asset_content -}}
                 </span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
-                {{ 'general.continue_shopping' | t }}
-              </a>
-
+              <div class="x-flex x-flex-col x-gap-[8px] x-w-[75%] x-mx-auto">
+                  <a href="{{ routes.all_products_collection_url }}" class="button">
+                    {{ 'general.continue_shopping' | t }}
+                  </a>
+    
+                  <a href="{{ routes.cart_url }}" class="button">
+                    View Cart
+                  </a>
+              </div>
               {%- if shop.customer_accounts_enabled and customer == null -%}
                 <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
                 <p class="cart__login-paragraph">
@@ -512,15 +517,23 @@
                     {{ 'sections.cart.checkout' | t }}
                 </button>
             </div> {% endcomment %}
-            <div class="cart__ctas">
+            <div class="x-w-full x-flex x-flex-col x-gap-[8px]">
                 <button 
                     type="button" 
-                    class="button"
+                    class="x-flex x-bg-black x-text-white x-border-white hover:x-border-black x-border-[1px] x-justify-center x-items-center x-w-full x-py-[10px] x-transition-colors x-duration-150"
                     name="save-to-draft" 
                     {% if cart==empty %} disabled {% endif %}
                 >
                     Save to Draft
                 </button>
+                <a 
+                    type="button" 
+                    class="x-flex x-bg-black x-text-white x-border-white hover:x-border-black x-border-[1px] x-justify-center x-items-center x-w-full x-py-[10px] x-transition-colors x-duration-150"
+                    href="{{ routes.cart_url }}"
+                    {% if cart==empty %} disabled {% endif %}
+                >
+                    View Cart
+                </a>
             </div>
         </div>
       </div>

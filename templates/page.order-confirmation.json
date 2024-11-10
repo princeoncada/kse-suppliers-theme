@@ -10,8 +10,11 @@
 {
   "sections": {
     "main": {
-      "type": "custom-checkout-main",
-      "settings": {}
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
     }
   },
   "order": [

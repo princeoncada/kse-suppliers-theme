@@ -1,0 +1,87 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<section>
+    <div class="x-p-[16px]">
+        <div>
+            <div class="dashboard view x-hidden">
+                dashboard
+            </div>
+            <div class="orders view x-hidden">
+                orders
+            </div>
+            <div class="addresses view x-hidden">
+                addresses
+            </div>
+            <div class="account view x-hidden">
+                account
+            </div>
+            <div class="saved view x-hidden">
+                saved
+            </div>
+            <div class="drafts view x-hidden">
+                drafts
+            </div>
+        </div>
+        <div class="x-flex x-flex-row">
+            <button class="dashboard nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
+                nav 1
+            </button>
+            <button class="orders nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
+                nav 2
+            </button>
+            <button class="addresses nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
+                nav 3
+            </button>
+            <button class="account nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
+                nav 4
+            </button>
+            <button class="saved nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
+                nav 5
+            </button>
+            <button class="drafts nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
+                nav 6
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+    // if query of view is not empty
+    const urlParams = new URLSearchParams(window.location.search);
+    const view = urlParams.get('view');
+
+    if (view) {
+        // set button background color
+        const button = $(`.${view}.nav-button`);
+        button.css('background-color', '#9E0B0F');
+        button.css('color', 'white');
+        // show the view
+        $(`.${view}.view`).removeClass('x-hidden');
+    } else {
+        // add a view query to the url with dashboard
+        window.history.pushState({}, '', '?view=dashboard');
+        // set button background color
+        const button = $('.dashboard.nav-button');
+        button.css('background-color', '#9E0B0F');
+        button.css('color', 'white');
+        // show the view
+        $('.dashboard.view').removeClass('x-hidden');
+    }
+
+    function clearAllButtonBackground() {
+        $('.nav-button').css('background-color', 'white');
+        $('.nav-button').css('color', '#4D4D4D');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.nav-button').click(function () {
+            clearAllButtonBackground();
+            $(this).css('background-color', '#9E0B0F');
+            $(this).css('color', 'white');
+            const view = $(this).attr('class').split(' ')[0];
+            window.history.pushState({}, '', `?view=${view}`);
+            $('.view').addClass('x-hidden');
+            $(`.${view}.view`).removeClass('x-hidden');
+        });
+    });
+</script>

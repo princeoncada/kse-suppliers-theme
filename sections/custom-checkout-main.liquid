@@ -1,0 +1,222 @@
+<section>
+    <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px] lg:x-max-w-[1440px] lg:x-mx-auto">
+        <div class="x-text-[40px]">CHECKOUT</div>
+        <div class="x-flex x-flex-col-reverse md:x-flex-row x-gap-[40px] lg:x-gap-[80px]">
+            <div class="x-flex x-flex-col x-gap-[40px] md:x-flex-1 lg:x-flex-none lg:x-w-[50%]">
+                <div class="x-flex x-flex-col x-gap-[16px]">
+                    <div class="x-text-[24px]">Contact Info</div>
+                    <div class="x-flex x-flex-col x-gap-[12px]">
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="email" class="x-text-[14px]">Email Address</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="email" name="email"
+                                    placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="x-flex x-flex-row x-gap-4">
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="first_name" class="x-text-[14px]">First Name</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="first_name"
+                                    placeholder="First Name">
+                            </div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="last_name" class="x-text-[14px]">Last Name</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="last_name"
+                                    placeholder="Last Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-flex x-flex-col x-gap-[16px]">
+                    <div class="x-text-[24px]">Shipping Address</div>
+                    <div class="x-flex x-flex-col x-gap-[12px]">
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="country" class="x-text-[14px]">Country/Region</label>
+                                <select name="country" class="x-border x-p-[12px] x-text-[14px]">
+                                    <option value="united_states">United States</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="company_name" class="x-text-[14px]">Company Name</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="company_name"
+                                    placeholder="Company Name">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="street_address" class="x-text-[14px]">Street Address</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="street_address"
+                                    placeholder="Street Address">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="town_city" class="x-text-[14px]">Town/City</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="town_city"
+                                    placeholder="Town/City">
+                            </div>
+                        </div>
+                        <div class="x-flex x-flex-row x-gap-4">
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="state" class="x-text-[14px]">State</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state"
+                                    placeholder="State">
+                            </div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="zip" class="x-text-[14px]">ZIP Code</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip"
+                                    placeholder="Zip Code">
+                            </div>
+                        </div>
+                        <div class="x-py-[12px]">
+                            <div class="x-flex x-flex-row x-gap-[8px] x-items-center">
+                                <input class="x-min-w-[16px] x-min-h-[16px]" type="checkbox" name="save_address" id="">
+                                <div>Save address for later</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="x-flex x-flex-row x-gap-[8px] x-items-center x-text-red-800">
+                                <i class='bx bx-plus x-leading-[0px] x-text-[20px]'></i>
+                                <div>Add Shipping Address</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-flex x-flex-col x-gap-[16px]">
+                    <div class="x-text-[18px]">Have a PO/Job Code for this order?</div>
+                    <div>
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="job_code" class="x-text-[14px]">PO/Job Code (Optional)</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="job_code"
+                                    placeholder="Enter Code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-flex x-flex-col x-gap-[16px]">
+                    <div class="x-text-[24px]">Recurring Order</div>
+                    <div class="x-flex x-flex-col x-gap-[12px]">
+                        <div>
+                            <div class="x-flex x-flex-row x-gap-[8px] x-items-center">
+                                <input class="x-min-w-[16px] x-min-h-[16px]" type="checkbox" name="recurring" id="">
+                                <div>Create Recurring Order</div>
+                            </div>
+                        </div>
+                        <div class="x-flex x-flex-col x-gap-[8px]">
+                            <div>I want my order every</div>
+                            <div class="x-flex x-flex-row x-gap-[12px]">
+                                <select name="when" class="x-border x-p-[12px] x-text-[14px] x-w-full">
+                                    <option value="1">1</option>
+                                </select>
+                                <select name="frequency" class="x-border x-p-[12px] x-text-[14px] x-w-full">
+                                    <option value="week">Week</option>
+                                    <option value="month">Month</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="end_date" class="x-text-[14px]">And it should end on</label>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="date" name="end_date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-flex x-flex-col x-gap-[16px]">
+                    <div class="x-text-[24px]">Special Notes / Instruction</div>
+                    <div>
+                        <div>
+                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
+                                <label for="message" class="x-text-[14px]">Message</label>
+                                <textarea name="message" class="x-border x-p-[12px]" placeholder="Write Message"
+                                    rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="x-flex x-justify-center x-rounded-sm x-py-[8px] x-bg-red-800 x-text-white x-w-full hover:x-bg-red-950 x-transition-colors x-duration-300">
+                        Place Order
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:x-w-[50%] x-relative">
+                <div class="md:x-sticky md:x-top-[48px] x-border x-flex x-flex-col x-gap-[12px] x-p-[16px] x-bg-[#F9F9F8]">
+                    <div class="x-text-[14px] x-bg-white x-p-[12px]">
+                        <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">Fitted Sheets</div>
+                        <div class="x-border-b-[1px]">
+                            <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
+                                <div>Code: SAP3680</div>
+                                <div>Size: 36 X 80 X 9</div>
+                                <div>Qty: 3</div>
+                                <div>Color: Beige</div>
+                                <div>Packing: 5 Dz/Cs</div>
+                                <div class="x-text-red-800 x-font-semibold">$110.97</div>
+                            </div>
+                            <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
+                                <div>Code: SAP3684</div>
+                                <div>Size: 39 X 75 X 12</div>
+                                <div>Qty: 3</div>
+                                <div>Color: Beige</div>
+                                <div>Packing: 5 Dz/Cs</div>
+                                <div class="x-text-red-800 x-font-semibold">$73.98</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-text-[14px] x-bg-white x-p-[12px]">
+                        <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">Fitted Sheets</div>
+                        <div class="x-border-b-[1px]">
+                            <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
+                                <div>Code: SAP3680</div>
+                                <div>Size: 36 X 80 X 9</div>
+                                <div>Qty: 3</div>
+                                <div>Color: Beige</div>
+                                <div>Packing: 5 Dz/Cs</div>
+                                <div class="x-text-red-800 x-font-semibold">$110.97</div>
+                            </div>
+                            <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
+                                <div>Code: SAP3684</div>
+                                <div>Size: 39 X 75 X 12</div>
+                                <div>Qty: 3</div>
+                                <div>Color: Beige</div>
+                                <div>Packing: 5 Dz/Cs</div>
+                                <div class="x-text-red-800 x-font-semibold">$73.98</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="x-border-[1px] x-border-[#F0EFEF] x-flex x-flex-row x-items-center x-gap-[8px] x-p-[12px] x-bg-[#F0EFEF]">
+                        <i class='bx bxs-calendar x-leading-[0px] x-text-[18px]'></i>
+                        <div>Placing an Order?</div>
+                        <div class="x-text-red-800 x-underline x-underline-offset-[2px]">Select Date and Time</div>
+                    </div>
+                    <div
+                        class="x-flex x-flex-col x-gap-[8px] x-border-[#F2B142] x-border-[1px] x-p-[12px] x-bg-[#FFF6E6]">
+                        <div class="x-flex x-flex-row x-items-center x-gap-[8px]">
+                            <input class="x-min-w-[16px] x-min-h-[16px]" type="radio" name="shipping_quote" value="true"
+                                checked>
+                            <div>Shipping cost will be added to order invoice</div>
+                        </div>
+                        <div class="x-flex x-flex-row x-items-center x-gap-[8px]">
+                            <input class="x-min-w-[16px] x-min-h-[16px]" type="radio" name="shipping_quote"
+                                value="false">
+                            <div class="x-flex x-items-center x-gap-[4px]">Submit for shipping quote <i
+                                    class='bx bxs-info-circle x-leading-[0px] x-text-[#F2AD36]'></i></div>
+                        </div>
+                    </div>
+                    <div
+                        class="x-flex x-flex-row x-justify-between x-items-center x-font-semibold x-text-[#A73E4C] x-border-[#A73E4C] x-border-[1px] x-p-[12px] x-bg-[#F5DFE2]">
+                        <div>TOTAL</div>
+                        <div class="x-text-[16px]">$443.88</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,83 @@
+<div class="x-w-[1000px] x-mx-auto x-p-4">
+    {% assign unique_products = "" %}
+    <!-- Gather Unique Product Titles in Cart -->
+    {% for item in cart.items %}
+        {% unless unique_products contains item.product.title %}
+            {% assign unique_products = unique_products | append: item.product.title | append: "," %}
+        {% endunless %}
+    {% endfor %}
+
+    <!-- Loop Through Each Unique Product Title -->
+    {% assign unique_products_array = unique_products | split: "," %}
+    {% for product_title in unique_products_array %}
+        {% unless product_title == "" %}
+            {% assign all_default = true %}
+            {% for item in cart.items %}
+                {% if item.product.title == product_title and item.variant.metafields.custom.type != "Default" %}
+                    {% assign all_default = false %}
+                {% endif %}
+            {% endfor %}
+
+            <!-- Display Main Product Title if all variants are "Default" -->
+            {% if all_default %}
+                <h2 class="x-text-[16px] x-font-semibold x-text-red-700 x-mb-2">{{ product_title }}</h2>
+            {% endif %}
+
+            {% assign unique_types = "" %}
+            {% for item in cart.items %}
+                {% if item.product.title == product_title %}
+                    {% unless unique_types contains item.variant.metafields.custom.type %}
+                        {% assign unique_types = unique_types | append: item.variant.metafields.custom.type | append: "," %}
+                    {% endunless %}
+                {% endif %}
+            {% endfor %}
+
+            {% assign unique_types_array = unique_types | split: "," %}
+            {% for type in unique_types_array %}
+                {% unless type == "" %}
+                    {% if type != "Default" %}
+                        <h3 class="x-text-[16px] x-font-semibold x-text-red-700 x-mt-4 x-mb-2">{{ type }}</h3>
+                    {% elsif all_default == false %}
+                        <h3 class="x-text-[16px] x-font-semibold x-text-red-700 x-mt-4 x-mb-2">{{ product_title }}</h3>
+                    {% endif %}
+
+                    <table class="x-w-full x-text-left x-border-collapse x-mb-4">
+                        <thead>
+                            <tr class="x-bg-[#404042]">
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Item Code</th>
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Description</th>
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Cut Size</th>
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Packing</th>
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Color</th>
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Qty</th>
+                                <th class="x-py-2 x-px-4 x-font-normal x-text-white">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart.items %}
+                                {% if item.product.title == product_title and item.variant.metafields.custom.type == type %}
+                                    <tr class="x-border-t x-border-gray-300">
+                                        <td class="x-py-2 x-px-4">{{ item.sku }}</td>
+                                        <td class="x-py-2 x-px-4">{{ item.title }}</td>
+                                        <td class="x-py-2 x-px-4">{{ item.variant.metafields.custom.cut_size | default: 'N/A' }}</td>
+                                        <td class="x-py-2 x-px-4">{{ item.variant.metafields.custom.packing | default: 'N/A' }}</td>
+                                        <td class="x-py-2 x-px-4">{{ item.variant.metafields.custom.color | default: 'N/A' }}</td>
+                                        <td class="x-py-2 x-px-4">
+                                            <input type="number" value="{{ item.quantity }}" class="x-w-16 x-border x-border-gray-300 x-rounded">
+                                        </td>
+                                        <td class="x-py-2 x-px-4">{{ item.line_price | money }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endunless %}
+            {% endfor %}
+        {% endunless %}
+    {% endfor %}
+
+    <!-- Total Section -->
+    <div class="x-flex x-justify-end x-font-semibold x-mt-4">
+        <span>Total: {{ cart.total_price | money }}</span>
+    </div>
+</div>

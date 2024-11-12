@@ -1,13 +1,218 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <section>
-    <div class="x-p-[16px]">
-        <div>
-            <div class="dashboard view x-hidden">
-                dashboard
+    <div class="x-p-[16px] x-flex x-flex-col md:x-flex-row-reverse x-gap-[8px] md:x-gap-[20px]">
+        <div class="x-bg-[#F9F9F8] x-p-[16px] md:x-w-full">
+            <div class="dashboard view x-hidden x-py-[32px]">
+                <div>
+                    <div class="x-pb-[8px]">Hello <span class="x-font-semibold">Sam Smith</span> (not Same Smith? <a
+                            class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Log out</a>)
+                    </div>
+                    <div>From your account dashboard you can view <span
+                            class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Recent
+                            Orders</span>, manage your <span
+                            class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Shipping
+                            Address</span>, and edit your <span
+                            class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Password and
+                            Account details</span></div>
+                </div>
             </div>
             <div class="orders view x-hidden">
-                orders
+                <div class="x-flex x-flex-col x-gap-[16px]">
+                    <div class="x-flex x-justify-between md:x-justify-start md:x-gap-[24px]">
+                        <button class="company-orders sub-view-button x-text-[16px] md:x-text-[20px]">Company Orders</button>
+                        <button class="my-orders sub-view-button x-text-[16px] md:x-text-[20px]">My Orders</button>
+                        <button class="recurring-orders sub-view-button x-text-[16px] md:x-text-[20px]">Recurring Orders</button>
+                    </div>
+                    <div>
+                        <div class="company-orders sub-view x-hidden">
+                            <div class="x-overflow-x-auto x-max-w-full">
+                                <table class="x-w-full">
+                                    <thead>
+                                        <tr>
+                                            <th class="x-sticky x-left-0 x-z-[1] x-p-0">
+                                                <div class="x-bg-white x-p-3 x-border-b x-border-gray-300 x-text-nowrap shadow-right">Order #</div>
+                                            </th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Ordered by</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Status</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">PO</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Total</th>
+                                            <th class="x-sticky x-right-0 x-z-[1] x-p-0">
+                                                <div class="x-bg-white x-p-3 x-border-b x-border-gray-300 x-text-nowrap shadow-left">Actions</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr class="md:x-text-center">
+                                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
+                                                    20156
+                                                </div>
+                                            </td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Company Orders</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Shipped</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">258893</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$110.00 for 3 items</td>
+                                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
+                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
+                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+    
+                                        <tr class="md:x-text-center">
+                                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
+                                                    20156
+                                                </div>
+                                            </td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Company Orders</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Shipped</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">258893</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$110.00 for 3 items</td>
+                                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
+                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
+                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+    
+                                        <!-- Additional rows as needed -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="my-orders sub-view">
+                            <div class="x-overflow-x-auto x-max-w-full">
+                                <table class="x-w-full">
+                                    <thead>
+                                        <tr>
+                                            <th class="x-sticky x-left-0 x-z-[1] x-p-0">
+                                                <div class="x-bg-white x-p-3 x-border-b x-border-gray-300 x-text-nowrap shadow-right">Order #</div>
+                                            </th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Ordered by</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Status</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">PO</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Total</th>
+                                            <th class="x-sticky x-right-0 x-z-[1] x-p-0">
+                                                <div class="x-bg-white x-p-3 x-border-b x-border-gray-300 x-text-nowrap shadow-left">Actions</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr class="md:x-text-center">
+                                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
+                                                    20156
+                                                </div>
+                                            </td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">My Orders</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Cancelled</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">258894</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$36.50 for 3 items</td>
+                                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
+                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
+                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+    
+                                        <tr class="md:x-text-center">
+                                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
+                                                    20156
+                                                </div>
+                                            </td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">My Orders</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Cancelled</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">258894</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$36.50 for 3 items</td>
+                                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
+                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
+                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+    
+                                        <!-- Additional rows as needed -->
+                                    </tbody>
+                                </table>
+                            </div>  
+                        </div>
+                        <div class="recurring-orders sub-view x-hidden">
+                            <div class="x-overflow-x-auto x-max-w-full">
+                                <table class="x-w-full">
+                                    <thead>
+                                        <tr>
+                                            <th class="x-sticky x-left-0 x-z-[1] x-p-0">
+                                                <div class="x-bg-white x-p-3 x-border-b x-border-gray-300 x-text-nowrap shadow-right">Order #</div>
+                                            </th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Ordered by</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Status</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">PO</th>
+                                            <th class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap">Total</th>
+                                            <th class="x-sticky x-right-0 x-z-[1] x-p-0">
+                                                <div class="x-bg-white x-p-3 x-border-b x-border-gray-300 x-text-nowrap shadow-left">Actions</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr class="md:x-text-center">
+                                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
+                                                    20156
+                                                </div>
+                                            </td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Recurring Orders</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Shipped</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">258893</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$110.00 for 3 items</td>
+                                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
+                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
+                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+    
+                                        <tr class="md:x-text-center">
+                                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
+                                                    20156
+                                                </div>
+                                            </td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Recurring Orders</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Shipped</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">258893</td>
+                                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$110.00 for 3 items</td>
+                                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
+                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
+                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+    
+                                        <!-- Additional rows as needed -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="addresses view x-hidden">
                 addresses
@@ -22,66 +227,152 @@
                 drafts
             </div>
         </div>
-        <div class="x-flex x-flex-row">
-            <button class="dashboard nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
-                nav 1
+        <div class="x-flex x-flex-row md:x-flex-col x-gap-[8px] md:x-w-1/2 md:x-gap-[20px]">
+            <button
+                class="dashboard nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-dashboard'></i>
+                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Dashboard
+                    </div>
+                </div>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                </div>
             </button>
-            <button class="orders nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
-                nav 2
+
+
+            <button
+                class="orders nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-shopping-bag'></i>
+                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Orders
+                    </div>
+                </div>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                </div>
             </button>
-            <button class="addresses nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
-                nav 3
+
+            <button
+                class="addresses nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-map-pin'></i>
+                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Addresses
+                    </div>
+                </div>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                </div>
             </button>
-            <button class="account nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
-                nav 4
+
+            <button
+                class="account nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-user'></i>
+                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Account Details
+                    </div>
+                </div>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                </div>
             </button>
-            <button class="saved nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
-                nav 5
+
+            <button
+                class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-heart'></i>
+                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Saved for Later
+                    </div>
+                </div>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                </div>
             </button>
-            <button class="drafts nav-button x-flex-1 x-aspect-square x-flex x-items-center x-justify-center">
-                nav 6
+
+            <button
+                class="drafts nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-folder-open'></i>
+                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Draft Orders
+                    </div>
+                </div>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                </div>
+                <div class="x-hidden x-underline-offset-[2px]">
+                </div>
             </button>
         </div>
     </div>
 </section>
 
+<style>
+    .shadow-right {
+        box-shadow: 5px 0 8px -2px rgba(0, 0, 0, 0.15);
+    }
+
+    .shadow-left {
+        box-shadow: -5px 0 8px -2px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
 <script>
-    // if query of view is not empty
-    const urlParams = new URLSearchParams(window.location.search);
-    const view = urlParams.get('view');
-
-    if (view) {
-        // set button background color
-        const button = $(`.${view}.nav-button`);
-        button.css('background-color', '#9E0B0F');
-        button.css('color', 'white');
-        // show the view
-        $(`.${view}.view`).removeClass('x-hidden');
-    } else {
-        // add a view query to the url with dashboard
-        window.history.pushState({}, '', '?view=dashboard');
-        // set button background color
-        const button = $('.dashboard.nav-button');
-        button.css('background-color', '#9E0B0F');
-        button.css('color', 'white');
-        // show the view
-        $('.dashboard.view').removeClass('x-hidden');
-    }
-
-    function clearAllButtonBackground() {
-        $('.nav-button').css('background-color', 'white');
-        $('.nav-button').css('color', '#4D4D4D');
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
-        $('.nav-button').click(function () {
-            clearAllButtonBackground();
-            $(this).css('background-color', '#9E0B0F');
-            $(this).css('color', 'white');
-            const view = $(this).attr('class').split(' ')[0];
-            window.history.pushState({}, '', `?view=${view}`);
-            $('.view').addClass('x-hidden');
-            $(`.${view}.view`).removeClass('x-hidden');
-        });
+        initalizeMainView();
+        initializeOrdersView();
     });
+
+    function initializeOrdersView() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialView = urlParams.get('sub-view') || 'company-orders';
+        updateSubView(initialView);
+
+        $('.sub-view-button').click(function () {
+            const view = $(this).attr('class').split(' ')[0];
+            updateSubView(view);
+        });
+    }
+
+    function clearSubViewButtonStyles() {
+        $('.sub-view-button').removeClass('x-underline');
+    }
+
+    function updateSubView(view) {
+        clearSubViewButtonStyles();
+        $(`.${view}.sub-view-button`).addClass('x-underline x-underline-offset-[8px] x-decoration-[#9E0B0F]');
+        $('.sub-view').addClass('x-hidden');
+        $(`.${view}.sub-view`).removeClass('x-hidden');
+
+    }
+
+    function initalizeMainView() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialView = urlParams.get('view') || 'dashboard';
+        updateMainView(initialView);
+
+        $('.nav-button').click(function () {
+            const view = $(this).attr('class').split(' ')[0];
+            updateMainView(view);
+        });
+    }
+
+    function clearButtonStyles() {
+        $('.nav-button').css({ 'background-color': '#F0EFEF', 'color': '#4D4D4D' });
+        $('.chevron-wrapper').html('<i class="x-text-[32px] bx bx-chevron-right"></i>');
+    }
+
+    function updateMainView(view) {
+        clearButtonStyles();
+        $(`.${view}.nav-button`).css({ 'background-color': '#F5DFE2', 'color': '#951828' })
+            .find('.chevron-wrapper').html('<i class="x-text-[32px] bx bx-chevron-left"></i>');
+        $('.view').addClass('x-hidden');
+        $(`.${view}.view`).removeClass('x-hidden');
+        window.history.pushState({}, '', `?view=${view}`);
+    }
 </script>

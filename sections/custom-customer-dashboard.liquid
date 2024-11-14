@@ -1,9 +1,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <section>
-    <div class="x-p-[16px] x-flex x-flex-col md:x-flex-row-reverse x-gap-[8px] md:x-gap-[20px]">
+    <div class="x-p-[16px] x-flex x-flex-col-reverse md:x-flex-row-reverse x-gap-[8px] md:x-gap-[20px]">
         <div class="x-bg-[#F9F9F8] x-p-[16px] md:x-w-full">
-            <div class="dashboard view x-hidden x-py-[32px]">
+            <div class="dashboard view x-hidden">
                 <div>
                     <div class="x-pb-[8px]">Hello <span class="x-font-semibold">Sam Smith</span> (not Same Smith? <a
                             class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Log out</a>)
@@ -214,96 +214,542 @@
                     </div>
                 </div>
             </div>
-            <div class="addresses view x-hidden">
-                addresses
+            <div class="addresses view x-hidden x-h-full">
+                <div class="x-flex x-flex-col x-gap-[16px] x-h-full">
+                    <div>The following addresses will be used on the checkout page by default</div>
+                    <div class="x-flex x-flex-col x-gap-[16px] x-flex-1">
+                        <div class="x-text-[20px]">Shipping Address</div>
+                        <div class="x-grid x-grid-cols-1 md:x-grid-cols-2 x-gap-[16px]">
+                            <div class="x-space-y-[8px]">
+                                <div class="x-border x-p-[16px]">
+                                    <div>address #1 person name</div>
+                                    <div>address #1 company name</div>
+                                    <div>address #1 address</div>
+                                    <div>address #1 state & zipcode</div>
+                                </div>
+                                <div class="x-flex x-flex-row x-gap-[8px]">
+                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md">Edit</button>
+                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md">Delete</button>
+                                </div>
+                            </div>
+                            <div class="x-space-y-[8px]">
+                                <div class="x-border x-p-[16px]">
+                                    <div>address #2 person name</div>
+                                    <div>address #2 company name</div>
+                                    <div>address #2 address</div>
+                                    <div>address #2 state & zipcode</div>
+                                </div>
+                                <div class="x-flex x-flex-row x-gap-[8px]">
+                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md">Edit</button>
+                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md">Delete</button>
+                                </div>
+                            </div>
+                            <div class="x-space-y-[8px]">
+                                <div class="x-border x-p-[16px]">
+                                    <div>address #3 person name</div>
+                                    <div>address #3 company name</div>
+                                    <div>address #3 address</div>
+                                    <div>address #3 state & zipcode</div>
+                                </div>
+                                <div class="x-flex x-flex-row x-gap-[8px]">
+                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md">Edit</button>
+                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="x-flex x-items-center x-gap-[4px] x-text-[#9e0b0f] x-mt-[8px]">
+                            <i class='bx bx-plus'></i><div>Add New Address</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="account view x-hidden">
-                account
+                <div class="x-space-y-[24px]">
+                    <div class="x-space-y-[8px]">
+                        <div class="x-grid x-grid-cols-1 md:x-grid-cols-2 x-gap-[8px]">
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="first_name" class="x-text-[14]">First Name</label>
+                                <input type="text" id="first_name" name="first_name" value="Sam" class="x-border x-p-[8px] x-rounded-md x-text-[14px]">
+                            </div>
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="last_name" class="x-text-[14]">Last Name</label>
+                                <input type="text" id="last_name" name="last_name" value="Smith" class="x-border x-p-[8px] x-rounded-md x-text-[14px]">
+                            </div>
+                        </div>
+                        <div class="x-flex x-flex-col x-gap-[4px]">
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="display_name" class="x-text-[14]">Display Name</label>
+                                <input type="text" value="Sam Smith" name="display_name" class="x-border x-p-[8px]">
+                            </div>
+                            <div class="x-italic x-text-[14px] x-text-gray-400 x-mt-[4px]">
+                                This is how your name will be displayed in the account section and reviews
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-space-y-[12px]">
+                        <div class="x-text-[18px]">
+                            Password Change
+                        </div>
+                        <div class="x-space-y-[8px]">
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="current_password" class="x-text-[14]">Current Password</label>
+                                <input type="password" name="current_password" value="qwerty12345" class="x-border x-p-[8px] x-rounded-md x-text-[14px]">
+                            </div>
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="new_password" class="x-text-[14]">New Password</label>
+                                <input type="password" name="new_password" value="" class="x-border x-p-[8px] x-rounded-md x-text-[14px]">
+                            </div>
+                            <div class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="confirm_password" class="x-text-[14]">Confirm Password</label>
+                                <input type="password" name="confirm_password" value="" class="x-border x-p-[8px] x-rounded-md x-text-[14px]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="saved view x-hidden">
-                saved
+                <div>
+                    Too discuss...
+                </div>
             </div>
             <div class="drafts view x-hidden">
-                drafts
+                <div class="draft-orders-list">
+
+
+
+                    <div class="collapsable">
+                        <input type="checkbox" class="x-hidden">
+                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                            <div class="x-text-white">Order #1 (6 items)</div>
+                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">&nbsp;</div>
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
+                            </div>
+                        </button>
+                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                <div class="x-flex x-justify-end x-gap-[12px]">
+                                    <button class="x-p-[8px]">
+                                        Delete Order
+                                    </button>
+                                    <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828]">
+                                        Add All to Cart
+                                    </button>
+                                </div>
+                                <div class="x-flex x-flex-col x-gap-[16px]">
+                                    <div class="x-space-y-[14px]">
+                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
+                                        <table class="x-w-full table-alternating-rows">
+                                            <thead>
+                                                <tr class="x-text-white x-bg-[#404042]">
+                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="x-text-center">
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="x-space-y-[14px]">
+                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
+                                        <table class="x-w-full table-alternating-rows">
+                                            <thead>
+                                                <tr class="x-text-white x-bg-[#404042]">
+                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="x-text-center">
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                    <div class="x-text-[16px]">Total: </div>
+                                    <div class="x-text-[16px]">$999.99</div>
+                                </div>
+                                <div class="x-w-full x-flex x-justify-end">
+                                    <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px]">
+                                        Checkout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="collapsable">
+                        <input type="checkbox" class="x-hidden">
+                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                            <div class="x-text-white">Order #2 (6 items)</div>
+                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">&nbsp;</div>
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
+                            </div>
+                        </button>
+                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                <div class="x-flex x-justify-end x-gap-[12px]">
+                                    <button class="x-p-[8px]">
+                                        Delete Order
+                                    </button>
+                                    <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828]">
+                                        Add All to Cart
+                                    </button>
+                                </div>
+                                <div class="x-flex x-flex-col x-gap-[16px]">
+                                    <div class="x-space-y-[14px]">
+                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
+                                        <table class="x-w-full table-alternating-rows">
+                                            <thead>
+                                                <tr class="x-text-white x-bg-[#404042]">
+                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="x-text-center">
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="x-space-y-[14px]">
+                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
+                                        <table class="x-w-full table-alternating-rows">
+                                            <thead>
+                                                <tr class="x-text-white x-bg-[#404042]">
+                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="x-text-center">
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                    <div class="x-text-[16px]">Total: </div>
+                                    <div class="x-text-[16px]">$999.99</div>
+                                </div>
+                                <div class="x-w-full x-flex x-justify-end">
+                                    <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px]">
+                                        Checkout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="collapsable">
+                        <input type="checkbox" class="x-hidden">
+                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                            <div class="x-text-white">Order #3 (6 items)</div>
+                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">&nbsp;</div>
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
+                            </div>
+                        </button>
+                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                <div class="x-flex x-justify-end x-gap-[12px]">
+                                    <button class="x-p-[8px]">
+                                        Delete Order
+                                    </button>
+                                    <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828]">
+                                        Add All to Cart
+                                    </button>
+                                </div>
+                                <div class="x-flex x-flex-col x-gap-[16px]">
+                                    <div class="x-space-y-[14px]">
+                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
+                                        <table class="x-w-full table-alternating-rows">
+                                            <thead>
+                                                <tr class="x-text-white x-bg-[#404042]">
+                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="x-text-center">
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="x-space-y-[14px]">
+                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
+                                        <table class="x-w-full table-alternating-rows">
+                                            <thead>
+                                                <tr class="x-text-white x-bg-[#404042]">
+                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
+                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="x-text-center">
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                                <tr class="x-border-b-[1px] x-border-gray-400">
+                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
+                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
+                                                    <td class="x-p-[8px]">60x80x12</td>
+                                                    <td class="x-p-[8px]">1 dz</td>
+                                                    <td class="x-p-[8px]">1</td>
+                                                    <td class="x-p-[8px]">$12.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                    <div class="x-text-[16px]">Total: </div>
+                                    <div class="x-text-[16px]">$999.99</div>
+                                </div>
+                                <div class="x-w-full x-flex x-justify-end">
+                                    <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px]">
+                                        Checkout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
             </div>
         </div>
-        <div class="x-flex x-flex-row md:x-flex-col x-gap-[8px] md:x-w-1/2 md:x-gap-[20px]">
+        <div class="x-flex x-flex-row md:x-flex-col x-gap-[8px] md:x-w-[420px] md:x-gap-[12px] md:x-min-h-[480px] md:x-max-h-[480px]">
             <button
-                class="dashboard nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                class="dashboard nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-dashboard'></i>
-                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    <i class='x-text-[24px] md:x-text-[28px] lg:x-text-[28px] bx bxs-dashboard'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
                         Dashboard
                     </div>
                 </div>
                 <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
                 </div>
             </button>
 
 
             <button
-                class="orders nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                class="orders nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-shopping-bag'></i>
-                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    <i class='x-text-[24px] md:x-text-[28px] lg:x-text-[28px] bx bxs-shopping-bag'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
                         Orders
                     </div>
                 </div>
                 <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
                 </div>
             </button>
 
             <button
-                class="addresses nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                class="addresses nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-map-pin'></i>
-                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    <i class='x-text-[24px] md:x-text-[28px] lg:x-text-[28px] bx bxs-map-pin'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
                         Addresses
                     </div>
                 </div>
                 <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
                 </div>
             </button>
 
             <button
-                class="account nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                class="account nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-user'></i>
-                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    <i class='x-text-[24px] md:x-text-[28 lg:x-text-[32px]px] bx bxs-user'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
                         Account Details
                     </div>
                 </div>
                 <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
                 </div>
             </button>
 
             <button
-                class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-heart'></i>
-                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    <i class='x-text-[24px] md:x-text-[28p lg:x-text-[32px]x] bx bxs-heart'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
                         Saved for Later
                     </div>
                 </div>
                 <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
                 </div>
             </button>
 
             <button
-                class="drafts nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-py-[28px] md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                class="drafts nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[32px] bx bxs-folder-open'></i>
-                    <div class="x-text-[28px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    <i class='x-text-[24px] md:x-text-[28px] lg:x-text-[28px] bx bxs-folder-open'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
                         Draft Orders
                     </div>
                 </div>
                 <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[32px] bx bx-chevron-left'></i>
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
                 </div>
                 <div class="x-hidden x-underline-offset-[2px]">
                 </div>
@@ -320,13 +766,40 @@
     .shadow-left {
         box-shadow: -5px 0 8px -2px rgba(0, 0, 0, 0.15);
     }
+
+    .table-alternating-rows tbody tr:nth-child(even) {
+        background-color: #F0EFEF;
+    }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         initalizeMainView();
         initializeOrdersView();
+        initializeCollapses();
     });
+
+    function initializeCollapses() {
+        $('.collapse-trigger').click(function () {
+            let collapseContent = $(this).closest('.collapsable').find('.collapse-content');
+            let collapseCheckbox = $(this).closest('.collapsable').find('input[type="checkbox"]');
+            let collapseFeedback = $(this).find('.collapse-feedback');
+
+            $('.collapse-content').not(collapseContent).css({ 'height': '0px' });
+            $('.collapsable input[type="checkbox"]').not(collapseCheckbox).prop('checked', false);
+            $('.collapse-feedback').not(collapseFeedback).css({ transform: 'rotate(0deg)' });
+
+            if (collapseCheckbox.prop('checked')) {
+                collapseContent.css({ 'height': '0px' });
+                collapseCheckbox.prop('checked', false);
+                collapseFeedback.css({ transform: 'rotate(0deg)' });
+            } else {
+                collapseContent.css({ 'height': `${collapseContent[0].scrollHeight}px` });
+                collapseCheckbox.prop('checked', true);
+                collapseFeedback.css({ transform: 'rotate(90deg)' });
+            }
+        });
+    }
 
     function initializeOrdersView() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -353,7 +826,8 @@
 
     function initalizeMainView() {
         const urlParams = new URLSearchParams(window.location.search);
-        const initialView = urlParams.get('view') || 'dashboard';
+        const views = ['dashboard', 'orders', 'addresses', 'account', 'saved', 'drafts'];
+        const initialView = views.includes(urlParams.get('view')) ? urlParams.get('view') : 'dashboard';
         updateMainView(initialView);
 
         $('.nav-button').click(function () {

@@ -93,7 +93,7 @@
         {% comment %} Desktop View {% endcomment %}
         <div class="x-border-t-[1px] x-border-[#ccc] x-py-[48px] x-flex-col x-gap-[32px] x-hidden md:x-flex">
             {% for product_type in product.metafields.product.types.value %}
-            <div class="lg:x-w-[85%] lg:x-mx-auto">
+            <div class="lg:x-w-[85%] md:x-w-[95%] md:x-mx-auto">
                 <div>
                     <h1 class="x-text-[#ac1200] x-text-[24px] x-py-[8px] x-px-[16px]">
                         {% if product_type != "Default" %}

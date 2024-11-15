@@ -69,7 +69,7 @@ X button for saved for later
                                             <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Color</th>
                                             <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Qty</th>
                                             <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Subtotal</th>
-                                            <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[10px]"></th>
+                                            <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[10px]">&nbsp;</th>
 
                                         </tr>
                                     </thead>
@@ -187,7 +187,7 @@ $(document).ready(function () {
                 });
     }
 
-    $('.increment').click(function () {
+    $(document).on('click', '.increment', function () {
         const row = $(this).closest('tr');
         const key = $(this).data('line-item-id');
         const input = row.find('.qty-input');
@@ -199,7 +199,7 @@ $(document).ready(function () {
         updateCart(key, currentQty, row);
     });
 
-    $('.decrement').click(function () {
+    $(document).on('click', '.decrement', function () {
         const row = $(this).closest('tr');
         const key = $(this).data('line-item-id');
         const input = row.find('.qty-input');

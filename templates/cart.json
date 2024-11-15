@@ -58,7 +58,7 @@
 {
   "sections": {
     "main": {
-      "type": "custom-cart2",
+      "type": "custom-cart",
   },
 },
   "order": [

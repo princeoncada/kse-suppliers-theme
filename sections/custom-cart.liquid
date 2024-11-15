@@ -1,271 +1,147 @@
-<div class=" x-max-w-[1000px] x-mx-auto">
-    <div class="x-text-[24px] md:x-text-[40px] x-text-black">Cart</div>
-    <div class="x-bg-gray-100 x-max-w-[1254px] x-border">
-        <div class="x-w-[1000px] x-mx-auto x-p-4 x-px-[12px] x-pt-[20px] md:x-pt-[48px] md:x-pb-[48px] md:x-px-[48px]">
-            {% assign unique_products = "" %}
-            <!-- Gather Unique Product Titles in Cart -->
-            {% for item in cart.items %}
-                {% unless unique_products contains item.product.title %}
-                    {% assign unique_products = unique_products | append: item.product.title | append: "," %}
-                {% endunless %}
-            {% endfor %}
-
-            <!-- Loop Through Each Unique Product Title -->
-            {% assign unique_products_array = unique_products | split: "," %}
-            {% for product_title in unique_products_array %}
-                {% unless product_title == "" %}
-                    {% assign all_default = true %}
-                    {% for item in cart.items %}
-                        {% if item.product.title == product_title and item.variant.metafields.custom.type != "Default" %}
-                            {% assign all_default = false %}
-                        {% endif %}
-                    {% endfor %}
-                    
-                    <!-- Display Main Product Title if all variants are "Default" -->
-                    {% if all_default %}
-                        <div class="x-flex x-justify-between x-items-center x-mb-2">
-                            <h2 class="x-text-[16px] x-font-semibold x-text-red-700">{{ product_title }}</h2>
-                            <div class="x-flex x-items-center">
-                                <span class="x-text-red-700 x-underline x-cursor-pointer save-for-later x-mr-4" data-line-item-id="{{ item.key }}" data-product-title="{{ product_title }}">
-                                Save for Later
-                                </span>
-                                <button class="x-text-black x-text-sm x-font-semibold remove-item">X</button>
+<section>
+    <div class="x-p-[16px]">
+        
+        <div class="x-flex x-flex-col x-gap-[64px] x-mb-[8px]">
+            <a class="x-flex x-items-center x-gap-[4px] x-text-[#9E0B0F]">
+                <i class='bx bx-left-arrow-alt x-text-[20px]' ></i> <div class="x-leading-[0px]">Continue Shopping</div>
+            </a>
+            <div class="x-w-full x-flex x-justify-between x-items-end">
+                <div class="x-text-[32px] x-leading-[36px]">CART</div>
+                <button>Clear Cart</button>
+            </div>
+        </div>
+        
+        <div class="x-border x-bg-[#F9F9F8] x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+            <div class="x-space-y-[18px]">
+                <div>
+                    <div class="x-text-[#9E0B0F] x-pb-[4px] x-border-b-[1px] x-border-gray-300 x-flex x-justify-between x-py-[4px] x-pr-[4px]">
+                        <div class="x-text-[18px]">Fitted Sheets</div>
+                        <div class="x-flex x-items-center x-gap-[8px]">
+                            <a class="x-underline x-underline-offset-[2px]">Save for Later</a>
+                            <div class="x-rounded-md x-text-[#444446] x-text-[18px] x-flex x-items-center">
+                                <i class='bx bx-x' ></i>
                             </div>
                         </div>
-                    {% endif %}
-
-                    {% assign unique_types = "" %}
-                    {% for item in cart.items %}
-                        {% if item.product.title == product_title %}
-                            {% unless unique_types contains item.variant.metafields.custom.type %}
-                                {% assign unique_types = unique_types | append: item.variant.metafields.custom.type | append: "," %}
-                            {% endunless %}
-                        {% endif %}
-                    {% endfor %}
-                    
-                    {% assign unique_types_array = unique_types | split: "," %}
-                    {% for type in unique_types_array %}
-                        {% unless type == "" %}
-                            {% if type != "Default" %}
-                                <div class="x-flex x-justify-between x-items-center x-mb-2">
-                                    <h3 class="x-text-[16px] x-font-semibold x-text-red-700">{{ type }}</h3>
-                                    <div class="x-flex x-items-center">
-                                        <span class="x-text-red-700 x-underline x-cursor-pointer save-for-later x-mr-4" data-line-item-id="{{ item.key }}" data-product-title="{{ product_title }}">
-                                        Save for Later
-                                        </span>
-                                        <button class="x-text-black x-text-sm x-font-semibold remove-item">X</button>
+                    </div>
+                    <div class="x-flex x-flex-col">
+                        <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                            <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                <div>
+                                    <span>Item Code: </span><span>SAP3680</span>
+                                </div>
+                                <div>
+                                    <span>Desc: </span><span>Twin</span>
+                                </div>
+                                <div>
+                                    <span>Cut Size: </span><span>36 X 80 X 9</span>
+                                </div>
+                                <div>
+                                    <span>Packing: </span><span>5 Dz/Cs</span>
+                                </div>
+                                <div>
+                                    <span>Color: </span><span>Beige</span>
+                                </div>
+                                <div>&nbsp;</div>
+                                <div class="x-flex x-gap-[4px] x-items-center x-w-full">
+                                    <span>Qty:</span>
+                                    <div class="x-flex x-items-center x-border x-rounded-md">
+                                        <button class="x-flex x-items-center x-p-[4px] x-border-r-[1px] x-border-gray-200"><i class='x-text-[16px] bx bx-minus' ></i></button>
+                                        <input type="number" class="x-border-none x-outline-none x-shadow-none x-text-center x-w-[40px]" readonly value="3">
+                                        <button class="x-flex x-items-center x-p-[4px] x-border-l-[1px] x-border-gray-200"><i class='x-text-[16px] bx bx-plus'></i></button>
                                     </div>
                                 </div>
-                            {% elsif all_default == false %}
-                                <h3 class="x-text-[16px] x-font-semibold x-text-red-700 x-mt-4 x-mb-2">{{ product_title }}</h3>
-                            {% endif %}
-                            
-                            <table class="cart-section x-w-full x-text-left x-border-collapse x-mb-4 x-table-fixed">
-                                <thead>
-                                    <tr class="x-bg-[#404042]">
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px] x-overflow-hidden">Item Code</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Description</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Cut Size</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Packing</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Color</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Qty</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in cart.items %}
-                                        {% if item.product.title == product_title and item.variant.metafields.custom.type == type %}
-                                            <tr class="x-border-t even:x-bg-white odd:x-bg-gray-100 x-border-gray-300">
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.sku }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.description }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.cut_size | default: 'N/A' }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.packing | default: 'N/A' }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.color | default: 'N/A' }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">
-                                                <div class="x-flex">
-                                                        <button type="button" class="decrement x-border x-border-gray-300 x-rounded x-px-2 x-bg-white" data-line-item-id="{{ item.key }}">-</button>
-                                                        <input type="number" value="{{ item.quantity }}" class="qty-input x-w-16 x-text-center x-border x-border-gray-300 x-rounded" readonly>
-                                                        <button type="button" class="increment x-border x-border-gray-300 x-rounded x-px-2 x-bg-white" data-line-item-id="{{ item.key }}">+</button>
-                                                    </div>
-                                                </td>
-                                                <td class="subtotal x-py-2 x-px-4">{{ item.line_price | money }}</td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% endunless %}
-                    {% endfor %}
-                {% endunless %}
-            {% endfor %}
-        
-            <!-- Total Section -->
-            <div class=" x-flex x-justify-end x-font-semibold x-mt-4">
-                <div>
-                    Total: <span class="cart-total">{{ cart.total_price | money }}</span>
+                                
+                                <div class="x-flex x-items-center">
+                                    <span>Subtotal:&nbsp;</span><span class="x-font-semibold">$110.97</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="x-w-full x-text-[#444446] x-bg-[#DFDFDF] x-rounded-md x-py-[4px]"><i class='bx bxs-trash-alt' ></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
-                
+                <div class="x-w-full x-flex x-border-[#9E0B0F] x-border-[1px] x-justify-between x-p-[8px] x-bg-[#F5DFE2] x-text-[#9E0B0F]">
+                    <div class="x-text-[16px]">TOTAL</div>
+                    <div class="x-font-semibold">$443.88</div>
+                </div>
+            </div>
+            <div class="x-space-y-[8px]">
+                <div class="x-text-[18px]">Looking to get a quote?</div>
+                <div>You will have the opportunity to submit your order for a shipping quote and make any special requests on the checkout page.</div>
+            </div>
+            <div class="x-flex x-flex-col x-gap-[24px]">
+                <div class="x-flex x-gap-[10px] x-items-center">
+                    <div class="x-bg-orange-700 x-w-[48px] x-h-[48px] x-rounded-full">&nbsp;</div>
+                    <div class="x-text-[16px]">
+                        <div class="x-text-[12px]">Contact & Support</div>
+                        <div class="x-flex x-gap-[8px]">
+                            <div class="x-font-semibold">999.999.9999</div>
+                            <div class="x-flex x-items-center x-gap-[4px] x-text-[#9E0B0F]"><i class='bx bxs-chat' ></i> Chat</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-w-full x-flex x-gap-[8px]">
+                    <button class="x-p-[8px] x-flex-1 x-text-[#9E0B0F] x-underline x-underline-offset-[2px]">Save Order as Draft</button>
+                    <button class="x-border-[#9E0B0F] x-p-[8px] x-flex-1 x-rounded-md x-bg-[#9E0B0F] x-text-white">Checkout</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="x-text-[20px] x-underline x-underline-offset-[8px] x-my-[16px] x-mt-[64px]">Saved for Later</div>
+            <div class="x-border x-p-[16px]">
+                <div class="items-container">
+                    <div class="item">
+                        <div class="x-text-[#9E0B0F] x-pb-[4px] x-border-b-[1px] x-border-gray-300 x-flex x-justify-between x-py-[4px] x-pr-[4px]">
+                            <div class="x-text-[18px]">Fitted Sheets</div>
+                            <div class="x-flex x-items-center x-gap-[8px]">
+                                <div class="x-rounded-md x-text-[#444446] x-text-[18px] x-flex x-items-center">
+                                    <i class='bx bx-x' ></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="x-flex x-flex-col">
+                            <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                                <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                    <div>
+                                        <span>Item Code: </span><span>SAP3680</span>
+                                    </div>
+                                    <div>
+                                        <span>Desc: </span><span>Twin</span>
+                                    </div>
+                                    <div>
+                                        <span>Cut Size: </span><span>36 X 80 X 9</span>
+                                    </div>
+                                    <div>
+                                        <span>Packing: </span><span>5 Dz/Cs</span>
+                                    </div>
+                                    <div>
+                                        <span>Color: </span><span>Beige</span>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    <div class="x-flex x-gap-[4px] x-items-center x-w-full">
+                                        <span>Qty:</span>
+                                        <div class="x-flex x-items-center x-border x-rounded-md">
+                                            <button class="x-flex x-items-center x-p-[4px] x-border-r-[1px] x-border-gray-200"><i class='x-text-[16px] bx bx-minus' ></i></button>
+                                            <input type="number" class="x-border-none x-outline-none x-shadow-none x-text-center x-w-[40px]" readonly value="3">
+                                            <button class="x-flex x-items-center x-p-[4px] x-border-l-[1px] x-border-gray-200"><i class='x-text-[16px] bx bx-plus'></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="x-flex x-items-center">
+                                        <span>Subtotal:&nbsp;</span><span class="x-font-semibold">$110.97</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="x-w-full x-text-white x-bg-[#9E0B0F] x-rounded-md x-py-[8px]">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Saved For Later Section -->
-    <div class="x-w-[1000px] x-mx-auto x-p-4 x-px-[12px] x-pt-[20px] md:x-pt-[48px] md:x-pb-[48px] md:x-px-[48px] x-border">
-            {% assign unique_products = "" %}
-            <!-- Gather Unique Product Titles in Cart -->
-            {% for item in cart.items %}
-                {% unless unique_products contains item.product.title %}
-                    {% assign unique_products = unique_products | append: item.product.title | append: "," %}
-                {% endunless %}
-            {% endfor %}
-        
-            <!-- Loop Through Each Unique Product Title -->
-            {% assign unique_products_array = unique_products | split: "," %}
-            {% for product_title in unique_products_array %}
-                {% unless product_title == "" %}
-                    {% assign all_default = true %}
-                    {% for item in cart.items %}
-                        {% if item.product.title == product_title and item.variant.metafields.custom.type != "Default" %}
-                            {% assign all_default = false %}
-                        {% endif %}
-                    {% endfor %}
-        
-                    <!-- Display Main Product Title if all variants are "Default" -->
-                    {% if all_default %}
-                        <h2 class="x-text-[16px] x-font-semibold x-text-red-700 x-mb-2">{{ product_title }}</h2>
-                    {% endif %}
-        
-                    {% assign unique_types = "" %}
-                    {% for item in cart.items %}
-                        {% if item.product.title == product_title %}
-                            {% unless unique_types contains item.variant.metafields.custom.type %}
-                                {% assign unique_types = unique_types | append: item.variant.metafields.custom.type | append: "," %}
-                            {% endunless %}
-                        {% endif %}
-                    {% endfor %}
-        
-                    {% assign unique_types_array = unique_types | split: "," %}
-                    {% for type in unique_types_array %}
-                        {% unless type == "" %}
-                            {% if type != "Default" %}
-                                <h3 class="x-text-[16px] x-font-semibold x-text-red-700 x-mt-4 x-mb-2">{{ type }}</h3>
-                            {% elsif all_default == false %}
-                                <h3 class="x-text-[16px] x-font-semibold x-text-red-700 x-mt-4 x-mb-2">{{ product_title }}</h3>
-                            {% endif %}
-        
-                            <table class="saved-for-later x-w-full x-text-left x-border-collapse x-mb-4 x-table-fixed">
-                                <thead>
-                                    <tr class="x-bg-[#404042]">
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px] x-overflow-hidden">Item Code</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Description</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Cut Size</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Packing</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Color</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]">Qty</th>
-                                        <th class="x-py-2 x-px-4 x-font-normal x-text-white x-w-[100px]"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in cart.items %}
-                                        {% if item.product.title == product_title and item.variant.metafields.custom.type == type %}
-                                            <tr class="x-border-t even:x-bg-white odd:x-bg-gray-100 x-border-gray-300">
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.sku }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.description }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.cut_size | default: 'N/A' }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.packing | default: 'N/A' }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">{{ item.variant.metafields.custom.color | default: 'N/A' }}</td>
-                                                <td class="x-py-2 x-px-4 x-w-[100px]">
-                                                <div class="x-flex">
-                                                        <button type="button" class="decrement x-border x-border-gray-300 x-rounded x-px-2 x-bg-white" data-line-item-id="{{ item.key }}">-</button>
-                                                        <input type="number" value="{{ item.quantity }}" class="qty-input x-w-16 x-text-center x-border x-border-gray-300 x-rounded" readonly>
-                                                        <button type="button" class="increment x-border x-border-gray-300 x-rounded x-px-2 x-bg-white" data-line-item-id="{{ item.key }}">+</button>
-                                                    </div>
-                                                </td>
-                                                <td class="x-py-2 x-px-4">
-                                                    <button type="button" class="x-bg-red-600 x-text-white x-font-semibold x-px-[5px] x-rounded add-to-cart" data-line-item-id="{{ item.key }}" data-variant-id="{{ item.variant_id }}">
-                                                    ADD TO CART
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% endunless %}
-                    {% endfor %}
-                {% endunless %}
-            {% endfor %}
-    </div>        
-</div>
-
-
-
-<script>
-
-    $(document).ready(function () {
-        
-        function updateCart(key, quantity, row) {
-            $.ajax({
-                url: '/cart/change.js',
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    id: key,
-                    quantity: quantity
-                },
-                success: function (cart) {
-                    // Update the row subtotal
-                    const updatedItem = cart.items.find(item => item.key === key);
-                    if (updatedItem) {
-                        row.find('.subtotal').text(`$${(updatedItem.line_price / 100).toFixed(2)}`);
-                    }
-
-                    // Update the cart total
-                    $('.cart-total').text(`$${(cart.total_price / 100).toFixed(2)}`);
-                },
-                error: function (error) {
-                    console.error('Error updating cart:', error);
-                }
-            });
-        }
-
-        // Increment quantity
-        $('.increment').click(function () {
-            const row = $(this).closest('tr');
-            const key = $(this).data('line-item-id');
-            const input = row.find('.qty-input');
-            let currentQty = parseInt(input.val());
-
-            currentQty += 1;
-            input.val(currentQty);
-
-            updateCart(key, currentQty, row);
-        });
-
-        // Decrement quantity
-        $('.decrement').click(function () {
-            const row = $(this).closest('tr');
-            const key = $(this).data('line-item-id');
-            const input = row.find('.qty-input');
-            let currentQty = parseInt(input.val());
-
-            if (currentQty > 1) {
-                currentQty -= 1;
-                input.val(currentQty);
-
-                updateCart(key, currentQty, row);
-            }
-        });
-
-        $(document).on('click', '.save-for-later', function () {
-            const lineItemId = $(this).data('line-item-id'); // Retrieve the data-line-item-id value
-            console.log('Line Item ID:', lineItemId); // Log the value to the console
-
-            const productTitle = $(this).data('product-title'); // Optionally log the product title
-            console.log('Product Title:', productTitle);
-
-            // Proceed with your other functionality
-        });
-
-
-    });
-</script>
+</section>

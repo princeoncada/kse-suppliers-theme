@@ -57,11 +57,14 @@
 
 {
   "sections": {
-    "main": {
-      "type": "custom-cart",
-  },
+        "main": {
+            "type": "custom-cart",
+        },
+        "support": {
+            "type": "custom-support"
+        },
 },
   "order": [
-"main"
+    "main", "support"
   ]
 }

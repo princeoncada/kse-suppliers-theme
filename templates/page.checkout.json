@@ -11,10 +11,12 @@
   "sections": {
     "main": {
       "type": "custom-checkout-main",
-      "settings": {}
-    }
+    },
+    "support": {
+        "type": "custom-support"
+    },
   },
   "order": [
-    "main"
+    "main", "support"
   ]
 }

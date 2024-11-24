@@ -801,6 +801,10 @@ video {
   margin-top: 8px !important;
 }
 
+.x-mb-\[-32px\] {
+  margin-bottom: -32px !important;
+}
+
 .x-block {
   display: block !important;
 }
@@ -1974,6 +1978,11 @@ video {
 .x-py-\[8px\] {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
+}
+
+.x-px-\[4px\] {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
 }
 
 .x-pb-\[10px\] {

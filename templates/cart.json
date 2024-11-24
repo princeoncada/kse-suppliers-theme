@@ -58,7 +58,7 @@
 {
   "sections": {
         "main": {
-            "type": "custom-cart",
+            "type": "custom-cart4",
         },
         "support": {
             "type": "custom-support"

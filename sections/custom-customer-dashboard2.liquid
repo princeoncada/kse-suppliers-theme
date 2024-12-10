@@ -5,18 +5,26 @@
         <div class="x-bg-[#F9F9F8] x-p-[16px] md:x-w-full">
             <div class="dashboard view x-hidden">
                 <div>
-                    <div class="x-pb-[8px]">Hello <span class="x-font-semibold">Sam Smith</span> (not Same Smith? <a
-                            class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Log out</a>)
+                    <div class="x-pb-[8px]">
+                        Hello 
+                        {% if customer %}
+                            <span class="x-font-semibold">{{ customer.first_name }} {{ customer.last_name }}</span>
+                            (not {{ customer.first_name }}? 
+                            <a href="/account/logout" 
+                               class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Log out</a>)
+                        {% endif %}
                     </div>
-                    <div>From your account dashboard you can view <span
+                    <div>
+                        From your account dashboard you can view <a href="/account?view=orders"
                             class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Recent
-                            Orders</span>, manage your <span
+                            Orders</a>, manage your <a href="/account?view=addresses"
                             class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Shipping
-                            Address</span>, and edit your <span
+                            Address</a>, and edit your <a href="/account?view=account"
                             class="x-text-[#9E0B0F] x-underline x-underline-offset-[2px] x-font-semibold">Password and
-                            Account details</span></div>
+                            Account details</a>
+                    </div>
                 </div>
-            </div>
+            </div>            
             <div class="orders view x-hidden">
                 <div class="x-flex x-flex-col x-gap-[16px]">
                     <div class="x-flex x-justify-between md:x-justify-start md:x-gap-[24px]">
@@ -62,7 +70,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-    
+
                                         <tr class="md:x-text-center">
                                             <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
                                                 <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">
@@ -219,48 +227,38 @@
                     <div>The following addresses will be used on the checkout page by default</div>
                     <div class="x-flex x-flex-col x-gap-[16px] x-flex-1">
                         <div class="x-text-[20px]">Shipping Address</div>
-                        <div class="x-grid x-grid-cols-1 md:x-grid-cols-2 x-gap-[16px]">
-                            <div class="x-space-y-[8px]">
-                                <div class="x-border x-p-[16px]">
-                                    <div>address #1 person name</div>
-                                    <div>address #1 company name</div>
-                                    <div>address #1 address</div>
-                                    <div>address #1 state & zipcode</div>
-                                </div>
-                                <div class="x-flex x-flex-row x-gap-[8px]">
-                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md">Edit</button>
-                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md">Delete</button>
-                                </div>
-                            </div>
-                            <div class="x-space-y-[8px]">
-                                <div class="x-border x-p-[16px]">
-                                    <div>address #2 person name</div>
-                                    <div>address #2 company name</div>
-                                    <div>address #2 address</div>
-                                    <div>address #2 state & zipcode</div>
-                                </div>
-                                <div class="x-flex x-flex-row x-gap-[8px]">
-                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md">Edit</button>
-                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md">Delete</button>
-                                </div>
-                            </div>
-                            <div class="x-space-y-[8px]">
-                                <div class="x-border x-p-[16px]">
-                                    <div>address #3 person name</div>
-                                    <div>address #3 company name</div>
-                                    <div>address #3 address</div>
-                                    <div>address #3 state & zipcode</div>
-                                </div>
-                                <div class="x-flex x-flex-row x-gap-[8px]">
-                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md">Edit</button>
-                                    <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md">Delete</button>
-                                </div>
-                            </div>
+                        <div class="x-grid x-grid-cols-1 md:x-grid-cols-2 x-gap-[16px]" id="shipping-addresses">
+                            <!-- Addresses will be dynamically inserted here -->
                         </div>
-                        <div class="x-flex x-items-center x-gap-[4px] x-text-[#9e0b0f] x-mt-[8px]">
+                        <div class="x-flex x-items-center x-gap-[4px] x-text-[#9e0b0f] x-mt-[8px]" id="add-new-address">
                             <i class='bx bx-plus'></i><div>Add New Address</div>
                         </div>
                     </div>
+                </div>
+            </div>
+           <!-- Add New Address Modal -->
+        <div id="add-address-modal" class="x-hidden x-fixed x-inset-0 x-items-center x-justify-center x-bg-gray-900 x-bg-opacity-50">
+                <div class="x-bg-white x-p-[24px] x-rounded-md x-w-[400px] x-space-y-[16px]">
+                    <div class="x-text-[20px] x-font-semibold">Add New Address</div>
+                    <form method="post" action="/account/addresses" id="add-new-address-form" class="x-space-y-[8px]">
+                    <input type="hidden" name="form_type" value="new_address">
+                    <input type="hidden" name="utf8" value="✓">
+                    <input type="hidden" name="return_to" value="/account?view=addresses">
+
+                    <input type="text" name="address[first_name]" id="new-first-name" class="x-border x-w-full x-p-[8px]" placeholder="First Name" value="{{ customer.first_name }}" required>
+                    <input type="text" name="address[last_name]" id="new-last-name" class="x-border x-w-full x-p-[8px]" placeholder="Last Name" value="{{ customer.last_name }}" required>
+                    <input type="text" name="address[company]" id="new-company" class="x-border x-w-full x-p-[8px]" placeholder="Company (Optional)">
+                    <input type="text" name="address[address1]" id="new-address1" class="x-border x-w-full x-p-[8px]" placeholder="Address Line 1" required>
+                    <input type="text" name="address[city]" id="new-city" class="x-border x-w-full x-p-[8px]" placeholder="City" required>
+                    <input type="text" name="address[province]" id="new-province" class="x-border x-w-full x-p-[8px]" placeholder="State/Province" required>
+                    <input type="text" name="address[zip]" id="new-zip" class="x-border x-w-full x-p-[8px]" placeholder="Zip Code" required>
+                    <input type="text" name="address[country]" id="new-country" class="x-border x-w-full x-p-[8px]" placeholder="Country" required>
+
+                    <div class="x-flex x-justify-end x-gap-[8px]">
+                        <button type="button" id="cancel-add-address" class="x-border x-p-[8px] x-rounded-md" onclick="toggleModalVisibility(false)">Cancel</button>
+                        <button type="submit" class="x-bg-[#9e0b0f] x-text-white x-p-[8px] x-rounded-md">Save</button>
+                    </div>
+                </form>
                 </div>
             </div>
             <div class="account view x-hidden">
@@ -314,364 +312,85 @@
             </div>
             <div class="drafts view x-hidden">
                 <div class="draft-orders-list">
-
-
-
-                    <div class="collapsable">
-                        <input type="checkbox" class="x-hidden">
-                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                            <div class="x-text-white">Order #1 (6 items)</div>
-                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">&nbsp;</div>
-                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
-                            </div>
-                        </button>
-                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                <div class="x-flex x-justify-end x-gap-[12px]">
-                                    <button class="x-p-[8px]">
-                                        Delete Order
-                                    </button>
-                                    <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828]">
-                                        Add All to Cart
-                                    </button>
-                                </div>
-                                <div class="x-flex x-flex-col x-gap-[16px]">
-                                    <div class="x-space-y-[14px]">
-                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
-                                        <table class="x-w-full table-alternating-rows">
-                                            <thead>
-                                                <tr class="x-text-white x-bg-[#404042]">
-                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="x-text-center">
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                    {% if customer.drafts.size > 0 %}
+                        {% for draft in customer.drafts %}
+                            <div class="collapsable">
+                                <input type="checkbox" class="x-hidden">
+                                <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                                    <div class="x-text-white">Order #{{ draft.id }} ({{ draft.line_items.size }} items)</div>
+                                    <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                        <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
+                                            &nbsp;
+                                        </div>
+                                        <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute"></div>
                                     </div>
-                                    <div class="x-space-y-[14px]">
-                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
-                                        <table class="x-w-full table-alternating-rows">
-                                            <thead>
-                                                <tr class="x-text-white x-bg-[#404042]">
-                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="x-text-center">
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                </button>
+                                <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                                    <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                        <!-- Actions -->
+                                        <div class="x-flex x-justify-end x-gap-[12px]">
+                                            <button class="x-p-[8px] delete-draft-order" data-id="{{ draft.id }}">
+                                                Delete Order
+                                            </button>
+                                            <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] add-to-cart" data-id="{{ draft.id }}">
+                                                Add All to Cart
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Items -->
+                                        <div class="x-flex x-flex-col x-gap-[16px]">
+                                            {% for item in draft.line_items %}
+                                                <div class="x-space-y-[14px]">
+                                                    <div class="x-text-[#951828] x-text-[24px]">{{ item.product.title }}</div>
+                                                    <table class="x-w-full table-alternating-rows">
+                                                        <thead>
+                                                            <tr class="x-text-white x-bg-[#404042]">
+                                                                <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                                <th class="x-p-[8px] x-font-normal">Description</th>
+                                                                <th class="x-p-[8px] x-font-normal">Cut Size</th>
+                                                                <th class="x-p-[8px] x-font-normal">Packing</th>
+                                                                <th class="x-p-[8px] x-font-normal">Qty</th>
+                                                                <th class="x-p-[8px] x-font-normal">Price</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="x-text-center">
+                                                            <tr class="x-border-b-[1px] x-border-gray-400">
+                                                                <td class="x-text-start x-p-[8px]">{{ item.sku }}</td>
+                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.description }}</td>
+                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.cut_size }}</td>
+                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.packing }}</td>
+                                                                <td class="x-p-[8px]">{{ item.quantity }}</td>
+                                                                <td class="x-p-[8px]">{{ item.line_price | money }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                    
+                                        <!-- Total -->
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Total: </div>
+                                            <div class="x-text-[16px]">{{ draft.total_price | money }}</div>
+                                        </div>
+                    
+                                        <!-- Checkout -->
+                                        <div class="x-w-full x-flex x-justify-end">
+                                            <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="{{ draft.id }}">
+                                                Checkout
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                    <div class="x-text-[16px]">Total: </div>
-                                    <div class="x-text-[16px]">$999.99</div>
-                                </div>
-                                <div class="x-w-full x-flex x-justify-end">
-                                    <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px]">
-                                        Checkout
-                                    </button>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="collapsable">
-                        <input type="checkbox" class="x-hidden">
-                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                            <div class="x-text-white">Order #2 (6 items)</div>
-                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">&nbsp;</div>
-                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
-                            </div>
-                        </button>
-                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                <div class="x-flex x-justify-end x-gap-[12px]">
-                                    <button class="x-p-[8px]">
-                                        Delete Order
-                                    </button>
-                                    <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828]">
-                                        Add All to Cart
-                                    </button>
-                                </div>
-                                <div class="x-flex x-flex-col x-gap-[16px]">
-                                    <div class="x-space-y-[14px]">
-                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
-                                        <table class="x-w-full table-alternating-rows">
-                                            <thead>
-                                                <tr class="x-text-white x-bg-[#404042]">
-                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="x-text-center">
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="x-space-y-[14px]">
-                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
-                                        <table class="x-w-full table-alternating-rows">
-                                            <thead>
-                                                <tr class="x-text-white x-bg-[#404042]">
-                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="x-text-center">
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                    <div class="x-text-[16px]">Total: </div>
-                                    <div class="x-text-[16px]">$999.99</div>
-                                </div>
-                                <div class="x-w-full x-flex x-justify-end">
-                                    <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px]">
-                                        Checkout
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="collapsable">
-                        <input type="checkbox" class="x-hidden">
-                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                            <div class="x-text-white">Order #3 (6 items)</div>
-                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">&nbsp;</div>
-                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
-                            </div>
-                        </button>
-                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                <div class="x-flex x-justify-end x-gap-[12px]">
-                                    <button class="x-p-[8px]">
-                                        Delete Order
-                                    </button>
-                                    <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828]">
-                                        Add All to Cart
-                                    </button>
-                                </div>
-                                <div class="x-flex x-flex-col x-gap-[16px]">
-                                    <div class="x-space-y-[14px]">
-                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
-                                        <table class="x-w-full table-alternating-rows">
-                                            <thead>
-                                                <tr class="x-text-white x-bg-[#404042]">
-                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="x-text-center">
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="x-space-y-[14px]">
-                                        <div class="x-text-[#951828] x-text-[24px]">Fitted Sheets</div>
-                                        <table class="x-w-full table-alternating-rows">
-                                            <thead>
-                                                <tr class="x-text-white x-bg-[#404042]">
-                                                    <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Description</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Cut Size</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Packing</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Qty</th>
-                                                    <th class=" x-p-[8px] x-font-normal">Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="x-text-center">
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                                <tr class="x-border-b-[1px] x-border-gray-400">
-                                                    <td class="x-text-start x-p-[8px]">FS-001</td>
-                                                    <td class="x-p-[8px]">White Fitted Sheet</td>
-                                                    <td class="x-p-[8px]">60x80x12</td>
-                                                    <td class="x-p-[8px]">1 dz</td>
-                                                    <td class="x-p-[8px]">1</td>
-                                                    <td class="x-p-[8px]">$12.00</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                    <div class="x-text-[16px]">Total: </div>
-                                    <div class="x-text-[16px]">$999.99</div>
-                                </div>
-                                <div class="x-w-full x-flex x-justify-end">
-                                    <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px]">
-                                        Checkout
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
+                        {% endfor %}
+                    {% else %}
+                        <p>No draft orders available.</p>
+                    {% endif %}
                 </div>
             </div>
+            
+            
         </div>
         <div class="x-flex x-flex-row md:x-flex-col x-gap-[8px] md:x-w-[420px] md:x-gap-[12px] md:x-min-h-[480px] md:x-max-h-[480px]">
             <button
@@ -770,14 +489,225 @@
     .table-alternating-rows tbody tr:nth-child(even) {
         background-color: #F0EFEF;
     }
+
+    .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .spinner {
+        width: 30px;
+        height: 30px;
+        border: 4px solid #ddd;
+        border-top: 4px solid #951828;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
 </style>
 
 <script>
+    const customerId = "{{ customer.id }}";
     document.addEventListener('DOMContentLoaded', function () {
         initalizeMainView();
         initializeOrdersView();
         initializeCollapses();
+        loadShippingAddresses();
+        initializeAddAddressFunctionality();
+        populateDraftOrders();
+
     });
+
+    //DRAFT ORDERS TAB
+    async function fetchData(query) {
+        try {
+            const response = await fetch("https://ea8a-120-72-18-186.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: query }),
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    async function populateDraftOrders() {
+        const currentUserId = `gid://shopify/Customer/${customerId}`;
+        const query = `
+            query {
+                draftOrders {
+                    id
+                    createdAt
+                    customerId
+                    lineItems {
+                        title
+                        quantity
+                        price
+                        variant_title
+                    }
+                    metafields {
+                        id
+                        namespace
+                        key
+                        value
+                    }
+                }
+            }
+        `;
+        const draftOrdersList = document.querySelector(".draft-orders-list");
+        
+        // Add loading animation
+        const loadingSpinner = document.createElement("div");
+        loadingSpinner.className = "loading-spinner";
+        loadingSpinner.innerHTML = `
+            <div class="spinner">
+
+            </div>
+        `;
+        draftOrdersList.innerHTML = ""; // Clear content
+        draftOrdersList.appendChild(loadingSpinner);
+
+        try {
+            const data = await fetchData(query);
+            console.log("Draft Orders API Response:", data);
+
+            if (data && data.data && data.data.draftOrders) {
+                const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
+                console.log("Filtered Orders:", orders);
+
+                const filteredOrders = [];
+                for (const order of orders) {
+                    const orderId = order.id.split('/').pop();
+
+                    // Check if the order has the "Placed" tag
+                    const tagQuery = `
+                        query {
+                            getDraftOrderTags(draftOrderId: "${orderId}") {
+                                tag
+                            }
+                        }
+                    `;
+                    const tagData = await fetchData(tagQuery);
+                    const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed");
+
+                    if (hasPlacedTag) {
+                        console.log(`Skipping order ${orderId} as it has the "Placed" tag.`);
+                        continue;
+                    }
+
+                    filteredOrders.push(order);
+                }
+
+                draftOrdersList.innerHTML = ""; // Clear loading spinner
+                if (filteredOrders.length > 0) {
+                    for (const order of filteredOrders) {
+                        const orderId = order.id.split('/').pop();
+                        const formattedDate = new Date(order.createdAt).toLocaleDateString();
+
+                        const collapsableDiv = document.createElement("div");
+                        collapsableDiv.classList.add("collapsable");
+
+                        collapsableDiv.innerHTML = `
+                            <input type="checkbox" class="x-hidden">
+                            <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                                <div class="x-text-white">Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
+                                <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                    <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
+                                    &nbsp;
+                                    </div>
+                                    <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
+                                    </div>
+                                </div>
+                            </button>
+                            <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                                <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                    <div class="x-flex x-justify-end x-gap-[12px]">
+                                        <button class="x-p-[8px] delete-draft-order" data-id="${order.id}">
+                                            Delete Order
+                                        </button>
+                                        <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] add-to-cart" data-id="${order.id}">
+                                            Add All to Cart
+                                        </button>
+                                    </div>
+                                    <div class="x-flex x-flex-col x-gap-[16px]">
+                                        ${order.lineItems.map(item => `
+                                            <div class="x-space-y-[14px]">
+                                                <div class="x-text-[#951828] x-text-[24px]">${item.title}</div>
+                                                <table class="x-w-full table-alternating-rows">
+                                                    <thead>
+                                                        <tr class="x-text-white x-bg-[#404042]">
+                                                            <th class="x-text-start x-p-[8px] x-font-normal x-w-[20%]">Item Code</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[40%]">Description</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[20%]">Variant</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[10%]">Qty</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[10%]">Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="x-text-center">
+                                                        <tr class="x-border-b-[1px] x-border-gray-400">
+                                                            <td class="x-text-start x-p-[8px]">${item.variant?.id.split('/').pop() || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${item.title}</td>
+                                                            <td class="x-p-[8px]">${item.variant_title || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${item.quantity}</td>
+                                                            <td class="x-p-[8px]">$${item.price}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        `).join("")}
+                                    </div>
+                                    <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                        <div class="x-text-[16px]">Total: </div>
+                                        <div class="x-text-[16px]">$${order.lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0)}</div>
+                                    </div>
+                                    <div class="x-w-full x-flex x-justify-end">
+                                        <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
+                                            Checkout
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        draftOrdersList.appendChild(collapsableDiv);
+                    }
+                    initializeCollapses();
+                } else {
+                    draftOrdersList.innerHTML = "<p>No draft orders available.</p>";
+                }
+            } else {
+                draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";
+            }
+        } catch (error) {
+            console.error("Error fetching draft orders:", error);
+            draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
+        }
+    }
+    
+    function toggleModalVisibility(modal, show) {
+        // Utility function to toggle modal visibility
+        if (show) {
+            modal.classList.remove('x-hidden');
+            modal.classList.add('x-flex');
+        } else {
+            modal.classList.remove('x-flex');
+            modal.classList.add('x-hidden');
+            modal.removeAttribute('data-edit-id'); // Clear edit mode data
+        }
+    }
 
     function initializeCollapses() {
         $('.collapse-trigger').click(function () {
@@ -799,6 +729,257 @@
                 collapseFeedback.css({ transform: 'rotate(90deg)' });
             }
         });
+    }
+
+
+    // ADDRESSES TAB                 
+    function initializeAddAddressFunctionality() {
+        const addAddressButton = document.getElementById('add-new-address');
+        const addAddressModal = document.getElementById('add-address-modal');
+        const saveAddressButton = document.getElementById('save-add-address');
+        const cancelAddAddressButton = document.getElementById('cancel-add-address');
+        const addressContainer = document.getElementById('shipping-addresses');
+
+
+        // Prefill modal fields with logged-in user's first and last name using Liquid variables
+        function prefillUserDetails() {
+            const firstName = '{{ customer.first_name | escape }}';
+            const lastName = '{{ customer.last_name | escape }}';
+
+            document.getElementById('new-first-name').value = firstName || '';
+            document.getElementById('new-last-name').value = lastName || '';
+        }
+
+        // Utility function to toggle modal visibility
+        function toggleModalVisibility(modal, show) {
+            if (show) {
+                modal.classList.remove('x-hidden');
+                modal.classList.add('x-flex');
+            } else {
+                modal.classList.remove('x-flex');
+                modal.classList.add('x-hidden');
+            }
+        }
+
+        // Event listener for "Add New Address" button
+        addAddressButton.addEventListener('click', function () {
+            prefillUserDetails(); // Prefill user details before showing the modal
+            toggleModalVisibility(addAddressModal, true); // Show the modal
+        });
+
+        // Event listener for "Cancel" button in the modal
+        cancelAddAddressButton.addEventListener('click', function () {
+            toggleModalVisibility(addAddressModal, false); // Hide the modal
+        });
+    }
+
+    function loadShippingAddresses() {
+        // Fetch addresses dynamically using Shopify Liquid or an API endpoint
+        const addresses = {{ customer.addresses | json }}; // This requires Liquid and will output addresses in JSON format
+
+        const addressContainer = document.getElementById('shipping-addresses');
+        addressContainer.innerHTML = ''; // Clear existing addresses
+
+        if (addresses.length === 0) {
+            addressContainer.innerHTML = '<div>No addresses found. Please add a new address.</div>';
+            return;
+        }
+
+        addresses.forEach((address, index) => {
+            const addressHTML = `
+                <div class="x-space-y-[8px]">
+                    <div class="x-border x-p-[16px]">
+                        <div>${address.first_name || ''} ${address.last_name || ''}</div>
+                        <div>${address.company || ''}</div>
+                        <div>${address.address1 || ''}</div>
+                        <div>${address.city || ''}, ${address.province || ''} ${address.zip || ''}</div>
+                        <div>${address.country || ''}</div>
+                    </div>
+                    <div class="x-flex x-flex-row x-gap-[8px]">
+                        <button class="x-flex-1 x-border x-p-[8px] x-bg-[#0b0f9e] x-text-white x-rounded-md edit-address" data-id="${address.id}">Edit</button>
+                        <button class="x-flex-1 x-border x-p-[8px] x-bg-[#9e0b0f] x-text-white x-rounded-md delete-address" data-id="${address.id}">Delete</button>
+                    </div>
+                </div>
+            `;
+            addressContainer.insertAdjacentHTML('beforeend', addressHTML);
+        });
+
+        // Attach event listeners for edit buttons
+        const editButtons = document.querySelectorAll('.edit-address');
+        editButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const addressId = this.getAttribute('data-id');
+                const address = addresses.find(addr => addr.id === addressId);
+                if (address) {
+                    openEditAddressModal(address);
+                } else {
+                    console.error('Address not found for editing.');
+                }
+            });
+        });
+
+        // Attach event listeners for delete buttons
+        const deleteButtons = document.querySelectorAll('.delete-address');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const addressId = this.getAttribute('data-id');
+                deleteAddress(addressId);
+            });
+        });
+    }
+
+    function openEditAddressModal(address) {
+        // Get modal elements
+        const modal = document.getElementById('add-address-modal');
+        if (!modal) {
+            console.error('Modal element not found');
+            return;
+        }
+
+        const firstNameInput = document.getElementById('new-first-name');
+        const lastNameInput = document.getElementById('new-last-name');
+        const companyInput = document.getElementById('new-company');
+        const address1Input = document.getElementById('new-address1');
+        const cityInput = document.getElementById('new-city');
+        const provinceInput = document.getElementById('new-province');
+        const zipInput = document.getElementById('new-zip');
+        const countryInput = document.getElementById('new-country');
+
+        if (
+            !firstNameInput ||
+            !lastNameInput ||
+            !companyInput ||
+            !address1Input ||
+            !cityInput ||
+            !provinceInput ||
+            !zipInput ||
+            !countryInput
+        ) {
+            console.error('One or more input elements not found in the modal');
+            return;
+        }
+
+        // Fill modal with address data
+        firstNameInput.value = address.first_name || '';
+        lastNameInput.value = address.last_name || '';
+        companyInput.value = address.company || '';
+        address1Input.value = address.address1 || '';
+        cityInput.value = address.city || '';
+        provinceInput.value = address.province || '';
+        zipInput.value = address.zip || '';
+        countryInput.value = address.country || '';
+
+        // Store the current address ID in the modal for reference
+        modal.setAttribute('data-edit-id', address.id);
+
+        // Show the modal
+        toggleModalVisibility(modal, true);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const saveButton = document.getElementById('save-add-address');
+        if (saveButton) {
+            saveButton.addEventListener('click', async function () {
+                const modal = document.getElementById('add-address-modal');
+                const addressId = modal.getAttribute('data-edit-id');
+
+                const newAddress = {
+                    first_name: document.getElementById('new-first-name').value.trim(),
+                    last_name: document.getElementById('new-last-name').value.trim(),
+                    company: document.getElementById('new-company').value.trim(),
+                    address1: document.getElementById('new-address1').value.trim(),
+                    city: document.getElementById('new-city').value.trim(),
+                    province: document.getElementById('new-province').value.trim(),
+                    zip: document.getElementById('new-zip').value.trim(),
+                    country: document.getElementById('new-country').value.trim(),
+                };
+
+                // Validate required fields
+                if (!newAddress.address1 || !newAddress.city || !newAddress.province || !newAddress.zip || !newAddress.country) {
+                    alert('Please fill out all required fields.');
+                    return;
+                }
+
+                try {
+                    let response;
+                    if (addressId) {
+                        // Update existing address (Edit mode)
+                        response = await fetch(`/account/addresses/${addressId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                ...newAddress,
+                                _method: 'put'
+                            })
+                        });
+                    } else {
+                        // Add new address (Add mode)
+                        response = await fetch('/account/addresses', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                form_type: 'new_address',
+                                utf8: '✓',
+                                ...newAddress
+                            })
+                        });
+                    }
+
+                    if (response.ok) {
+                        // If successful, refresh or redirect to the desired view
+                        window.location.href = '/account?view=addresses';
+                    } else {
+                        alert('Failed to save the address. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving the address.');
+                }
+            });
+        }
+
+        // Attach event listener for cancel button
+        const cancelButton = document.getElementById('cancel-add-address');
+            if (cancelButton) {
+                cancelButton.addEventListener('click', function () {
+                    toggleModalVisibility(document.getElementById('add-address-modal'), false);
+                });
+            }
+    });
+
+    // Existing Delete Address Function
+    async function deleteAddress(addressId) {
+        // Confirmation prompt
+        if (!confirm('Are you sure you want to delete this address?')) {
+            return;
+        }
+
+        try {
+            // Use the fetch API to send a DELETE request
+            const response = await fetch(`/account/addresses/${addressId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    _method: 'delete'
+                })
+            });
+
+            if (response.ok) {
+                // If the delete request is successful, redirect to your desired URL
+                window.location.href = '/account?view=addresses';
+            } else {
+                alert('Failed to delete the address. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the address.');
+        }
     }
 
     function initializeOrdersView() {
@@ -849,3 +1030,4 @@
         window.history.pushState({}, '', `?view=${view}`);
     }
 </script>
+

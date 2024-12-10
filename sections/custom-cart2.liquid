@@ -119,7 +119,6 @@ X button for saved for later
 </div>
 <script>
 $(document).ready(function () {
-
     function updateSavedForLaterStorage(productTitle, productType, itemCode, newQty) {
         const savedItems = JSON.parse(localStorage.getItem('savedForLater')) || [];
         const group = savedItems.find(group => group.productTitle === productTitle && group.productType === productType);

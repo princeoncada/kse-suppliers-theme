@@ -176,7 +176,7 @@ function saveToDraft() {
 
         // Send the draft order request
         $.ajax({
-            url: 'https://77e5-158-62-77-223.ngrok-free.app/graphql',
+            url: 'https://ea8a-120-72-18-186.ngrok-free.app/graphql',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ query: mutation })

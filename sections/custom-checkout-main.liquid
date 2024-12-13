@@ -6,25 +6,27 @@
                 <div class="x-flex x-flex-col x-gap-[16px]">
                     <div class="x-text-[24px]">Contact Info</div>
                     <div class="x-flex x-flex-col x-gap-[12px]">
+
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px]">
                                 <label for="email" class="x-text-[14px]">Email Address</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="email" name="email"
-                                    placeholder="Email Address">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="email" name="email" id="email" 
+                                    placeholder="Email Address" disabled>
                             </div>
                         </div>
                         <div class="x-flex x-flex-row x-gap-4">
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="first_name" class="x-text-[14px]">First Name</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="first_name"
-                                    placeholder="First Name">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="first_name" id="first_name"
+                                    placeholder="First Name" disabled>
                             </div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="last_name" class="x-text-[14px]">Last Name</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="last_name"
-                                    placeholder="Last Name">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="last_name"  id="last_name"
+                                    placeholder="Last Name" disabled> 
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="x-flex x-flex-col x-gap-[16px]">
@@ -41,33 +43,33 @@
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="company_name" class="x-text-[14px]">Company Name</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="company_name"
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="company_name" id="company_name"
                                     placeholder="Company Name">
                             </div>
                         </div>
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="street_address" class="x-text-[14px]">Street Address</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="street_address"
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="street_address" id="street_address"
                                     placeholder="Street Address">
                             </div>
                         </div>
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="town_city" class="x-text-[14px]">Town/City</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="town_city"
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="town_city" id="town_city"
                                     placeholder="Town/City">
                             </div>
                         </div>
                         <div class="x-flex x-flex-row x-gap-4">
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="state" class="x-text-[14px]">State</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state"
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state" id="state"
                                     placeholder="State">
                             </div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="zip" class="x-text-[14px]">ZIP Code</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip"
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip" id="zip"
                                     placeholder="Zip Code">
                             </div>
                         </div>
@@ -139,13 +141,13 @@
                     </div>
                 </div>
                 <div>
-                    <button class="x-flex x-justify-center x-rounded-sm x-py-[8px] x-bg-red-800 x-text-white x-w-full hover:x-bg-red-950 x-transition-colors x-duration-300">
+                    <a class="x-flex x-justify-center x-rounded-sm x-py-[8px] x-bg-red-800 x-text-white x-w-full hover:x-bg-red-950 x-transition-colors x-duration-300" id="place-order">
                         Place Order
-                    </button>
+                    </a>
                 </div>
             </div>
 
-            <div class="lg:x-w-[50%] x-relative">
+            {% comment %} <div class="lg:x-w-[50%] x-relative">
                 <div class="md:x-sticky md:x-top-[48px] x-border x-flex x-flex-col x-gap-[12px] x-p-[16px] x-bg-[#F9F9F8]">
                     <div class="x-text-[14px] x-bg-white x-p-[12px]">
                         <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">Fitted Sheets</div>
@@ -212,11 +214,254 @@
                     <div
                         class="x-flex x-flex-row x-justify-between x-items-center x-font-semibold x-text-[#A73E4C] x-border-[#A73E4C] x-border-[1px] x-p-[12px] x-bg-[#F5DFE2]">
                         <div>TOTAL</div>
-                        <div class="x-text-[16px]">$443.88</div>
+                        <div class="x-text-[16px]">$448</div>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+
+            <div class="lg:x-w-[50%] x-relative">
+                <div class="md:x-sticky md:x-top-[48px] x-border x-flex x-flex-col x-gap-[12px] x-p-[16px] x-bg-[#F9F9F8]">
+                    <div id="checkout-cart-items" class="x-text-[14px] x-bg-white x-p-[12px]"></div>
+                    <div
+                        class="x-border-[1px] x-border-[#F0EFEF] x-flex x-flex-row x-items-center x-gap-[8px] x-p-[12px] x-bg-[#F0EFEF]">
+                        <i class='bx bxs-calendar x-leading-[0px] x-text-[18px]'></i>
+                        <div>Placing an Order?</div>
+                        <div class="x-text-red-800 x-underline x-underline-offset-[2px]">Select Date and Time</div>
+                    </div>
+                    <div
+                        class="x-flex x-flex-col x-gap-[8px] x-border-[#F2B142] x-border-[1px] x-p-[12px] x-bg-[#FFF6E6]">
+                        <div class="x-flex x-flex-row x-items-center x-gap-[8px]">
+                            <input class="x-min-w-[16px] x-min-h-[16px]" type="radio" name="shipping_quote" value="true"
+                                checked>
+                            <div>Shipping cost will be added to order invoice</div>
+                        </div>
+                        <div class="x-flex x-flex-row x-items-center x-gap-[8px]">
+                            <input class="x-min-w-[16px] x-min-h-[16px]" type="radio" name="shipping_quote"
+                                value="false">
+                            <div class="x-flex x-items-center x-gap-[4px]">Submit for shipping quote <i
+                                    class='bx bxs-info-circle x-leading-[0px] x-text-[#F2AD36]'></i></div>
+                        </div>
+                    </div>
+                    <div
+                        class="x-flex x-flex-row x-justify-between x-items-center x-font-semibold x-text-[#A73E4C] x-border-[#A73E4C] x-border-[1px] x-p-[12px] x-bg-[#F5DFE2]">
+                        <div>TOTAL</div>
+                        <div id="checkout-total" class="x-text-[16px]"></div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
+
+<script>
+    const cartItems = {{ cart.items | json }};
+    window.CustomerData = {
+        customerId: "{{ customer.id }}",
+        email: "{{ customer.email }}",
+        firstName: "{{ customer.first_name }}",
+        lastName: "{{ customer.last_name }}",
+        defaultAddress: {
+                address2: "{{ customer.default_address.address1 }}",
+                company_name: "{{ customer.default_address.company }}",
+                city: "{{ customer.default_address.city }}",
+                province: "{{ customer.default_address.province }}",
+                country: "{{ customer.default_address.country }}",
+                zip: "{{ customer.default_address.zip }}"
+            }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('email').value = window.CustomerData.email;
+        document.getElementById('first_name').value = window.CustomerData.firstName;
+        document.getElementById('last_name').value = window.CustomerData.lastName;
+        document.getElementById('company_name').value = window.CustomerData.defaultAddress.company_name;
+        document.getElementById('street_address').value = window.CustomerData.defaultAddress.address2;
+        document.getElementById('town_city').value = window.CustomerData.defaultAddress.city;
+        document.getElementById('state').value = window.CustomerData.defaultAddress.province;
+        document.getElementById('zip').value = window.CustomerData.defaultAddress.zip;
+
+        const checkoutCartItems = document.getElementById('checkout-cart-items');
+        const checkoutTotal = document.getElementById('checkout-total');
+
+        if (cartItems.length > 0) {
+            let total = 0;
+
+            cartItems.forEach(item => {
+            const { product_title, quantity, final_line_price } = item;
+            const { type, description, cut_size, packing, color } = item.metafields || {};
+
+            total += final_line_price / 100;
+
+            const itemHtml = `
+                <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">${product_title}</div>
+                <div class="x-border-b-[1px]">
+                <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
+                    <div>Type: ${type || 'N/A'}</div>
+                    <div>Description: ${description || 'N/A'}</div>
+                    <div>Cut Size: ${cut_size || 'N/A'}</div>
+                    <div>Packing: ${packing || 'N/A'}</div>
+                    <div>Color: ${color || 'N/A'}</div>
+                    <div>Qty: ${quantity}</div>
+                    <div class="x-text-red-800 x-font-semibold">$${(final_line_price / 100).toFixed(2)}</div>
+                </div>
+                </div>
+            `;
+
+            checkoutCartItems.insertAdjacentHTML('beforeend', itemHtml);
+            });
+
+            checkoutTotal.innerText = `$${total.toFixed(2)}`;
+        } else {
+            checkoutCartItems.innerHTML = '<p>No items in the cart</p>';
+            checkoutTotal.innerText = '$0.00';
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const placeOrderButton = document.getElementById('place-order');
+    
+    placeOrderButton.addEventListener('click', function (event) {
+        saveToDraft(); // Call the saveToDraft function
+    });
+});
+
+async function saveToDraft() {
+    const customerId = window.CustomerData?.customerId;
+    const currentUserId = `gid://shopify/Customer/${customerId}`;
+    const shippingAddress = {
+        address1: document.getElementById("street_address").value,
+        address2: document.getElementById("company_name").value || "",
+        city: document.getElementById("town_city").value,
+        province: document.getElementById("state").value,
+        country: "United States", // Default to United States
+        zip: document.getElementById("zip").value,
+    };
+
+    if (!customerId) {
+        alert("Customer information is missing!");
+        return;
+    }
+
+    try {
+        const cartResponse = await fetch("/cart.js", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const cartState = await cartResponse.json();
+        const cartItems = cartState.items.map(item => ({
+            variantId: `gid://shopify/ProductVariant/${item.variant_id}`,
+            quantity: item.quantity,
+        }));
+
+        const mutation = `
+            mutation createDraftOrder($input: DraftOrderInput!) {
+                draftOrderCreate(input: $input) {
+                    draftOrder {
+                        id
+                        invoiceUrl
+                    }
+                    userErrors {
+                        field
+                        message
+                    }
+                }
+            }
+        `;
+
+        const variables = {
+            input: {
+                customerId: currentUserId,
+                lineItems: cartItems,
+                shippingAddress: shippingAddress,
+            },
+        };
+
+        const draftResponse = await fetch("https://eaa0-120-72-18-186.ngrok-free.app/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query: mutation, variables }),
+        });
+
+        const draftResult = await draftResponse.json();
+
+        if (draftResult.errors || draftResult.data?.draftOrderCreate?.userErrors?.length) {
+            const errorMessage = draftResult.data?.draftOrderCreate?.userErrors[0]?.message || "Failed to create draft order.";
+            console.error("Draft Order Errors:", errorMessage);
+            alert(errorMessage);
+            return;
+        }
+
+        const draftOrder = draftResult.data?.draftOrderCreate?.draftOrder;
+
+        if (draftOrder) {
+            console.log("Draft Order Created:", draftOrder);
+            await completeDraftOrder(draftOrder.id); // Ensure `await` is valid here
+        } else {
+            alert("Failed to create draft order.");
+        }
+    } catch (error) {
+        console.error("Error in saveToDraft:", error);
+        alert("An error occurred while saving to draft.");
+    }
+}
+
+async function completeDraftOrder(draftOrderId) {
+    const completeMutation = `
+        mutation completeDraftOrder($id: ID!) {
+            draftOrderComplete(id: $id) {
+                draftOrder {
+                    id
+                    status
+                }
+                userErrors {
+                    field
+                    message
+                }
+            }
+        }
+    `;
+
+    const variables = {
+        id: draftOrderId,
+    };
+
+    try {
+        const response = await fetch("https://eaa0-120-72-18-186.ngrok-free.app/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query: completeMutation, variables }),
+        });
+
+        const result = await response.json();
+
+        if (result.errors || result.data?.draftOrderComplete?.userErrors?.length) {
+            const errorMessage = result.data?.draftOrderComplete?.userErrors[0]?.message || "Failed to complete draft order.";
+            console.error("Draft Order Completion Errors:", errorMessage);
+            alert(errorMessage);
+            return;
+        }
+
+        const completedOrder = result.data?.draftOrderComplete?.draftOrder;
+
+        if (completedOrder) {
+            console.log("Draft Order Completed:", completedOrder);
+            window.location.href = "/pages/order-confirmation"; // Redirect to confirmation page
+        } else {
+            alert("Failed to complete the draft order.");
+        }
+    } catch (error) {
+        console.error("Error completing draft order:", error);
+        alert("An error occurred while completing the order.");
+    }
+}
+
+    
+</script>
+

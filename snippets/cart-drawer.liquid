@@ -526,10 +526,18 @@
                 >
                     Save to Draft
                 </button>
-                <a 
+                {% comment %} <a 
                     type="button" 
                     class="x-flex x-bg-black x-text-white x-border-white hover:x-border-black x-border-[1px] x-justify-center x-items-center x-w-full x-py-[10px] x-transition-colors x-duration-150"
                     href="{{ routes.cart_url }}"
+                    {% if cart==empty %} disabled {% endif %}
+                >
+                    View Cart
+                </a> {% endcomment %}
+                <a 
+                    type="button" 
+                    class="x-flex x-bg-black x-text-white x-border-white hover:x-border-black x-border-[1px] x-justify-center x-items-center x-w-full x-py-[10px] x-transition-colors x-duration-150"
+                    href="/pages/checkout"
                     {% if cart==empty %} disabled {% endif %}
                 >
                     View Cart
@@ -541,3 +549,15 @@
   </div>
 </cart-drawer>
 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Remove the need for sessionStorage by linking directly to the custom checkout
+    const viewCartLink = document.querySelector('[name="view-cart-link"]');
+    if (viewCartLink) {
+      const cartItems = {{ cart.items | json }};
+      const encodedCartItems = encodeURIComponent(JSON.stringify(cartItems));
+      viewCartLink.href = `/pages/checkout?cart_items=${encodedCartItems}`;
+    }
+  });
+</script>

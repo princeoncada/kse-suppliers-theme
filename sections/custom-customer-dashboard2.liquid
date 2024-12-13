@@ -239,7 +239,9 @@
            <!-- Add New Address Modal -->
         <div id="add-address-modal" class="x-hidden x-fixed x-inset-0 x-items-center x-justify-center x-bg-gray-900 x-bg-opacity-50">
                 <div class="x-bg-white x-p-[24px] x-rounded-md x-w-[400px] x-space-y-[16px]">
-                    <div class="x-text-[20px] x-font-semibold">Add New Address</div>
+                    <div id="modal-title" class="x-text-[20px] x-font-semibold">
+
+                    </div>
                     <form method="post" action="/account/addresses" id="add-new-address-form" class="x-space-y-[8px]">
                     <input type="hidden" name="form_type" value="new_address">
                     <input type="hidden" name="utf8" value="✓">
@@ -259,6 +261,31 @@
                         <button type="submit" class="x-bg-[#9e0b0f] x-text-white x-p-[8px] x-rounded-md">Save</button>
                     </div>
                 </form>
+                </div>
+            </div>
+            <!-- Edit Address Modal -->
+            <div id="edit-address-modal" class="x-hidden x-fixed x-inset-0 x-items-center x-justify-center x-bg-gray-900 x-bg-opacity-50">
+                <div class="x-bg-white x-p-[24px] x-rounded-md x-w-[400px] x-space-y-[16px]">
+                    <div id="modal-title" class="x-text-[20px] x-font-semibold">Edit Address</div>
+                    <form method="post" action="/account/addresses" id="edit-address-form" class="x-space-y-[8px]">
+                        <input type="hidden" name="form_type" value="edit_address">
+                        <input type="hidden" name="utf8" value="✓">
+                        <input type="hidden" name="return_to" value="/account?view=addresses">
+
+                        <input type="text" name="address[first_name]" id="edit-first-name" class="x-border x-w-full x-p-[8px]" placeholder="First Name" required>
+                        <input type="text" name="address[last_name]" id="edit-last-name" class="x-border x-w-full x-p-[8px]" placeholder="Last Name" required>
+                        <input type="text" name="address[company]" id="edit-company" class="x-border x-w-full x-p-[8px]" placeholder="Company (Optional)">
+                        <input type="text" name="address[address1]" id="edit-address1" class="x-border x-w-full x-p-[8px]" placeholder="Address Line 1" required>
+                        <input type="text" name="address[city]" id="edit-city" class="x-border x-w-full x-p-[8px]" placeholder="City" required>
+                        <input type="text" name="address[province]" id="edit-province" class="x-border x-w-full x-p-[8px]" placeholder="State/Province" required>
+                        <input type="text" name="address[zip]" id="edit-zip" class="x-border x-w-full x-p-[8px]" placeholder="Zip Code" required>
+                        <input type="text" name="address[country]" id="edit-country" class="x-border x-w-full x-p-[8px]" placeholder="Country" required>
+
+                        <div class="x-flex x-justify-end x-gap-[8px]">
+                            <button type="button" id="cancel-edit-address" class="x-border x-p-[8px] x-rounded-md">Cancel</button>
+                            <button type="submit" id="save-edit-address" class="x-bg-[#9e0b0f] x-text-white x-p-[8px] x-rounded-md">Save</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="account view x-hidden">
@@ -322,7 +349,7 @@
                                         <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
                                             &nbsp;
                                         </div>
-                                        <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute"></div>
+                                        <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
                                     </div>
                                 </button>
                                 <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
@@ -525,13 +552,74 @@
         loadShippingAddresses();
         initializeAddAddressFunctionality();
         populateDraftOrders();
+        const saveAddButton = document.getElementById('save-add-address');
+        const saveEditButton = document.getElementById('save-edit-address');
 
+        if (saveAddButton) {
+            saveAddButton.addEventListener('click', async function (event) {
+                event.preventDefault();
+                try {
+                    const form = document.getElementById('add-new-address-form');
+                    const formData = new FormData(form);
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    if (response.ok) {
+                        alert('Address added successfully!');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to add address.');
+                    }
+                } catch (error) {
+                    console.error('Error adding address:', error);
+                }
+            });
+        }
+
+        if (saveEditButton) {
+            saveEditButton.addEventListener('click', async function (event) {
+                event.preventDefault();
+
+                try {
+                    const editModal = document.getElementById('edit-address-modal');
+                    const addressId = editModal.getAttribute('data-edit-id');
+                    if (!addressId) {
+                        alert('Address ID is missing.');
+                        return;
+                    }
+
+                    // Get form data
+                    const form = document.getElementById('edit-address-form');
+                    const formData = new URLSearchParams(new FormData(form));
+                    formData.append('_method', 'put'); // Add method override
+
+                    // Send POST request with `_method=put`
+                    const response = await fetch(`/account/addresses/${addressId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        window.location.reload(); // Reload to see updates
+                    } else {
+                        const errorText = await response.text();
+                        console.error('Edit error:', errorText);
+                        alert('Failed to update address.');
+                    }
+                } catch (error) {
+                    console.error('Error editing address:', error);
+                    alert('An error occurred while editing the address.');
+                }
+            });
+        }
     });
 
     //DRAFT ORDERS TAB
     async function fetchData(query) {
         try {
-            const response = await fetch("https://ea8a-120-72-18-186.ngrok-free.app/graphql", {
+            const response = await fetch("https://eaa0-120-72-18-186.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -697,18 +785,6 @@
         }
     }
     
-    function toggleModalVisibility(modal, show) {
-        // Utility function to toggle modal visibility
-        if (show) {
-            modal.classList.remove('x-hidden');
-            modal.classList.add('x-flex');
-        } else {
-            modal.classList.remove('x-flex');
-            modal.classList.add('x-hidden');
-            modal.removeAttribute('data-edit-id'); // Clear edit mode data
-        }
-    }
-
     function initializeCollapses() {
         $('.collapse-trigger').click(function () {
             let collapseContent = $(this).closest('.collapsable').find('.collapse-content');
@@ -731,61 +807,96 @@
         });
     }
 
+    // ADDRESSES TAB     
+    function toggleModalVisibility(modal, show) {
+        if (!modal) {
+            console.error('Modal element not found');
+            return;
+        }
 
-    // ADDRESSES TAB                 
+        if (show) {
+            modal.classList.remove('x-hidden');
+            modal.classList.add('x-flex');
+        } else {
+            modal.classList.remove('x-flex');
+            modal.classList.add('x-hidden');
+            modal.removeAttribute('data-edit-id');
+        }
+    }
+
     function initializeAddAddressFunctionality() {
         const addAddressButton = document.getElementById('add-new-address');
         const addAddressModal = document.getElementById('add-address-modal');
-        const saveAddressButton = document.getElementById('save-add-address');
         const cancelAddAddressButton = document.getElementById('cancel-add-address');
-        const addressContainer = document.getElementById('shipping-addresses');
 
+        if (addAddressButton) {
+            addAddressButton.addEventListener('click', function () {
+                // Clear modal fields for new address
+                document.getElementById('new-first-name').value = '';
+                document.getElementById('new-last-name').value = '';
+                document.getElementById('new-company').value = '';
+                document.getElementById('new-address1').value = '';
+                document.getElementById('new-city').value = '';
+                document.getElementById('new-province').value = '';
+                document.getElementById('new-zip').value = '';
+                document.getElementById('new-country').value = '';
 
-        // Prefill modal fields with logged-in user's first and last name using Liquid variables
-        function prefillUserDetails() {
-            const firstName = '{{ customer.first_name | escape }}';
-            const lastName = '{{ customer.last_name | escape }}';
-
-            document.getElementById('new-first-name').value = firstName || '';
-            document.getElementById('new-last-name').value = lastName || '';
+                // Show the add address modal
+                toggleModalVisibility(addAddressModal, true);
+            });
         }
 
-        // Utility function to toggle modal visibility
-        function toggleModalVisibility(modal, show) {
-            if (show) {
-                modal.classList.remove('x-hidden');
-                modal.classList.add('x-flex');
-            } else {
-                modal.classList.remove('x-flex');
-                modal.classList.add('x-hidden');
-            }
+        if (cancelAddAddressButton) {
+            cancelAddAddressButton.addEventListener('click', function () {
+                toggleModalVisibility(addAddressModal, false);
+            });
+        }
+    }
+
+    function openEditAddressModal(address) {
+        const editAddressModal = document.getElementById('edit-address-modal');
+        if (!editAddressModal) {
+            console.error('Edit Address Modal element not found');
+            return;
         }
 
-        // Event listener for "Add New Address" button
-        addAddressButton.addEventListener('click', function () {
-            prefillUserDetails(); // Prefill user details before showing the modal
-            toggleModalVisibility(addAddressModal, true); // Show the modal
-        });
+        // Populate modal fields with address data
+        document.getElementById('edit-first-name').value = address.first_name || '';
+        document.getElementById('edit-last-name').value = address.last_name || '';
+        document.getElementById('edit-company').value = address.company || '';
+        document.getElementById('edit-address1').value = address.address1 || '';
+        document.getElementById('edit-city').value = address.city || '';
+        document.getElementById('edit-province').value = address.province || '';
+        document.getElementById('edit-zip').value = address.zip || '';
+        document.getElementById('edit-country').value = address.country || '';
 
-        // Event listener for "Cancel" button in the modal
-        cancelAddAddressButton.addEventListener('click', function () {
-            toggleModalVisibility(addAddressModal, false); // Hide the modal
-        });
+        // Set the address ID for editing
+        editAddressModal.setAttribute('data-edit-id', address.id);
+
+        // Show the edit address modal
+        toggleModalVisibility(editAddressModal, true);
+    }
+
+    function updateModalTitle(isEditMode) {
+        const modalTitle = document.getElementById('modal-title');
+        if (modalTitle) {
+            modalTitle.innerText = isEditMode ? 'Edit Address' : 'Add New Address';
+        } else {
+            console.warn('Modal title element not found');
+        }
     }
 
     function loadShippingAddresses() {
-        // Fetch addresses dynamically using Shopify Liquid or an API endpoint
-        const addresses = {{ customer.addresses | json }}; // This requires Liquid and will output addresses in JSON format
-
+        const addresses = {{ customer.addresses | json }}; // Populate using Shopify Liquid
         const addressContainer = document.getElementById('shipping-addresses');
-        addressContainer.innerHTML = ''; // Clear existing addresses
+        addressContainer.innerHTML = '';
 
         if (addresses.length === 0) {
             addressContainer.innerHTML = '<div>No addresses found. Please add a new address.</div>';
             return;
         }
 
-        addresses.forEach((address, index) => {
+        addresses.forEach((address) => {
             const addressHTML = `
                 <div class="x-space-y-[8px]">
                     <div class="x-border x-p-[16px]">
@@ -804,23 +915,21 @@
             addressContainer.insertAdjacentHTML('beforeend', addressHTML);
         });
 
-        // Attach event listeners for edit buttons
         const editButtons = document.querySelectorAll('.edit-address');
-        editButtons.forEach(button => {
+        editButtons.forEach((button) => {
             button.addEventListener('click', function () {
-                const addressId = this.getAttribute('data-id');
-                const address = addresses.find(addr => addr.id === addressId);
+                const addressId = parseInt(this.getAttribute('data-id'), 10);
+                const address = addresses.find((addr) => addr.id === addressId);
                 if (address) {
                     openEditAddressModal(address);
                 } else {
-                    console.error('Address not found for editing.');
+                    console.error(`Address with ID ${addressId} not found`);
                 }
             });
         });
 
-        // Attach event listeners for delete buttons
         const deleteButtons = document.querySelectorAll('.delete-address');
-        deleteButtons.forEach(button => {
+        deleteButtons.forEach((button) => {
             button.addEventListener('click', function () {
                 const addressId = this.getAttribute('data-id');
                 deleteAddress(addressId);
@@ -828,160 +937,29 @@
         });
     }
 
-    function openEditAddressModal(address) {
-        // Get modal elements
-        const modal = document.getElementById('add-address-modal');
-        if (!modal) {
-            console.error('Modal element not found');
-            return;
-        }
-
-        const firstNameInput = document.getElementById('new-first-name');
-        const lastNameInput = document.getElementById('new-last-name');
-        const companyInput = document.getElementById('new-company');
-        const address1Input = document.getElementById('new-address1');
-        const cityInput = document.getElementById('new-city');
-        const provinceInput = document.getElementById('new-province');
-        const zipInput = document.getElementById('new-zip');
-        const countryInput = document.getElementById('new-country');
-
-        if (
-            !firstNameInput ||
-            !lastNameInput ||
-            !companyInput ||
-            !address1Input ||
-            !cityInput ||
-            !provinceInput ||
-            !zipInput ||
-            !countryInput
-        ) {
-            console.error('One or more input elements not found in the modal');
-            return;
-        }
-
-        // Fill modal with address data
-        firstNameInput.value = address.first_name || '';
-        lastNameInput.value = address.last_name || '';
-        companyInput.value = address.company || '';
-        address1Input.value = address.address1 || '';
-        cityInput.value = address.city || '';
-        provinceInput.value = address.province || '';
-        zipInput.value = address.zip || '';
-        countryInput.value = address.country || '';
-
-        // Store the current address ID in the modal for reference
-        modal.setAttribute('data-edit-id', address.id);
-
-        // Show the modal
-        toggleModalVisibility(modal, true);
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const saveButton = document.getElementById('save-add-address');
-        if (saveButton) {
-            saveButton.addEventListener('click', async function () {
-                const modal = document.getElementById('add-address-modal');
-                const addressId = modal.getAttribute('data-edit-id');
-
-                const newAddress = {
-                    first_name: document.getElementById('new-first-name').value.trim(),
-                    last_name: document.getElementById('new-last-name').value.trim(),
-                    company: document.getElementById('new-company').value.trim(),
-                    address1: document.getElementById('new-address1').value.trim(),
-                    city: document.getElementById('new-city').value.trim(),
-                    province: document.getElementById('new-province').value.trim(),
-                    zip: document.getElementById('new-zip').value.trim(),
-                    country: document.getElementById('new-country').value.trim(),
-                };
-
-                // Validate required fields
-                if (!newAddress.address1 || !newAddress.city || !newAddress.province || !newAddress.zip || !newAddress.country) {
-                    alert('Please fill out all required fields.');
-                    return;
-                }
-
-                try {
-                    let response;
-                    if (addressId) {
-                        // Update existing address (Edit mode)
-                        response = await fetch(`/account/addresses/${addressId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: new URLSearchParams({
-                                ...newAddress,
-                                _method: 'put'
-                            })
-                        });
-                    } else {
-                        // Add new address (Add mode)
-                        response = await fetch('/account/addresses', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: new URLSearchParams({
-                                form_type: 'new_address',
-                                utf8: '✓',
-                                ...newAddress
-                            })
-                        });
-                    }
-
-                    if (response.ok) {
-                        // If successful, refresh or redirect to the desired view
-                        window.location.href = '/account?view=addresses';
-                    } else {
-                        alert('Failed to save the address. Please try again.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while saving the address.');
-                }
-            });
-        }
-
-        // Attach event listener for cancel button
-        const cancelButton = document.getElementById('cancel-add-address');
-            if (cancelButton) {
-                cancelButton.addEventListener('click', function () {
-                    toggleModalVisibility(document.getElementById('add-address-modal'), false);
-                });
-            }
-    });
-
-    // Existing Delete Address Function
     async function deleteAddress(addressId) {
-        // Confirmation prompt
-        if (!confirm('Are you sure you want to delete this address?')) {
-            return;
-        }
+        if (!confirm('Are you sure you want to delete this address?')) return;
 
         try {
-            // Use the fetch API to send a DELETE request
             const response = await fetch(`/account/addresses/${addressId}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    _method: 'delete'
-                })
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ _method: 'delete' }),
             });
 
             if (response.ok) {
-                // If the delete request is successful, redirect to your desired URL
-                window.location.href = '/account?view=addresses';
+                alert('Address deleted successfully!');
+                window.location.reload();
             } else {
-                alert('Failed to delete the address. Please try again.');
+                alert('Failed to delete address.');
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while deleting the address.');
+            console.error('Error deleting address:', error);
         }
     }
 
+
+    // ORDERS TAB                
     function initializeOrdersView() {
         const urlParams = new URLSearchParams(window.location.search);
         const initialView = urlParams.get('sub-view') || 'company-orders';

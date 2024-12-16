@@ -44,33 +44,33 @@
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="company_name" class="x-text-[14px]">Company Name</label>
                                 <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="company_name" id="company_name"
-                                    placeholder="Company Name">
+                                    placeholder="Company Name" readonly>
                             </div>
                         </div>
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="street_address" class="x-text-[14px]">Street Address</label>
                                 <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="street_address" id="street_address"
-                                    placeholder="Street Address">
+                                    placeholder="Street Address" readonly>
                             </div>
                         </div>
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="town_city" class="x-text-[14px]">Town/City</label>
                                 <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="town_city" id="town_city"
-                                    placeholder="Town/City">
+                                    placeholder="Town/City" readonly>
                             </div>
                         </div>
                         <div class="x-flex x-flex-row x-gap-4">
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="state" class="x-text-[14px]">State</label>
                                 <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state" id="state"
-                                    placeholder="State">
+                                    placeholder="State" readonly>
                             </div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="zip" class="x-text-[14px]">ZIP Code</label>
                                 <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip" id="zip"
-                                    placeholder="Zip Code">
+                                    placeholder="Zip Code" readonly>
                             </div>
                         </div>
                         <div class="x-py-[12px]">
@@ -257,13 +257,9 @@
     window.cartItems = {{ cart.items | json }}; // Make cart items globally accessible
 
     window.CustomerData = {
-        customerId: "{{ customer.id }}",
-        email: "{{ customer.email }}",
-        firstName: "{{ customer.first_name }}",
-        lastName: "{{ customer.last_name }}",
         defaultAddress: {
-            address2: "{{ customer.default_address.address1 }}",
-            company_name: "{{ customer.default_address.company }}",
+            address2: "{{ customer.addresses[0].address1 }}",
+            company_name: "{{ customer.addresses[3].company }}",
             city: "{{ customer.default_address.city }}",
             province: "{{ customer.default_address.province }}",
             country: "{{ customer.default_address.country }}",

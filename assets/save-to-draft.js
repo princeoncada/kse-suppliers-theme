@@ -200,8 +200,7 @@ function saveToDraft() {
             // Validate the returned draft order ID
             const draftOrderId = response?.data?.createDraftOrder?.id;
             if (draftOrderId) {
-                console.log("Draft Order Created ID:", draftOrderId);
-                // Redirect to order-confirmation page with the draftOrderId
+                clearCart();
                 window.location.href = `/pages/order-confirmation?draftOrderId=${encodeURIComponent(draftOrderId)}`;
             } else {
                 console.error("Failed to get Draft Order ID:", response.errors || response);

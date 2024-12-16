@@ -1,12 +1,16 @@
-<section>
-    {% if customer %}
-        logged in
-    {% else %}
-        not logged in
-    {% endif %}
+<section class="order-confirmation-section">
     <div class="x-max-w-[1440px] x-mx-auto x-p-[16px] md:x-p-[30px]">
         <div class="x-bg-[#FFF6E6] x-flex x-flex-col x-gap-[48px] x-items-center x-justify-center x-text-center x-py-[64px] md:x-py-[80px] lg:x-py-[128px] x-px-[12px] x-text-[16px]">
-            <div class="x-flex x-flex-col x-gap-[32px]">
+            <!-- Spinner Container -->
+            <div id="spinner-container">
+                <div class="loading-spinner">
+                    <div class="spinner">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Confirmation Content -->
+            <div id="confirmation-content" style="display: none;">
                 <div><i class='bx bx-check-circle x-text-[#9E0B0F] x-text-[96px]'></i></div>
                 <div class="x-text-[32px] md:x-text-[36px]">ORDER CONFIRMED!</div>
                 <div>
@@ -14,15 +18,47 @@
                     We have sent you a confirmation email.
                 </div>
                 <div class="x-font-semibold">
-                    Your order number is: <span class="x-text-[#9E0B0F]">123456789</span>
+                    Your order number is: <span id="order-number" class="x-text-[#9E0B0F]"></span>
                 </div>
             </div>
-            <a class="x-bg-[#9E0B0F] x-text-white x-text-[14px] md:x-text-[16px] x-p-[12px] md:x-p-[14px] x-px-[16px] md:x-px-[20px] x-uppercase" href="{{ routes.all_products_collection_url }}">
+
+            <!-- Failure Content -->
+            <div id="failure-content" style="display: none;">
+                <div><i class='bx bx-error-circle x-text-[#951828] x-text-[96px]'></i></div>
+                <div class="x-text-[32px] md:x-text-[36px]">ORDER FAILED!</div>
+                <div>
+                    Something went wrong while processing your order. Please try again or view your drafts.
+                </div>
+            </div>
+
+            <!-- Button -->
+            <a id="action-button" style="display: none;" class="x-bg-[#9E0B0F] x-text-white x-text-[14px] md:x-text-[16px] x-p-[12px] md:x-p-[14px] x-px-[16px] md:x-px-[20px] x-uppercase">
                 Browse more products
             </a>
         </div>
     </div>
 </section>
+
+<style>
+    .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ddd;
+        border-top: 4px solid #951828;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -31,14 +67,15 @@
 
         if (draftOrderId) {
             console.log("Completing Draft Order:", draftOrderId);
+
             const completeMutation = `
-                mutation completeDraftOrder($id: ID!, $shippingAddress: ShippingAddressInput!) {
+                mutation completeDraftOrder($id: String!, $shippingAddress: ShippingAddressInput!) {
                     completeDraftOrder(id: $id, shippingAddress: $shippingAddress)
                 }
             `;
 
             const variables = {
-                id: draftOrderId, // Pass only the draft order ID (not the gid:// prefix)
+                id: draftOrderId,
                 shippingAddress: {
                     address1: "123 Test St",
                     city: "Test City",
@@ -48,6 +85,11 @@
                 }
             };
 
+            const spinnerContainer = document.getElementById('spinner-container');
+            const confirmationContent = document.getElementById('confirmation-content');
+            const failureContent = document.getElementById('failure-content');
+            const actionButton = document.getElementById('action-button');
+
             $.ajax({
                 url: 'https://c1ff-120-72-18-186.ngrok-free.app/graphql',
                 method: 'POST',
@@ -55,15 +97,37 @@
                 data: JSON.stringify({ query: completeMutation, variables }),
             }).done(function (response) {
                 console.log('Complete Draft Order Response:', response);
+
                 if (response.data?.completeDraftOrder) {
                     console.log("Draft Order Completed Successfully.");
-                    window.location.href = '/pages/order-confirmation';
+
+                    // Hide spinner and show confirmation content
+                    spinnerContainer.style.display = 'none';
+                    confirmationContent.style.display = 'block';
+                    actionButton.style.display = 'inline-block';
+                    actionButton.href = "{{ routes.all_products_collection_url }}";
+                    actionButton.textContent = "Browse more products";
+
+                    // Update the order number
+                    const cleanOrderId = draftOrderId.split('/').pop();
+                    document.querySelector('#order-number').textContent = cleanOrderId;
+
                 } else {
-                    console.error("Error completing draft order:", response.errors || response);
+                    throw new Error("Failed to complete draft order.");
                 }
             }).fail(function (error) {
                 console.error('Error completing draft order:', error);
+
+                // On failure, show failure content
+                spinnerContainer.style.display = 'none';
+                failureContent.style.display = 'block';
+                actionButton.style.display = 'inline-block';
+                actionButton.href = "/account?view=drafts";
+                actionButton.textContent = "View Draft Orders";
             });
+        } else {
+            console.error('No draftOrderId found in URL parameters.');
+            alert('No draft order ID provided. Please try again.');
         }
     });
 </script>

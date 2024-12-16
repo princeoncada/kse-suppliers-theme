@@ -549,15 +549,3 @@
   </div>
 </cart-drawer>
 
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Remove the need for sessionStorage by linking directly to the custom checkout
-    const viewCartLink = document.querySelector('[name="view-cart-link"]');
-    if (viewCartLink) {
-      const cartItems = {{ cart.items | json }};
-      const encodedCartItems = encodeURIComponent(JSON.stringify(cartItems));
-      viewCartLink.href = `/pages/checkout?cart_items=${encodedCartItems}`;
-    }
-  });
-</script>

@@ -1,4 +1,9 @@
 <section>
+    {% if customer %}
+        logged in
+    {% else %}
+        not logged in
+    {% endif %}
     <div class="x-max-w-[1440px] x-mx-auto x-p-[16px] md:x-p-[30px]">
         <div class="x-bg-[#FFF6E6] x-flex x-flex-col x-gap-[48px] x-items-center x-justify-center x-text-center x-py-[64px] md:x-py-[80px] lg:x-py-[128px] x-px-[12px] x-text-[16px]">
             <div class="x-flex x-flex-col x-gap-[32px]">
@@ -18,3 +23,47 @@
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+        const draftOrderId = params.get('draftOrderId');
+
+        if (draftOrderId) {
+            console.log("Completing Draft Order:", draftOrderId);
+            const completeMutation = `
+                mutation completeDraftOrder($id: ID!, $shippingAddress: ShippingAddressInput!) {
+                    completeDraftOrder(id: $id, shippingAddress: $shippingAddress)
+                }
+            `;
+
+            const variables = {
+                id: draftOrderId, // Pass only the draft order ID (not the gid:// prefix)
+                shippingAddress: {
+                    address1: "123 Test St",
+                    city: "Test City",
+                    province: "Florida",
+                    country: "United States",
+                    zip: "32003"
+                }
+            };
+
+            $.ajax({
+                url: 'https://c1ff-120-72-18-186.ngrok-free.app/graphql',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ query: completeMutation, variables }),
+            }).done(function (response) {
+                console.log('Complete Draft Order Response:', response);
+                if (response.data?.completeDraftOrder) {
+                    console.log("Draft Order Completed Successfully.");
+                    window.location.href = '/pages/order-confirmation';
+                } else {
+                    console.error("Error completing draft order:", response.errors || response);
+                }
+            }).fail(function (error) {
+                console.error('Error completing draft order:', error);
+            });
+        }
+    });
+</script>

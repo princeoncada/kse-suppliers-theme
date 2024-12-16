@@ -146,21 +146,33 @@ function saveToDraft() {
     $.ajax({
         url: '/cart.js',
         method: 'GET',
-        contentType: 'application/json'
+        dataType: 'json',
+        contentType: 'application/json',
     }).done(function (state) {
-        // Handle success
-        let stateObj = JSON.parse(state);
-        const cartItems = stateObj.items.map(item => ({
+        console.log("State from /cart.js:", state);
+
+        // Ensure 'items' exists and is an array
+        if (!state.items || !Array.isArray(state.items)) {
+            console.error("Error: 'items' property is missing or invalid.");
+            return;
+        }
+
+        // Map cart items
+        const cartItems = state.items.map(item => ({
             variantId: item.variant_id,
-            quantity: item.quantity
+            quantity: item.quantity,
         }));
 
-        // Create the GraphQL mutation string with customer's default shipping address
+        console.log("Mapped Cart Items:", cartItems);
+
+        // Create the GraphQL mutation
         const mutation = `
             mutation {
                 createDraftOrder(
                     customerId: "${currentUserId}",
-                    lineItems: [${cartItems.map(item => `{ variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }`).join(',')}],
+                    lineItems: [${cartItems.map(item => `
+                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }
+                    `).join(',')}],
                     shippingAddress: {
                         address1: "${customerAddress.address1}",
                         city: "${customerAddress.city}",
@@ -174,27 +186,36 @@ function saveToDraft() {
             }
         `;
 
-        // Send the draft order request
+        console.log("Mutation Payload:", mutation);
+
+        // Send the mutation to create the draft order
         $.ajax({
-            url: 'https://eaa0-120-72-18-186.ngrok-free.app/graphql',
+            url: 'https://c1ff-120-72-18-186.ngrok-free.app/graphql',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ query: mutation })
+            data: JSON.stringify({ query: mutation }),
         }).done(function (response) {
-            // Handle success
             console.log('Draft Order Response:', response);
-            clearCart();
-        }).fail(function (error) {
-            // Handle error
-            console.error('Error creating draft order:', error);
-            draftSavedFeedback(false);
-        });
 
+            // Validate the returned draft order ID
+            const draftOrderId = response?.data?.createDraftOrder?.id;
+            if (draftOrderId) {
+                console.log("Draft Order Created ID:", draftOrderId);
+                // Redirect to order-confirmation page with the draftOrderId
+                window.location.href = `/pages/order-confirmation?draftOrderId=${encodeURIComponent(draftOrderId)}`;
+            } else {
+                console.error("Failed to get Draft Order ID:", response.errors || response);
+            }
+        }).fail(function (error) {
+            console.error('Error creating draft order:', error);
+        });
     }).fail(function (error) {
-        // Handle error
         console.error('Error fetching cart items:', error);
     });
 }
+
+
+
 
 function clearCart() {
     let cart = $('cart-notification').length ? $('cart-notification') : $('cart-drawer');

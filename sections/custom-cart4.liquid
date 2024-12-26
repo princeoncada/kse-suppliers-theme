@@ -248,19 +248,14 @@
                                 <tbody>
                                     <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
                                         <td class="x-p-[8px] x-py-[16px] item-code">
-                                            &nbsp;
                                         </td>
                                         <td class="x-p-[8px] x-py-[16px] item-desc">
-                                            &nbsp;
                                         </td>
                                         <td class="x-p-[8px] x-py-[16px] item-cut-size">
-                                            &nbsp;
                                         </td>
                                         <td class="x-p-[8px] x-py-[16px] item-packing">
-                                            &nbsp;
                                         </td>
                                         <td class="x-p-[8px] x-py-[16px] item-color">
-                                            &nbsp;
                                         </td>
                                         <td class="x-p-[8px] x-py-[4px]">
                                             <div class="x-flex x-gap-[4px] x-items-center md:x-w-full lg:x-pr-[48px]">
@@ -332,15 +327,16 @@ $(document).ready(function () {
 
             // Create a header for the product group
             const groupHeader = `
-                <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
-                    <div class="title x-text-[18px] md:x-text-[24px] lg:x-text-[32px] md:x-leading-[32px]">${group.productType === "Default" ? group.productTitle : group.productType}</div>
-                    <div class="x-flex x-items-end">
-                        <button class="x-rounded-md x-text-[#444446] x-text-[18px] x-flex x-items-center x-p-[4px] remove-group" data-product-title="${group.productTitle}" data-product-type="${group.productType}">
-                            <i class='bx bx-x'></i>
-                        </button>
+                <div class="x-flex x-items-center x-justify-between x-text-[#9E0B0F] x-border-b-[1px] x-border-gray-300 x-py-[4px] md:x-py-[12px]">
+                    <div class="title x-text-[18px] md:x-text-[24px] lg:x-text-[32px] md:x-leading-[32px]">
+                        ${group.productType === "Default" ? group.productTitle : group.productType}
                     </div>
+                    <button class="x-rounded-md x-text-[#444446] x-text-[18px] x-flex x-items-center x-p-[4px] remove-group" data-product-title="${group.productTitle}" data-product-type="${group.productType}">
+                        <i class='bx bx-x'></i>
+                    </button>
                 </div>
             `;
+
 
             // Mobile view container
             const mobileContainer = $("<div>").addClass("x-flex x-flex-col md:x-hidden");
@@ -445,6 +441,7 @@ $(document).ready(function () {
 
         savedSection.removeClass("x-hidden"); // Show the section if items exist
     }
+    
     function updateCartTotal() {
         $.ajax({
             url: '/cart.js',
@@ -605,6 +602,7 @@ $(document).ready(function () {
         removeItemsFromCart(productTitle, productType);
     });
 
+    
 
     // Load saved items on page load
     loadSavedForLater();

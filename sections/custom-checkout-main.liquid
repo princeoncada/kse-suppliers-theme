@@ -6,25 +6,27 @@
                 <div class="x-flex x-flex-col x-gap-[16px]">
                     <div class="x-text-[24px]">Contact Info</div>
                     <div class="x-flex x-flex-col x-gap-[12px]">
+                        {% if customer %}
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px]">
                                 <label for="email" class="x-text-[14px]">Email Address</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="email" name="email"
-                                    placeholder="Email Address">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="email" name="email" id="email" 
+                                value="{{ customer.email }}" readonly>
                             </div>
                         </div>
                         <div class="x-flex x-flex-row x-gap-4">
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="first_name" class="x-text-[14px]">First Name</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="first_name"
-                                    placeholder="First Name">
-                            </div>
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="first_name" id="first_name"
+                                value="{{ customer.first_name }}" readonly>
+                            </div>           
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="last_name" class="x-text-[14px]">Last Name</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="last_name"
-                                    placeholder="Last Name">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="last_name"  id="last_name"
+                                value="{{ customer.last_name }}" readonly> 
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="x-flex x-flex-col x-gap-[16px]">
@@ -41,37 +43,37 @@
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="company_name" class="x-text-[14px]">Company Name</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="company_name"
-                                    placeholder="Company Name">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="company_name" id="company_name"
+                                    placeholder="Company Name" readonly>
                             </div>
                         </div>
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="street_address" class="x-text-[14px]">Street Address</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="street_address"
-                                    placeholder="Street Address">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="street_address" id="street_address"
+                                    placeholder="Street Address" readonly>
                             </div>
                         </div>
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="town_city" class="x-text-[14px]">Town/City</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="town_city"
-                                    placeholder="Town/City">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="town_city" id="town_city"
+                                    placeholder="Town/City" readonly>
                             </div>
                         </div>
                         <div class="x-flex x-flex-row x-gap-4">
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="state" class="x-text-[14px]">State</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state"
-                                    placeholder="State">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state" id="state"
+                                    placeholder="State" readonly>
                             </div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="zip" class="x-text-[14px]">ZIP Code</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip"
-                                    placeholder="Zip Code">
+                                <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip" id="zip"
+                                    placeholder="Zip Code" readonly>
                             </div>
                         </div>
-                        <div class="x-py-[12px]">
+                        {% comment %} <div class="x-py-[12px]">
                             <div class="x-flex x-flex-row x-gap-[8px] x-items-center">
                                 <input class="x-min-w-[16px] x-min-h-[16px]" type="checkbox" name="save_address" id="">
                                 <div>Save address for later</div>
@@ -82,7 +84,7 @@
                                 <i class='bx bx-plus x-leading-[0px] x-text-[20px]'></i>
                                 <div>Add Shipping Address</div>
                             </button>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
                 <div class="x-flex x-flex-col x-gap-[16px]">
@@ -97,7 +99,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="x-flex x-flex-col x-gap-[16px]">
+                {% comment %} <div class="x-flex x-flex-col x-gap-[16px]">
                     <div class="x-text-[24px]">Recurring Order</div>
                     <div class="x-flex x-flex-col x-gap-[12px]">
                         <div>
@@ -125,7 +127,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <div class="x-flex x-flex-col x-gap-[16px]">
                     <div class="x-text-[24px]">Special Notes / Instruction</div>
                     <div>
@@ -139,13 +141,13 @@
                     </div>
                 </div>
                 <div>
-                    <button class="x-flex x-justify-center x-rounded-sm x-py-[8px] x-bg-red-800 x-text-white x-w-full hover:x-bg-red-950 x-transition-colors x-duration-300">
+                    <a class="x-flex x-justify-center x-rounded-sm x-py-[8px] x-bg-red-800 x-text-white x-w-full hover:x-bg-red-950 x-transition-colors x-duration-300" id="place-order">
                         Place Order
-                    </button>
+                    </a>
                 </div>
             </div>
 
-            <div class="lg:x-w-[50%] x-relative">
+            {% comment %} <div class="lg:x-w-[50%] x-relative">
                 <div class="md:x-sticky md:x-top-[48px] x-border x-flex x-flex-col x-gap-[12px] x-p-[16px] x-bg-[#F9F9F8]">
                     <div class="x-text-[14px] x-bg-white x-p-[12px]">
                         <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">Fitted Sheets</div>
@@ -212,11 +214,305 @@
                     <div
                         class="x-flex x-flex-row x-justify-between x-items-center x-font-semibold x-text-[#A73E4C] x-border-[#A73E4C] x-border-[1px] x-p-[12px] x-bg-[#F5DFE2]">
                         <div>TOTAL</div>
-                        <div class="x-text-[16px]">$443.88</div>
+                        <div class="x-text-[16px]">$448</div>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+
+            <div class="lg:x-w-[50%] x-relative">
+                <div class="md:x-sticky md:x-top-[48px] x-border x-flex x-flex-col x-gap-[12px] x-p-[16px] x-bg-[#F9F9F8]">
+                    <div id="checkout-cart-items" class="x-text-[14px] x-bg-white x-p-[12px]"></div>
+                    {% comment %} <div
+                        class="x-border-[1px] x-border-[#F0EFEF] x-flex x-flex-row x-items-center x-gap-[8px] x-p-[12px] x-bg-[#F0EFEF]">
+                        <i class='bx bxs-calendar x-leading-[0px] x-text-[18px]'></i>
+                        <div>Placing an Order?</div>
+                        <div class="x-text-red-800 x-underline x-underline-offset-[2px]">Select Date and Time</div>
+                    </div> {% endcomment %}
+                    <div id="shipping-options" 
+                        class="x-flex x-flex-col x-gap-[8px] x-border-[#F2B142] x-border-[1px] x-p-[12px] x-bg-[#FFF6E6]">
+                        <div class="x-flex x-flex-row x-items-center x-gap-[8px]">
+                            <input id="auto-shipping-quote" class="x-min-w-[16px] x-min-h-[16px]" type="radio" name="shipping_quote" value="true"
+                                checked>
+                            <div>Shipping cost will be added to order invoice</div>
+                        </div>
+                        <div class="x-flex x-flex-row x-items-center x-gap-[8px]">
+                            <input id="submit-shipping-quote" class="x-min-w-[16px] x-min-h-[16px]" type="radio" name="shipping_quote"
+                                value="false">
+                            <div 
+                                class="x-flex x-items-center x-gap-[4px] cursor-pointer"
+                            >
+                                Submit for shipping quote 
+                                <i class='bx bxs-info-circle x-leading-[0px] x-text-[#F2AD36]'></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="x-flex x-flex-row x-justify-between x-items-center x-font-semibold x-text-[#A73E4C] x-border-[#A73E4C] x-border-[1px] x-p-[12px] x-bg-[#F5DFE2]">
+                        <div>TOTAL</div>
+                        <div id="checkout-total" class="x-text-[16px]"></div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
+
+<script>
+    window.CustomerData = {
+        defaultAddress: {
+            address2: "{{ customer.addresses[0].address1 }}",
+            company_name: "{{ customer.addresses[3].company }}",
+            city: "{{ customer.default_address.city }}",
+            province: "{{ customer.default_address.province }}",
+            country: "{{ customer.default_address.country }}",
+            zip: "{{ customer.default_address.zip }}"
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const placeOrderButton = document.getElementById('place-order');
+
+    document.querySelectorAll('input[name="shipping_quote"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            placeOrderButton.textContent = this.value === 'false' ? 'Request Shipping' : 'Place Order';
+        });
+    });
+});
+
+
+
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        const params = new URLSearchParams(window.location.search);
+        const draftOrderId = params.get('draftOrderId');
+        const shippingCostParam = params.get('shippingCost');
+
+        if (!draftOrderId) {
+            console.error('No draftOrderId found in URL parameters.');
+            alert('Invalid draft order. Please try again.');
+            return;
+        }
+
+        console.log('Fetching Draft Order:', draftOrderId);
+
+        /**
+         * Fetch Draft Order from Backend
+         */
+        async function fetchDraftOrder(id) {
+            const formattedId = id.startsWith('gid://shopify/DraftOrder/')
+                ? id
+                : `gid://shopify/DraftOrder/${id}`;
+
+            try {
+                const response = await fetch('https://38df-158-62-79-92.ngrok-free.app/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        query: `
+                            query getDraftOrder($id: String!) {
+                                getDraftOrder(id: $id) {
+                                    id
+                                    shippingAddress {
+                                        address1
+                                        city
+                                        province
+                                        country
+                                        zip
+                                    }
+                                    lineItems {
+                                        title
+                                        quantity
+                                        variantTitle
+                                        variant {
+                                            price
+                                            metafields {
+                                                key
+                                                value
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        `,
+                        variables: { id: formattedId },
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (result.errors) {
+                    console.error('GraphQL Errors:', result.errors);
+                    return null;
+                }
+
+                const draftOrder = result.data?.getDraftOrder;
+
+                console.log('Draft Order:', draftOrder);
+
+                if (!draftOrder) {
+                    console.warn('No draft order found with the given ID.');
+                    return null;
+                }
+
+                return {
+                    id: draftOrder.id,
+                    shippingAddress: draftOrder.shippingAddress,
+                    lineItems: draftOrder.lineItems.map((item) => ({
+                        title: item.title,
+                        quantity: item.quantity,
+                        variantTitle: item.variantTitle,
+                        variant: {
+                            price: item.variant?.price,
+                            metafields: item.variant?.metafields || [],
+                        },
+                    })),
+                };
+            } catch (error) {
+                console.error('Error fetching draft order:', error);
+                throw new Error('Failed to fetch draft order.');
+            }
+        }
+
+
+
+
+        async function checkForShippingFee(draftOrderId) {
+            const query = `
+                query {
+                    checkForShippingFee(draftOrderId: "${draftOrderId}")
+                }
+            `;
+
+            try {
+                const response = await fetch("https://38df-158-62-79-92.ngrok-free.app/graphql", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ query }),
+                });
+
+                const result = await response.json();
+                return result.data?.checkForShippingFee || "$0";
+            } catch (error) {
+                console.error("Error checking for shipping fee:", error);
+                return "$0";
+            }
+        }
+
+        /**
+         * Render Draft Order to Checkout
+         */
+        async function renderDraftOrder() {
+            const draftOrder = await fetchDraftOrder(draftOrderId);
+            const checkoutCartItems = document.getElementById('checkout-cart-items');
+            const checkoutTotal = document.getElementById('checkout-total');
+            const shippingOptions = document.getElementById('shipping-options');
+
+            if (draftOrder && draftOrder.lineItems) {
+                console.log('Draft Order Details:', draftOrder);
+                checkoutCartItems.innerHTML = ''; // Clear existing content
+                let total = 0;
+
+                draftOrder.lineItems.forEach((item) => {
+                    const { title, quantity, variant, variantTitle } = item;
+                    const price = parseFloat(variant?.price) || 0; // Ensure price is parsed as a float
+                    const metafields = variant?.metafields.reduce((fields, mf) => {
+                        fields[mf.key] = mf.value;
+                        return fields;
+                    }, {}) || {};
+
+                    total += price * quantity;
+
+                    const itemHtml = `
+                        <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">${item.title} </div>
+                        <div class="x-border-b-[1px]">
+                            <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
+                                <div>Code:${variantTitle || 'N/A'}</div>
+                                <div>Size: ${metafields.cut_size || 'N/A'}</div>
+                                <div>Qty: ${quantity}</div>
+                                <div>Color: ${metafields.color || 'N/A'}</div>
+                                <div>Packing: ${metafields.packing || 'N/A'}</div>
+                                <div class="x-text-red-800 x-font-semibold">$${(price * quantity).toFixed(2)}</div>
+                            </div>
+                        </div>
+                    `;
+                    checkoutCartItems.insertAdjacentHTML('beforeend', itemHtml);
+                });
+
+                // Fetch shipping cost dynamically
+                const rawShippingFee = await checkForShippingFee(draftOrderId);
+                const shippingCost = parseFloat(rawShippingFee.replace('$', '')) || 0;
+                const totalWithShipping = total + shippingCost;
+
+                // Update the total price
+                checkoutTotal.innerHTML = `
+                    <div class="x-flex x-flex-col">
+                        ${shippingCost > 0 ? `
+                            <div class="x-flex x-justify-between">
+                                <span>Shipping:</span>
+                                <span>$${shippingCost.toFixed(2)}</span>
+                            </div>
+                            <div class="x-flex x-justify-between x-font-bold">
+                                <span>Total + Shipping:</span>
+                                <span>$${totalWithShipping.toFixed(2)}</span>
+                            </div>
+                        ` : `
+                            <div class="x-flex x-justify-between x-font-bold">
+                                <span>Total:</span>
+                                <span>$${total.toFixed(2)}</span>
+                            </div>
+                        `}
+                    </div>
+                `;
+
+                // Hide radio buttons if shipping cost exists
+                if (shippingCost > 0) {
+                    shippingOptions.classList.add('x-hidden');
+                }
+            } else {
+                console.warn('No line items found in the draft order.');
+                checkoutCartItems.innerHTML = '<p>No items in the order.</p>';
+                checkoutTotal.textContent = '$0.00';
+            }
+        }
+
+
+
+        /**
+         * Populate Shipping Address
+         */
+        const customerAddress = window.CustomerData?.defaultAddress || {};
+        document.getElementById('company_name').value = customerAddress.company_name || '';
+        document.getElementById('street_address').value = customerAddress.address2 || '';
+        document.getElementById('town_city').value = customerAddress.city || '';
+        document.getElementById('state').value = customerAddress.province || '';
+        document.getElementById('zip').value = customerAddress.zip || '';
+
+        // Fetch and render draft order
+        await renderDraftOrder();
+
+        /**
+         * Place Order Button Logic
+         */
+        document.getElementById('place-order').addEventListener('click', function () {
+            const params = new URLSearchParams(window.location.search);
+            const draftOrderId = params.get('draftOrderId');
+            const placeOrderButton = document.getElementById('place-order');
+
+            if (draftOrderId) {
+                let href = `/pages/order-confirmation?draftOrderId=${draftOrderId}`;
+
+                // Check if "Request Shipping" is the button's text content
+                if (placeOrderButton.textContent === 'Request Shipping') {
+                    href += '&requestedShipping=true';
+                }
+
+                window.location.href = href;
+            } else {
+                console.error('No draftOrderId found.');
+                alert('Failed to place the order. Please try again.');
+            }
+        });
+    });
+</script>

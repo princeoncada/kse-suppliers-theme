@@ -25,8 +25,9 @@
                     </div>
                 </div>
             </div>            
+
             <div class="orders view x-hidden">
-                <div class="x-flex x-flex-col x-gap-[16px]">
+                <div class="main x-flex x-flex-col x-gap-[16px]">
                     <div class="x-flex x-justify-between md:x-justify-start md:x-gap-[24px]">
                         <button class="company-orders sub-view-button x-text-[16px] md:x-text-[20px]">Company Orders</button>
                         <button class="my-orders sub-view-button x-text-[16px] md:x-text-[20px]">My Orders</button>
@@ -64,9 +65,7 @@
                                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$110.00 for 3 items</td>
                                             <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
                                                 <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
-                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
-                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
-                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                    <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="20156">VIEW</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -83,9 +82,7 @@
                                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$110.00 for 3 items</td>
                                             <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
                                                 <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
-                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
-                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
-                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                    <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="20156">VIEW</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -126,9 +123,7 @@
                                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$36.50 for 3 items</td>
                                             <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
                                                 <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
-                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
-                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
-                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                    <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="20156">VIEW</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -145,9 +140,7 @@
                                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$36.50 for 3 items</td>
                                             <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
                                                 <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
-                                                    <button class="x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full">VIEW</button>
-                                                    <button class="x-bg-yellow-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">REORDER</button>
-                                                    <button class="x-bg-gray-500 x-text-white x-py-1 x-px-3 x-rounded x-w-full">TRACK</button>
+                                                    <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="20156">VIEW</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -222,13 +215,343 @@
                         </div> {% endcomment %}
                     </div>
                 </div>
+                <div class="order-view x-hidden">
+                    <button class="order-back-btn x-underline x-text-[20px] x-underline-offset-4 x-mb-[16px]">Back</button>
+                    <div class="x-flex x-justify-between x-items-center">
+                        <div class="x-text-[32px] md:x-text-[40px]">Order #20165</div>
+                        <div class="x-text-[16px] md:x-text-[20px]">PO: 258894</div>
+                    </div>
+                    <div class="x-flex x-flex-col md:x-flex-row x-justify-between x-gap-[16px] md:x-gap-[0px] md:x-items-center x-py-[12px] x-pb-[32px]">
+                        <div class="x-text-[14px] md:x-text-[18px]">This order was placed on <span class="x-font-bold">October 25, 2023</span> by <span class="x-font-bold">Samuel Smith</span></div>
+                        <div class="x-flex x-gap-[8px] x-items-end">
+                            <button class="x-bg-[#F2AD36] x-text-white x-px-[12px] x-py-[6px] x-rounded-[4px] x-text-[14px] md:x-text-[18px]">Reorder</button>
+                            <button class="x-bg-[#404042] x-text-white x-px-[12px] x-py-[6px] x-rounded-[4px] x-text-[14px] md:x-text-[18px]">Track</button>
+                        </div>
+                    </div>
+                    <div class="items-container x-space-y-[16px] md:x-space-y-[40px]">
+
+                        <div class="item">
+                            <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
+                                <div class="x-text-[18px] md:x-text-[24px] md:x-leading-[32px]">Fitted Sheets</div>
+                            </div>
+
+                            {% comment %} mobile view {% endcomment %}
+                            <div class="x-flex x-flex-col md:x-hidden">
+                                <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                                    <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                        <div>
+                                            <span>Item Code: </span><span>SAP3680</span>
+                                        </div>
+                                        <div>
+                                            <span>Desc: </span><span>Twin</span>
+                                        </div>
+                                        <div>
+                                            <span>Cut Size: </span><span>36 X 80 X 9</span>
+                                        </div>
+                                        <div>
+                                            <span>Packing: </span><span>5 Dz/Cs</span>
+                                        </div>
+                                        <div>
+                                            <span>Color: </span><span>Beige</span>
+                                        </div>
+                                        <div>&nbsp;</div>
+                                        <div class="x-flex x-gap-[4px] x-items-center x-w-full">
+                                            <span>Qty:</span><span>3</span>
+                                        </div>
+                                        
+                                        <div class="x-flex x-items-center">
+                                            <span>Subtotal:&nbsp;</span><span class="x-font-semibold">$110.97</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% comment %} desktop view {% endcomment %}
+                            <div class="x-hidden x-flex-col md:x-flex">
+                                <table class="x-border-none table-alternating-rows">
+                                    <thead>
+                                        <tr class="x-text-white x-bg-[#404042]">
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Item Code</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Description</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Cut Size</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Packing</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Color</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Qty</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">SAP3680</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Twin</td>
+                                            <td class="x-p-[8px] x-py-[16px]">36 X 80 X 9</td>
+                                            <td class="x-p-[8px] x-py-[16px]">5 Dz/Cs</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Beige</td>
+                                            <td class="x-p-[8px] x-py-[16px]">3</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>$110.97</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">SAP3680</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Twin</td>
+                                            <td class="x-p-[8px] x-py-[16px]">36 X 80 X 9</td>
+                                            <td class="x-p-[8px] x-py-[16px]">5 Dz/Cs</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Beige</td>
+                                            <td class="x-p-[8px] x-py-[16px]">3</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>$110.97</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">SAP3680</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Twin</td>
+                                            <td class="x-p-[8px] x-py-[16px]">36 X 80 X 9</td>
+                                            <td class="x-p-[8px] x-py-[16px]">5 Dz/Cs</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Beige</td>
+                                            <td class="x-p-[8px] x-py-[16px]">3</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>$110.97</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
+                                <div class="x-text-[18px] md:x-text-[24px] md:x-leading-[32px]">Draw Sheets</div>
+                            </div>
+
+                            {% comment %} mobile view {% endcomment %}
+                            <div class="x-flex x-flex-col md:x-hidden">
+                                <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                                    <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                        <div>
+                                            <span>Item Code: </span><span>SAP3680</span>
+                                        </div>
+                                        <div>
+                                            <span>Desc: </span><span>Twin</span>
+                                        </div>
+                                        <div>
+                                            <span>Cut Size: </span><span>36 X 80 X 9</span>
+                                        </div>
+                                        <div>
+                                            <span>Packing: </span><span>5 Dz/Cs</span>
+                                        </div>
+                                        <div>
+                                            <span>Color: </span><span>Beige</span>
+                                        </div>
+                                        <div>&nbsp;</div>
+                                        <div class="x-flex x-gap-[4px] x-items-center x-w-full">
+                                            <span>Qty:</span><span>3</span>
+                                        </div>
+                                        
+                                        <div class="x-flex x-items-center">
+                                            <span>Subtotal:&nbsp;</span><span class="x-font-semibold">$110.97</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% comment %} desktop view {% endcomment %}
+                            <div class="x-hidden x-flex-col md:x-flex">
+                                <table class="x-border-none table-alternating-rows">
+                                    <thead>
+                                        <tr class="x-text-white x-bg-[#404042]">
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Item Code</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Description</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Cut Size</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Packing</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Color</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Qty</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">SAP3680</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Twin</td>
+                                            <td class="x-p-[8px] x-py-[16px]">36 X 80 X 9</td>
+                                            <td class="x-p-[8px] x-py-[16px]">5 Dz/Cs</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Beige</td>
+                                            <td class="x-p-[8px] x-py-[16px]">3</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>$110.97</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
+                                <div class="x-text-[18px] md:x-text-[24px] md:x-leading-[32px]">Pillowcase</div>
+                            </div>
+
+                            {% comment %} mobile view {% endcomment %}
+                            <div class="x-flex x-flex-col md:x-hidden">
+                                <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                                    <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                        <div>
+                                            <span>Item Code: </span><span>SAP3680</span>
+                                        </div>
+                                        <div>
+                                            <span>Desc: </span><span>Twin</span>
+                                        </div>
+                                        <div>
+                                            <span>Cut Size: </span><span>36 X 80 X 9</span>
+                                        </div>
+                                        <div>
+                                            <span>Packing: </span><span>5 Dz/Cs</span>
+                                        </div>
+                                        <div>
+                                            <span>Color: </span><span>Beige</span>
+                                        </div>
+                                        <div>&nbsp;</div>
+                                        <div class="x-flex x-gap-[4px] x-items-center x-w-full">
+                                            <span>Qty:</span><span>3</span>
+                                        </div>
+                                        
+                                        <div class="x-flex x-items-center">
+                                            <span>Subtotal:&nbsp;</span><span class="x-font-semibold">$110.97</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% comment %} desktop view {% endcomment %}
+                            <div class="x-hidden x-flex-col md:x-flex">
+                                <table class="x-border-none table-alternating-rows">
+                                    <thead>
+                                        <tr class="x-text-white x-bg-[#404042]">
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Item Code</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Description</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Cut Size</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Packing</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Color</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Qty</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">SAP3680</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Twin</td>
+                                            <td class="x-p-[8px] x-py-[16px]">36 X 80 X 9</td>
+                                            <td class="x-p-[8px] x-py-[16px]">5 Dz/Cs</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Beige</td>
+                                            <td class="x-p-[8px] x-py-[16px]">3</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>$110.97</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">SAP3680</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Twin</td>
+                                            <td class="x-p-[8px] x-py-[16px]">36 X 80 X 9</td>
+                                            <td class="x-p-[8px] x-py-[16px]">5 Dz/Cs</td>
+                                            <td class="x-p-[8px] x-py-[16px]">Beige</td>
+                                            <td class="x-p-[8px] x-py-[16px]">3</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>$110.97</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="x-flex x-w-full x-my-[32px] x-p-[16px] x-bg-[#F0EFEF]">
+                        <div class="x-w-1/2">&nbsp;</div>
+                        <div class="x-w-1/2 x-flex x-flex-col x-gap-[8px]">
+                            <div class="x-flex x-justify-between">
+                                <div class="x-text-[16px] md:x-text-[20px]">
+                                    Subtotal:
+                                </div> 
+                                <div class="x-text-[16px] md:x-text-[20px]">
+                                    $110.97
+                                </div>
+                            </div>
+                            <div class="x-flex x-justify-between">
+                                <div class="x-text-[16px] md:x-text-[20px]">
+                                    Shipping:
+                                </div> 
+                                <div class="x-text-[16px] md:x-text-[20px]">
+                                    $0.00
+                                </div>
+                            </div>
+                            <div class="x-flex x-justify-between">
+                                <div class="x-text-[16px] md:x-text-[20px]">
+                                    Total:
+                                </div> 
+                                <div class="x-text-[16px] md:x-text-[20px] x-text-[#951728]">
+                                    $110.97
+                                </div>    
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="x-flex">
+                        <div class="x-w-1/2">
+                            <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Contact Info</h1>
+                            <div class="x-flex x-flex-col x-gap-[16px]">
+                                <div class="x-text-[14px] md:x-text-[16px]">
+                                    <div class="x-text-[#BBBBBC]">First Name</div>
+                                    <div>Sam</div>
+                                </div>
+                                <div class="x-text-[14px] md:x-text-[16px]">
+                                    <div class="x-text-[#BBBBBC]">Last Name</div>
+                                    <div>Smith</div>
+                                </div>
+                                <div class="x-text-[14px] md:x-text-[16px]">
+                                    <div class="x-text-[#BBBBBC]">Email</div>
+                                    <div>samsmith@email.com</div>                                
+                                </div>   
+                            </div>                  
+                        </div>
+                        <div class="x-w-1/2">
+                            <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Shipping Address</h1>
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div>Sam Smith</div>
+                                <div>1234 Main St</div>
+                                <div>Los Angeles, CA 90001</div>
+                                <div>United States</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-pt-[32px]">
+                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Notes</h1>
+                        <div class="x-text-[14px] md:x-text-[16px]">
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et, fugit? Molestiae, ipsa. Reiciendis aliquid cum molestiae in officia voluptatem repellat earum ratione dolorum, magnam nostrum. Dolor reiciendis nisi in nulla.
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="addresses view x-hidden x-h-full">
                 <div class="x-flex x-flex-col x-gap-[16px] x-h-full">
                     <div>The following addresses will be used on the checkout page by default</div>
                     <div class="x-flex x-flex-col x-gap-[16px] x-flex-1">
-                        <div class="x-text-[20px]">Shipping Address</div>
+                        <div class="x-text-[16px] md:x-text-[20px]">Shipping Address</div>
                         <div class="x-grid x-grid-cols-1 md:x-grid-cols-2 x-gap-[16px]" id="shipping-addresses">
                             <!-- Addresses will be dynamically inserted here -->
                         </div>
@@ -338,165 +661,15 @@
 
             <div class="saved view x-hidden">
                 <div class="saved-orders-list">
-                    {% if customer.drafts.size > 0 %}
-                        {% for draft in customer.drafts %}
-                            <div class="collapsable">
-                                <input type="checkbox" class="x-hidden">
-                                <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                                    <div class="x-text-white">Order #{{ draft.id }} ({{ draft.line_items.size }} items)</div>
-                                    <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                        <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
-                                            &nbsp;
-                                        </div>
-                                        <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
-                                    </div>
-                                </button>
-                                <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                                    <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                        <!-- Actions -->
-                                        <div class="x-flex x-justify-end x-gap-[12px]">
-                                            <button class="x-p-[8px] delete-draft-order" data-id="{{ draft.id }}">
-                                                Delete Order
-                                            </button>
-                                            <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] add-to-cart" data-id="{{ draft.id }}">
-                                                Add All to Cart
-                                            </button>
-                                        </div>
-                                        
-                                        <!-- Items -->
-                                        <div class="x-flex x-flex-col x-gap-[16px]">
-                                            {% for item in draft.line_items %}
-                                                <div class="x-space-y-[14px]">
-                                                    <div class="x-text-[#951828] x-text-[24px]">{{ item.product.title }}</div>
-                                                    <table class="x-w-full table-alternating-rows">
-                                                        <thead>
-                                                            <tr class="x-text-white x-bg-[#404042]">
-                                                                <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                                <th class="x-p-[8px] x-font-normal">Description</th>
-                                                                <th class="x-p-[8px] x-font-normal">Cut Size</th>
-                                                                <th class="x-p-[8px] x-font-normal">Packing</th>
-                                                                <th class="x-p-[8px] x-font-normal">Qty</th>
-                                                                <th class="x-p-[8px] x-font-normal">Price</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="x-text-center">
-                                                            <tr class="x-border-b-[1px] x-border-gray-400">
-                                                                <td class="x-text-start x-p-[8px]">{{ item.sku }}</td>
-                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.description }}</td>
-                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.cut_size }}</td>
-                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.packing }}</td>
-                                                                <td class="x-p-[8px]">{{ item.quantity }}</td>
-                                                                <td class="x-p-[8px]">{{ item.line_price | money }}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                    
-                                        <!-- Total -->
-                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                            <div class="x-text-[16px]">Total: </div>
-                                            <div class="x-text-[16px]">{{ draft.total_price | money }}</div>
-                                        </div>
-                    
-                                        <!-- Checkout -->
-                                        <div class="x-w-full x-flex x-justify-end">
-                                            <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="{{ draft.id }}">
-                                                Checkout
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No draft orders available.</p>
-                    {% endif %}
                 </div>
             </div>
 
             <div class="drafts view x-hidden">
                 <div class="draft-orders-list">
-                    {% if customer.drafts.size > 0 %}
-                        {% for draft in customer.drafts %}
-                            <div class="collapsable">
-                                <input type="checkbox" class="x-hidden">
-                                <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                                    <div class="x-text-white">Order #{{ draft.id }} ({{ draft.line_items.size }} items)</div>
-                                    <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                        <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
-                                            &nbsp;
-                                        </div>
-                                        <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
-                                    </div>
-                                </button>
-                                <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                                    <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                        <!-- Actions -->
-                                        <div class="x-flex x-justify-end x-gap-[12px]">
-                                            <button class="x-p-[8px] delete-draft-order" data-id="{{ draft.id }}">
-                                                Delete Order
-                                            </button>
-                                            <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] add-to-cart" data-id="{{ draft.id }}">
-                                                Add All to Cart
-                                            </button>
-                                        </div>
-                                        
-                                        <!-- Items -->
-                                        <div class="x-flex x-flex-col x-gap-[16px]">
-                                            {% for item in draft.line_items %}
-                                                <div class="x-space-y-[14px]">
-                                                    <div class="x-text-[#951828] x-text-[24px]">{{ item.product.title }}</div>
-                                                    <table class="x-w-full table-alternating-rows">
-                                                        <thead>
-                                                            <tr class="x-text-white x-bg-[#404042]">
-                                                                <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
-                                                                <th class="x-p-[8px] x-font-normal">Description</th>
-                                                                <th class="x-p-[8px] x-font-normal">Cut Size</th>
-                                                                <th class="x-p-[8px] x-font-normal">Packing</th>
-                                                                <th class="x-p-[8px] x-font-normal">Qty</th>
-                                                                <th class="x-p-[8px] x-font-normal">Price</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="x-text-center">
-                                                            <tr class="x-border-b-[1px] x-border-gray-400">
-                                                                <td class="x-text-start x-p-[8px]">{{ item.sku }}</td>
-                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.description }}</td>
-                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.cut_size }}</td>
-                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.packing }}</td>
-                                                                <td class="x-p-[8px]">{{ item.quantity }}</td>
-                                                                <td class="x-p-[8px]">{{ item.line_price | money }}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                    
-                                        <!-- Total -->
-                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                            <div class="x-text-[16px]">Total: </div>
-                                            <div class="x-text-[16px]">{{ draft.total_price | money }}</div>
-                                        </div>
-                    
-                                        <!-- Checkout -->
-                                        <div class="x-w-full x-flex x-justify-end">
-                                            <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="{{ draft.id }}">
-                                                Checkout
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No draft orders available.</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
-        
+
         <div class="x-flex x-flex-row md:x-flex-col x-gap-[8px] md:x-w-[420px] md:x-gap-[12px] md:x-min-h-[480px] md:x-max-h-[480px]">
             <button
                 class="dashboard nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
@@ -624,13 +797,15 @@
 <script>
     const customerId = "{{ customer.id }}";
     document.addEventListener('DOMContentLoaded', function () {
-        initalizeMainView();
+        initializeMainView();
         initializeOrdersView();
         initializeCollapses();
+        initializeOrderView();
         loadShippingAddresses();
         initializeAddAddressFunctionality();
         populateDraftOrders();
         populateRequestShippingOrders();
+
         const saveAddButton = document.getElementById('save-add-address');
         const saveEditButton = document.getElementById('save-edit-address');
 
@@ -694,6 +869,37 @@
             });
         }
     });
+
+    function initializeOrderView() {
+        const mainView = $('.orders .main');
+        const orderView = $('.orders .order-view');
+        const viewOrderButtons = $(".view-order-btn");
+        const backToOrdersButton = $(".order-back-btn");
+
+        viewOrderButtons.on('click', function () {
+            // get data of order
+            const orderId = $(this).data('order');
+
+            // add order=orderId to the url
+            const url = new URL(window.location.href);
+            url.searchParams.set('order', orderId);
+            window.history.pushState({}, '', url);
+
+            mainView.addClass('x-hidden');
+            orderView.removeClass('x-hidden');
+        });
+
+        backToOrdersButton.on('click', function () {
+            // remove order from the url
+            const url = new URL(window.location.href);
+            url.searchParams.delete('order');
+            window.history.pushState({}, '', url);
+
+            mainView.removeClass('x-hidden');
+            orderView.addClass('x-hidden');
+        });
+    }
+
     //REQUESTED SHIPPING TAB
     async function populateRequestShippingOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
@@ -1277,7 +1483,7 @@
         $(`.${view}.sub-view`).removeClass('x-hidden');
     }
 
-    function initalizeMainView() {
+    function initializeMainView() {
         const urlParams = new URLSearchParams(window.location.search);
         const views = ['dashboard', 'orders', 'addresses', 'account', 'saved', 'drafts'];
         const initialView = views.includes(urlParams.get('view')) ? urlParams.get('view') : 'dashboard';

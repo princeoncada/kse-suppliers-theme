@@ -668,6 +668,11 @@ video {
   margin-bottom: 16px !important;
 }
 
+.x-my-\[32px\] {
+  margin-top: 32px !important;
+  margin-bottom: 32px !important;
+}
+
 .x-my-\[8px\] {
   margin-top: 8px !important;
   margin-bottom: 8px !important;
@@ -711,6 +716,10 @@ video {
 
 .x-mb-\[-32\] {
   margin-bottom: -32 !important;
+}
+
+.x-mb-\[16px\] {
+  margin-bottom: 16px !important;
 }
 
 .x-mb-\[24px\] {
@@ -799,6 +808,10 @@ video {
 
 .x-mt-\[8px\] {
   margin-top: 8px !important;
+}
+
+.x-mb-\[\] {
+  margin-bottom:  !important;
 }
 
 .x-block {
@@ -923,6 +936,10 @@ video {
 
 .x-w-1 {
   width: 0.25rem !important;
+}
+
+.x-w-1\/2 {
+  width: 50% !important;
 }
 
 .x-w-1\/5 {
@@ -1664,6 +1681,11 @@ video {
   background-color: rgb(240 239 239 / var(--tw-bg-opacity, 1)) !important;
 }
 
+.x-bg-\[\#F2AD36\] {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(242 173 54 / var(--tw-bg-opacity, 1)) !important;
+}
+
 .x-bg-\[\#F5DFE2\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(245 223 226 / var(--tw-bg-opacity, 1)) !important;
@@ -2013,6 +2035,10 @@ video {
   padding-bottom: 25px !important;
 }
 
+.x-pb-\[32px\] {
+  padding-bottom: 32px !important;
+}
+
 .x-pb-\[47px\] {
   padding-bottom: 47px !important;
 }
@@ -2063,6 +2089,10 @@ video {
 
 .x-pt-\[30px\] {
   padding-top: 30px !important;
+}
+
+.x-pt-\[32px\] {
+  padding-top: 32px !important;
 }
 
 .x-pt-\[40px\] {
@@ -2285,6 +2315,11 @@ video {
   color: rgb(167 62 76 / var(--tw-text-opacity, 1)) !important;
 }
 
+.x-text-\[\#BBBBBC\] {
+  --tw-text-opacity: 1 !important;
+  color: rgb(187 187 188 / var(--tw-text-opacity, 1)) !important;
+}
+
 .x-text-\[\#DBDBDB\] {
   --tw-text-opacity: 1 !important;
   color: rgb(219 219 219 / var(--tw-text-opacity, 1)) !important;
@@ -2358,6 +2393,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
 }
 
+.x-text-\[\] {
+  color:  !important;
+}
+
 .x-underline {
   text-decoration-line: underline !important;
 }
@@ -2384,6 +2423,14 @@ video {
 
 .x-underline-offset-\[8px\] {
   text-underline-offset: 8px !important;
+}
+
+.x-underline-offset-2 {
+  text-underline-offset: 2px !important;
+}
+
+.x-underline-offset-4 {
+  text-underline-offset: 4px !important;
 }
 
 .x-opacity-75 {
@@ -2743,6 +2790,10 @@ video {
 
   .md\:x-gap-6 {
     gap: 1.5rem !important;
+  }
+
+  .md\:x-gap-\[0px\] {
+    gap: 0px !important;
   }
 
   .md\:x-gap-\[12px\] {

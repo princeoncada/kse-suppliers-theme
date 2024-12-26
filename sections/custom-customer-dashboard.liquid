@@ -30,7 +30,7 @@
                     <div class="x-flex x-justify-between md:x-justify-start md:x-gap-[24px]">
                         <button class="company-orders sub-view-button x-text-[16px] md:x-text-[20px]">Company Orders</button>
                         <button class="my-orders sub-view-button x-text-[16px] md:x-text-[20px]">My Orders</button>
-                        <button class="recurring-orders sub-view-button x-text-[16px] md:x-text-[20px]">Recurring Orders</button>
+                        {% comment %} <button class="recurring-orders sub-view-button x-text-[16px] md:x-text-[20px]">Recurring Orders</button> {% endcomment %}
                     </div>
                     <div>
                         <div class="company-orders sub-view x-hidden">
@@ -157,7 +157,8 @@
                                 </table>
                             </div>  
                         </div>
-                        <div class="recurring-orders sub-view x-hidden">
+
+                        {% comment %} <div class="recurring-orders sub-view x-hidden">
                             <div class="x-overflow-x-auto x-max-w-full">
                                 <table class="x-w-full">
                                     <thead>
@@ -218,10 +219,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
             </div>
+
             <div class="addresses view x-hidden x-h-full">
                 <div class="x-flex x-flex-col x-gap-[16px] x-h-full">
                     <div>The following addresses will be used on the checkout page by default</div>
@@ -237,7 +239,7 @@
                 </div>
             </div>
            <!-- Add New Address Modal -->
-        <div id="add-address-modal" class="x-hidden x-fixed x-inset-0 x-items-center x-justify-center x-bg-gray-900 x-bg-opacity-50">
+            <div id="add-address-modal" class="x-hidden x-fixed x-inset-0 x-items-center x-justify-center x-bg-gray-900 x-bg-opacity-50">
                 <div class="x-bg-white x-p-[24px] x-rounded-md x-w-[400px] x-space-y-[16px]">
                     <div id="modal-title" class="x-text-[20px] x-font-semibold">
 
@@ -288,6 +290,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="account view x-hidden">
                 <div class="x-space-y-[24px]">
                     <div class="x-space-y-[8px]">
@@ -332,6 +335,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="saved view x-hidden">
                 <div class="saved-orders-list">
                     {% if customer.drafts.size > 0 %}
@@ -411,6 +415,7 @@
                     {% endif %}
                 </div>
             </div>
+
             <div class="drafts view x-hidden">
                 <div class="draft-orders-list">
                     {% if customer.drafts.size > 0 %}
@@ -490,9 +495,8 @@
                     {% endif %}
                 </div>
             </div>
-            
-            
         </div>
+        
         <div class="x-flex x-flex-row md:x-flex-col x-gap-[8px] md:x-w-[420px] md:x-gap-[12px] md:x-min-h-[480px] md:x-max-h-[480px]">
             <button
                 class="dashboard nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
@@ -563,17 +567,17 @@
             </button>
 
             <button
-            class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
-            <div class="x-flex x-gap-[18px] x-items-center">
-                <i class='x-text-[24px] md:x-text-[28p lg:x-text-[32px]x] bx bxs-package'></i>
-                <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
-                    Requested Shipping
+                class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+                <div class="x-flex x-gap-[18px] x-items-center">
+                    <i class='x-text-[24px] md:x-text-[28p lg:x-text-[32px]x] bx bxs-package'></i>
+                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
+                        Requested Shipping
+                    </div>
                 </div>
-            </div>
-            <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
-            </div>
-        </button>
+                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
+                </div>
+            </button>
         </div>
     </div>
 </section>

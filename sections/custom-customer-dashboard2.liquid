@@ -333,8 +333,82 @@
                 </div>
             </div>
             <div class="saved view x-hidden">
-                <div>
-                    Too discuss...
+                <div class="saved-orders-list">
+                    {% if customer.drafts.size > 0 %}
+                        {% for draft in customer.drafts %}
+                            <div class="collapsable">
+                                <input type="checkbox" class="x-hidden">
+                                <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                                    <div class="x-text-white">Order #{{ draft.id }} ({{ draft.line_items.size }} items)</div>
+                                    <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                        <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
+                                            &nbsp;
+                                        </div>
+                                        <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">&nbsp;</div>
+                                    </div>
+                                </button>
+                                <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                                    <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                        <!-- Actions -->
+                                        <div class="x-flex x-justify-end x-gap-[12px]">
+                                            <button class="x-p-[8px] delete-draft-order" data-id="{{ draft.id }}">
+                                                Delete Order
+                                            </button>
+                                            <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] add-to-cart" data-id="{{ draft.id }}">
+                                                Add All to Cart
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Items -->
+                                        <div class="x-flex x-flex-col x-gap-[16px]">
+                                            {% for item in draft.line_items %}
+                                                <div class="x-space-y-[14px]">
+                                                    <div class="x-text-[#951828] x-text-[24px]">{{ item.product.title }}</div>
+                                                    <table class="x-w-full table-alternating-rows">
+                                                        <thead>
+                                                            <tr class="x-text-white x-bg-[#404042]">
+                                                                <th class="x-text-start x-p-[8px] x-font-normal">Item Code</th>
+                                                                <th class="x-p-[8px] x-font-normal">Description</th>
+                                                                <th class="x-p-[8px] x-font-normal">Cut Size</th>
+                                                                <th class="x-p-[8px] x-font-normal">Packing</th>
+                                                                <th class="x-p-[8px] x-font-normal">Qty</th>
+                                                                <th class="x-p-[8px] x-font-normal">Price</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="x-text-center">
+                                                            <tr class="x-border-b-[1px] x-border-gray-400">
+                                                                <td class="x-text-start x-p-[8px]">{{ item.sku }}</td>
+                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.description }}</td>
+                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.cut_size }}</td>
+                                                                <td class="x-p-[8px]">{{ item.variant.metafields.custom.packing }}</td>
+                                                                <td class="x-p-[8px]">{{ item.quantity }}</td>
+                                                                <td class="x-p-[8px]">{{ item.line_price | money }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                    
+                                        <!-- Total -->
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Total: </div>
+                                            <div class="x-text-[16px]">{{ draft.total_price | money }}</div>
+                                        </div>
+                    
+                                        <!-- Checkout -->
+                                        <div class="x-w-full x-flex x-justify-end">
+                                            <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="{{ draft.id }}">
+                                                Checkout
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No draft orders available.</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="drafts view x-hidden">
@@ -403,9 +477,9 @@
                     
                                         <!-- Checkout -->
                                         <div class="x-w-full x-flex x-justify-end">
-                                            <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="{{ draft.id }}">
+                                            <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="{{ draft.id }}">
                                                 Checkout
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -474,19 +548,6 @@
             </button>
 
             <button
-                class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
-                <div class="x-flex x-gap-[18px] x-items-center">
-                    <i class='x-text-[24px] md:x-text-[28p lg:x-text-[32px]x] bx bxs-heart'></i>
-                    <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
-                        Saved for Later
-                    </div>
-                </div>
-                <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
-                    <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
-                </div>
-            </button>
-
-            <button
                 class="drafts nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
                 <div class="x-flex x-gap-[18px] x-items-center">
                     <i class='x-text-[24px] md:x-text-[28px] lg:x-text-[28px] bx bxs-folder-open'></i>
@@ -500,6 +561,19 @@
                 <div class="x-hidden x-underline-offset-[2px]">
                 </div>
             </button>
+
+            <button
+            class="saved nav-button x-flex-1 x-aspect-square md:x-aspect-auto md:x-px-[18px] x-flex x-items-center x-justify-center md:x-justify-between x-transition-colors x-duration-150 x-rounded-md">
+            <div class="x-flex x-gap-[18px] x-items-center">
+                <i class='x-text-[24px] md:x-text-[28p lg:x-text-[32px]x] bx bxs-package'></i>
+                <div class="x-text-[18px] x-hidden md:x-block x-text-[#4D4D4D]">
+                    Requested Shipping
+                </div>
+            </div>
+            <div class="x-hidden md:x-flex chevron-wrapper x-items-center">
+                <i class='x-text-[28px] lg:x-text-[28px] bx bx-chevron-left'></i>
+            </div>
+        </button>
         </div>
     </div>
 </section>
@@ -552,6 +626,7 @@
         loadShippingAddresses();
         initializeAddAddressFunctionality();
         populateDraftOrders();
+        populateRequestShippingOrders();
         const saveAddButton = document.getElementById('save-add-address');
         const saveEditButton = document.getElementById('save-edit-address');
 
@@ -615,55 +690,32 @@
             });
         }
     });
-
-    //DRAFT ORDERS TAB
-    async function fetchData(query) {
-        try {
-            const response = await fetch("https://c1ff-120-72-18-186.ngrok-free.app/graphql", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ query: query }),
-            });
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    }
-
-    async function populateDraftOrders() {
+    //REQUESTED SHIPPING TAB
+    async function populateRequestShippingOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
             query {
                 draftOrders {
                     id
+                    name
                     createdAt
                     customerId
                     lineItems {
                         title
                         quantity
                         price
-                        variant_title
-                    }
-                    metafields {
-                        id
-                        namespace
-                        key
-                        value
+                        variantTitle
                     }
                 }
             }
         `;
-        const draftOrdersList = document.querySelector(".draft-orders-list");
-        
+        const draftOrdersList = document.querySelector(".saved-orders-list");
+
         // Add loading animation
         const loadingSpinner = document.createElement("div");
         loadingSpinner.className = "loading-spinner";
         loadingSpinner.innerHTML = `
             <div class="spinner">
-
             </div>
         `;
         draftOrdersList.innerHTML = ""; // Clear content
@@ -671,17 +723,15 @@
 
         try {
             const data = await fetchData(query);
-            console.log("Draft Orders API Response:", data);
 
             if (data && data.data && data.data.draftOrders) {
                 const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
-                console.log("Filtered Orders:", orders);
 
                 const filteredOrders = [];
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();
 
-                    // Check if the order has the "Placed" tag
+                    // Check if the order has the "ShipRequested" tag
                     const tagQuery = `
                         query {
                             getDraftOrderTags(draftOrderId: "${orderId}") {
@@ -690,14 +740,29 @@
                         }
                     `;
                     const tagData = await fetchData(tagQuery);
-                    const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed");
+                    const hasShipRequestedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "ShipRequested");
 
-                    if (hasPlacedTag) {
-                        console.log(`Skipping order ${orderId} as it has the "Placed" tag.`);
+                    if (!hasShipRequestedTag) {
                         continue;
                     }
 
-                    filteredOrders.push(order);
+                    // Check for the shipping fee
+                    const shippingFee = await checkForShippingFee(orderId);
+
+
+                    // Ensure shippingFee is a string and handle cases where it's null or undefined
+                    const feeString = typeof shippingFee === "string" ? shippingFee : "$0";
+
+
+                    // Remove the "$" and parse as a float
+                    const numericShippingFee = parseFloat(feeString.replace("$", ""));
+
+
+                    // Determine the shipping status based on the numeric value
+                    const shippingStatus = numericShippingFee > 0 ? "Shipping Quote Applied" : "Shipping Quote Requested";
+
+
+                    filteredOrders.push({ ...order, shippingStatus, numericShippingFee });
                 }
 
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
@@ -705,6 +770,9 @@
                     for (const order of filteredOrders) {
                         const orderId = order.id.split('/').pop();
                         const formattedDate = new Date(order.createdAt).toLocaleDateString();
+                        const orderName = order.name || `Order #${orderId}`;
+                        const totalPrice = order.lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                        const totalWithShipping = totalPrice + order.numericShippingFee;
 
                         const collapsableDiv = document.createElement("div");
                         collapsableDiv.classList.add("collapsable");
@@ -712,7 +780,7 @@
                         collapsableDiv.innerHTML = `
                             <input type="checkbox" class="x-hidden">
                             <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                                <div class="x-text-white">Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
+                                <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${order.shippingStatus}</div>
                                 <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
                                     <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
                                     &nbsp;
@@ -747,7 +815,7 @@
                                                     </thead>
                                                     <tbody class="x-text-center">
                                                         <tr class="x-border-b-[1px] x-border-gray-400">
-                                                            <td class="x-text-start x-p-[8px]">${item.variant?.id.split('/').pop() || "N/A"}</td>
+                                                            <td class="x-text-start x-p-[8px]">${item.variant_title || "N/A"}</td>
                                                             <td class="x-p-[8px]">${item.title}</td>
                                                             <td class="x-p-[8px]">${item.variant_title || "N/A"}</td>
                                                             <td class="x-p-[8px]">${item.quantity}</td>
@@ -758,21 +826,36 @@
                                             </div>
                                         `).join("")}
                                     </div>
-                                    <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                        <div class="x-text-[16px]">Total: </div>
-                                        <div class="x-text-[16px]">$${order.lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0)}</div>
-                                    </div>
-                                    <div class="x-w-full x-flex x-justify-end">
-                                        <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
-                                            Checkout
-                                        </button>
-                                    </div>
+                                    ${
+                                        order.numericShippingFee > 0
+                                            ? `
+                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                                <div class="x-text-[16px]">Shipping:</div>
+                                                <div class="x-text-[16px]">$${order.numericShippingFee.toFixed(2)}</div>
+                                            </div>
+                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                                <div class="x-text-[16px]">Total + Shipping:</div>
+                                                <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
+                                            </div>
+                                            <div class="x-w-full x-flex x-justify-end">
+                                                <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
+                                                    Checkout
+                                                </a>
+                                            </div>
+                                            `
+                                            : `
+                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                                <div class="x-text-[16px]">Total:</div>
+                                                <div class="x-text-[16px]">$${totalPrice.toFixed(2)}</div>
+                                            </div>                                           
+                                            `
+                                    }
                                 </div>
                             </div>
                         `;
                         draftOrdersList.appendChild(collapsableDiv);
                     }
-                    initializeCollapses();
+                    initializeCollapses(draftOrdersList);
                 } else {
                     draftOrdersList.innerHTML = "<p>No draft orders available.</p>";
                 }
@@ -784,17 +867,224 @@
             draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
         }
     }
+
+
+    async function checkForShippingFee(draftOrderId) {
+        const query = `
+            query {
+                checkForShippingFee(draftOrderId: "${draftOrderId}")
+            }
+        `;
+
+        try {
+            const response = await fetch("https://38df-158-62-79-92.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query }),
+            });
+
+            const result = await response.json();
+
+
+            // Return the raw shipping fee value
+            return result.data?.checkForShippingFee || "$0";
+        } catch (error) {
+            console.error("Error checking for shipping fee:", error);
+            throw new Error("Failed to check for shipping fee.");
+        }
+    }
+
+
+
+    //DRAFT ORDERS TAB
+    async function fetchData(query) {
+        try {
+            const response = await fetch("https://38df-158-62-79-92.ngrok-free.app/graphql", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ query: query }),
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    async function populateDraftOrders() {
+        const currentUserId = `gid://shopify/Customer/${customerId}`;
+        const query = `
+            query {
+                draftOrders {
+                    id
+                    name
+                    createdAt
+                    customerId
+                    lineItems {
+                        title
+                        quantity
+                        variantTitle
+                        variant {
+                            price
+                            metafields {
+                                key
+                                value
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+        const draftOrdersList = document.querySelector(".draft-orders-list");
+
+        // Add loading animation
+        const loadingSpinner = document.createElement("div");
+        loadingSpinner.className = "loading-spinner";
+        loadingSpinner.innerHTML = `
+            <div class="spinner">
+            </div>
+        `;
+        draftOrdersList.innerHTML = ""; // Clear content
+        draftOrdersList.appendChild(loadingSpinner);
+
+        try {
+            const data = await fetchData(query);
+
+            if (data && data.data && data.data.draftOrders) {
+                const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
+                console.log(orders);
+
+                const filteredOrders = [];
+                for (const order of orders) {
+                    const orderId = order.id.split('/').pop();
+
+                    // Check if the order has the "Placed" tag
+                    const tagQuery = `
+                        query {
+                            getDraftOrderTags(draftOrderId: "${orderId}") {
+                                tag
+                            }
+                        }
+                    `;
+                    const tagData = await fetchData(tagQuery);
+                    const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed" || tag.tag === "ShipRequested");
+
+                    if (hasPlacedTag) {
+                        continue;
+                    }
+
+                    filteredOrders.push(order);
+                }
+
+                draftOrdersList.innerHTML = ""; // Clear loading spinner
+                if (filteredOrders.length > 0) {
+                    for (const order of filteredOrders) {
+                        const orderId = order.id.split('/').pop();
+                        const formattedDate = new Date(order.createdAt).toLocaleDateString();
+                        const orderName = order.name || `Order #${orderId}`;
+
+                        const collapsableDiv = document.createElement("div");
+                        collapsableDiv.classList.add("collapsable");
+
+                        collapsableDiv.innerHTML = `
+                            <input type="checkbox" class="x-hidden">
+                            <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                                <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
+                                <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                    <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
+                                    &nbsp;
+                                    </div>
+                                    <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
+                                    </div>
+                                </div>
+                            </button>
+                            <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                                <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                    <div class="x-flex x-justify-end x-gap-[12px]">
+                                        <button class="x-p-[8px] delete-draft-order" data-id="${order.id}">
+                                            Delete Order
+                                        </button>
+                                        <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] add-to-cart" data-id="${order.id}">
+                                            Add All to Cart
+                                        </button>
+                                    </div>
+                                    <div class="x-flex x-flex-col x-gap-[16px]">
+                                        ${order.lineItems.map(item => {
+                                            const metafields = item.variant?.metafields.reduce((fields, mf) => {
+                                                fields[mf.key] = mf.value;
+                                                return fields;
+                                            }, {}) || {};
+                                            return `
+                                                <div class="x-space-y-[14px]">
+                                                    <div class="x-text-[#951828] x-text-[24px]">${item.title}</div>
+                                                    <table class="x-w-full table-alternating-rows">
+                                                        <thead>
+                                                            <tr class="x-text-white x-bg-[#404042]">
+                                                                <th class="x-text-start x-p-[8px] x-font-normal x-w-[20%]">Item Code</th>
+                                                                <th class="x-p-[8px] x-font-normal x-w-[40%]">Description</th>
+                                                                <th class="x-p-[8px] x-font-normal x-w-[20%]">Variant</th>
+                                                                <th class="x-p-[8px] x-font-normal x-w-[10%]">Qty</th>
+                                                                <th class="x-p-[8px] x-font-normal x-w-[10%]">Price</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="x-text-center">
+                                                            <tr class="x-border-b-[1px] x-border-gray-400">
+                                                                <td class="x-text-start x-p-[8px]">${item.variantTitle || "N/A"}</td>
+                                                                <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
+                                                                <td class="x-p-[8px]">${metafields.color || "N/A"}</td>
+                                                                <td class="x-p-[8px]">${item.quantity}</td>
+                                                                <td class="x-p-[8px]">$${(item.variant?.price * item.quantity).toFixed(2) || "0.00"}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            `;
+                                        }).join("")}
+                                    </div>
+                                    <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                        <div class="x-text-[16px]">Total: </div>
+                                        <div class="x-text-[16px]">$${order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0).toFixed(2)}</div>
+                                    </div>
+                                    <div class="x-w-full x-flex x-justify-end">
+                                        <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
+                                            Checkout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        draftOrdersList.appendChild(collapsableDiv);
+                    }
+                    initializeCollapses(draftOrdersList);
+                } else {
+                    draftOrdersList.innerHTML = "<p>No draft orders available.</p>";
+                }
+            } else {
+                draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";
+            }
+        } catch (error) {
+            console.error("Error fetching draft orders:", error);
+            draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
+        }
+    }
+
     
-    function initializeCollapses() {
-        $('.collapse-trigger').click(function () {
+    function initializeCollapses(targetContainer) {
+        $(targetContainer).find('.collapse-trigger').off('click').on('click', function () {
             let collapseContent = $(this).closest('.collapsable').find('.collapse-content');
             let collapseCheckbox = $(this).closest('.collapsable').find('input[type="checkbox"]');
             let collapseFeedback = $(this).find('.collapse-feedback');
 
-            $('.collapse-content').not(collapseContent).css({ 'height': '0px' });
-            $('.collapsable input[type="checkbox"]').not(collapseCheckbox).prop('checked', false);
-            $('.collapse-feedback').not(collapseFeedback).css({ transform: 'rotate(0deg)' });
+            // Reset all other collapses within the container
+            $(targetContainer).find('.collapse-content').not(collapseContent).css({ 'height': '0px' });
+            $(targetContainer).find('.collapsable input[type="checkbox"]').not(collapseCheckbox).prop('checked', false);
+            $(targetContainer).find('.collapse-feedback').not(collapseFeedback).css({ transform: 'rotate(0deg)' });
 
+            // Toggle current collapse
             if (collapseCheckbox.prop('checked')) {
                 collapseContent.css({ 'height': '0px' });
                 collapseCheckbox.prop('checked', false);
@@ -806,6 +1096,7 @@
             }
         });
     }
+
 
     // ADDRESSES TAB     
     function toggleModalVisibility(modal, show) {

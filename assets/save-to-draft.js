@@ -190,7 +190,7 @@ function saveToDraft() {
 
         // Send the mutation to create the draft order
         $.ajax({
-            url: 'https://c1ff-120-72-18-186.ngrok-free.app/graphql',
+            url: 'https://38df-158-62-79-92.ngrok-free.app/graphql',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ query: mutation }),
@@ -201,7 +201,6 @@ function saveToDraft() {
             const draftOrderId = response?.data?.createDraftOrder?.id;
             if (draftOrderId) {
                 clearCart();
-                window.location.href = `/pages/order-confirmation?draftOrderId=${encodeURIComponent(draftOrderId)}`;
             } else {
                 console.error("Failed to get Draft Order ID:", response.errors || response);
             }

@@ -107,7 +107,7 @@
 }
 
 /*
-! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -799,10 +799,6 @@ video {
 
 .x-mt-\[8px\] {
   margin-top: 8px !important;
-}
-
-.x-mt-\[16px\] {
-  margin-top: 16px !important;
 }
 
 .x-block {

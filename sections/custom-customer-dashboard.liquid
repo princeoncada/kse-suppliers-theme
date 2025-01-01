@@ -563,6 +563,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="account view x-hidden">
                 <div class="x-space-y-[24px]">
                     <div class="x-space-y-[8px]">
@@ -1157,7 +1158,7 @@
         `;
 
         try {
-            const response = await fetch("https://f059-158-62-75-42.ngrok-free.app/graphql", {
+            const response = await fetch("https://323a-158-62-75-42.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -1176,12 +1177,10 @@
         }
     }
 
-
-
     //DRAFT ORDERS TAB
     async function fetchData(query) {
         try {
-            const response = await fetch("https://f059-158-62-75-42.ngrok-free.app/graphql", {
+            const response = await fetch("https://323a-158-62-75-42.ngrok-free.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -1392,11 +1391,15 @@
                     <input type="text" name="address[company]" id="edit-company" class="x-border x-w-full x-p-[8px]" placeholder="Company (Optional)">
                     <input type="text" name="address[address1]" id="edit-address1" class="x-border x-w-full x-p-[8px]" placeholder="Address Line 1" required>
                     <input type="text" name="address[city]" id="edit-city" class="x-border x-w-full x-p-[8px]" placeholder="City" required>
-                    <select id="AddressCountry_edit-address" name="address[country]" data-address-country-select autocomplete="country">
-                        {{ all_country_option_tags }}
-                    </select>
-                    <select id="AddressProvince_edit-address" name="address[province]" autocomplete="address-level1" style="display: none;">
-                    </select>
+                    <div class="address-field">
+                        <label for="AddressCountry_edit-address" class="field-label">Country/Region</label>
+                        <select id="AddressCountry_edit-address" name="address[country]" data-address-country-select autocomplete="country" class="field-input select-box">
+                            {{ all_country_option_tags }}
+                        </select>
+                    </div>
+                        <label for="AddressProvince_edit-address" class="field-label" style="display: none;">Province</label>
+                        <select id="AddressProvince_edit-address" name="address[province]" autocomplete="address-level1" style="display: none;" class="field-input select-box">
+                        </select>
                     <input type="text" name="address[zip]" id="edit-zip" class="x-border x-w-full x-p-[8px]" placeholder="Zip Code" required>
                 </form>
             </div>
@@ -1408,6 +1411,8 @@
                 option => option.value === countrySelect.value
             );
 
+            const provinceLabel = document.querySelector("label[for='AddressProvince_edit-address']");
+
             if (selectedOption) {
                 const provinces = JSON.parse(selectedOption.getAttribute('data-provinces') || '[]');
 
@@ -1416,6 +1421,10 @@
 
                 if (provinces.length > 0) {
                     provinceSelect.style.display = 'block';
+
+                    if (provinceLabel) {
+                        provinceLabel.style.display = 'block'; // Show the label
+                    }
 
                     provinces.forEach((province, index) => {
                         const option = document.createElement('option');
@@ -1433,6 +1442,9 @@
                     }
                 } else {
                     provinceSelect.style.display = 'none';
+                    if (provinceLabel) {
+                        provinceLabel.style.display = 'none';
+                    }
                 }
             }
         }

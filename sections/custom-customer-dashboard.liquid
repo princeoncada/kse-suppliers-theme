@@ -848,6 +848,7 @@
         initializeAddAddressModal(); 
         loadShippingAddresses(addresses);
         initializeAddressModals(addresses);
+        populateDraftOrderTab();
 
         // Event listener for saving a new address
         const saveAddButton = document.getElementById('save-add-address');
@@ -882,7 +883,8 @@
                 }
             });
         }
-                // Event listener for saving an edited address
+        
+        // Event listener for saving an edited address
         const saveEditButton = document.getElementById('save-edit-address');
         if (saveEditButton) {
             saveEditButton.addEventListener('click', async function (event) {
@@ -923,68 +925,435 @@
                 }
             });
         }
+        document.addEventListener('click', function (event) {
+                if (event.target.classList.contains('reorder-btn')) {
+                    const orderId = event.target.dataset.order;
+                    reorderDraftOrder(orderId);
+                }
+            });
     });
 
     function initializeOrderView() {
-        const mainView = $('.orders .main');
-        const orderView = $('.orders .order-view');
-        const viewOrderButtons = $(".view-order-btn");
-        const backToOrdersButton = $(".order-back-btn");
+        const mainView = document.querySelector('.orders .main');
+        const orderView = document.querySelector('.order-view');
 
-        viewOrderButtons.on('click', function () {
-            // get data of order
-            const orderId = $(this).data('order');
+        async function populateOrderView(orderId) {
+            const orderDetails = await fetchOrderDetails(orderId); // Fetch details dynamically
 
-            // add order=orderId to the url
-            const url = new URL(window.location.href);
-            url.searchParams.set('order', orderId);
-            window.history.pushState({}, '', url);
+            // Populate the order view dynamically
+            orderView.innerHTML = `
+                <button class="order-back-btn x-underline x-text-[20px] x-underline-offset-4 x-mb-[16px]">Back</button>
+                <div class="x-flex x-justify-between x-items-center">
+                    <div class="x-text-[32px] md:x-text-[40px]">Order ${orderDetails.orderNumber}</div>
+                    <div class="x-text-[16px] md:x-text-[20px]">PO: ${orderDetails.purchaseOrder}</div>
+                </div>
+                <div class="x-flex x-flex-col md:x-flex-row x-justify-between x-gap-[16px] md:x-gap-[0px] md:x-items-center x-py-[12px] x-pb-[32px]">
+                    <div class="x-text-[14px] md:x-text-[18px]">This order was placed on <span class="x-font-bold">${orderDetails.orderDate}</span> by <span class="x-font-bold">${orderDetails.customerName}</span></div>
+                    <div class="x-flex x-gap-[8px] x-items-end">
+                        <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] reorder-btn" data-order="${orderId}">
+                            Reorder
+                        </button>
+                        <button class="x-bg-[#404042] x-text-white x-px-[12px] x-py-[6px] x-rounded-[4px] x-text-[14px] md:x-text-[18px]">Track</button>
+                    </div>
+                </div>
+                <div class="items-container x-space-y-[16px] md:x-space-y-[40px]">
+                    ${orderDetails.items.map(item => `
+                        <div class="item">
+                            <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
+                                <div class="x-text-[18px] md:x-text-[24px] md:x-leading-[32px]">${item.name}</div>
+                            </div>
+                            <div class="x-flex x-flex-col md:x-hidden">
+                                <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                                    <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                        <div><span>Item Code: </span><span>${item.code}</span></div>
+                                        <div><span>Desc: </span><span>${item.description}</span></div>
+                                        <div><span>Cut Size: </span><span>${item.cutSize}</span></div>
+                                        <div><span>Packing: </span><span>${item.packing}</span></div>
+                                        <div><span>Color: </span><span>${item.color}</span></div>
+                                        <div>&nbsp;</div>
+                                        <div class="x-flex x-gap-[4px] x-items-center x-w-full"><span>Qty:</span><span>${item.quantity}</span></div>
+                                        <div class="x-flex x-items-center"><span>Subtotal:&nbsp;</span><span class="x-font-semibold">${item.subtotal}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="x-hidden x-flex-col md:x-flex">
+                                <table class="x-border-none table-alternating-rows">
+                                    <thead>
+                                        <tr class="x-text-white x-bg-[#404042]">
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Item Code</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Description</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Cut Size</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Packing</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Color</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Qty</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">${item.code}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.description}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.cutSize}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.packing}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.color}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.quantity}</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>${item.subtotal}</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="x-flex x-w-full x-my-[32px] x-p-[16px] x-bg-[#F0EFEF]">
+                    <div class="x-w-1/2">&nbsp;</div>
+                    <div class="x-w-1/2 x-flex x-flex-col x-gap-[8px]">
+                        <div class="x-flex x-justify-between">
+                            <div class="x-text-[16px] md:x-text-[20px]">Subtotal:</div>
+                            <div class="x-text-[16px] md:x-text-[20px]">${orderDetails.subtotal}</div>
+                        </div>
+                        <div class="x-flex x-justify-between">
+                            <div class="x-text-[16px] md:x-text-[20px]">Shipping:</div>
+                            <div class="x-text-[16px] md:x-text-[20px]">${orderDetails.shipping}</div>
+                        </div>
+                        <div class="x-flex x-justify-between">
+                            <div class="x-text-[16px] md:x-text-[20px]">Total:</div>
+                            <div class="x-text-[16px] md:x-text-[20px] x-text-[#951728]">${orderDetails.total}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-flex">
+                    <div class="x-w-1/2">
+                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Contact Info</h1>
+                        <div class="x-flex x-flex-col x-gap-[16px]">
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div class="x-text-[#BBBBBC]">First Name</div>
+                                <div>${orderDetails.contact.firstName}</div>
+                            </div>
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div class="x-text-[#BBBBBC]">Last Name</div>
+                                <div>${orderDetails.contact.lastName}</div>
+                            </div>
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div class="x-text-[#BBBBBC]">Email</div>
+                                <div>${orderDetails.contact.email}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-w-1/2">
+                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Shipping Address</h1>
+                        <div class="x-text-[14px] md:x-text-[16px]">
+                            <div>${orderDetails.shippingAddress.name}</div>
+                            <div>${orderDetails.shippingAddress.street}</div>
+                            <div>${orderDetails.shippingAddress.city}, ${orderDetails.shippingAddress.state} ${orderDetails.shippingAddress.zip}</div>
+                            <div>${orderDetails.shippingAddress.country}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-pt-[32px]">
+                    <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Notes</h1>
+                    <div class="x-text-[14px] md:x-text-[16px]">${orderDetails.notes}</div>
+                </div>
+            `;
 
-            mainView.addClass('x-hidden');
-            orderView.removeClass('x-hidden');
+            mainView.classList.add('x-hidden');
+            orderView.classList.remove('x-hidden');
+        }
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('view-order-btn')) {
+                const orderId = event.target.dataset.order;
+                const url = new URL(window.location.href);
+                url.searchParams.set('order', orderId);
+                window.history.pushState({}, '', url);
+                populateOrderView(orderId);
+            }
+
+            if (event.target.classList.contains('order-back-btn')) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('order');
+                window.history.pushState({}, '', url);
+                mainView.classList.remove('x-hidden');
+                orderView.classList.add('x-hidden');
+            }
         });
+    }
 
-        backToOrdersButton.on('click', function () {
-            // remove order from the url
-            const url = new URL(window.location.href);
-            url.searchParams.delete('order');
-            window.history.pushState({}, '', url);
+    async function fetchOrderDetails(orderId) {
+        const query = `
+                {
+                    draftOrders {
+                        id
+                        name
+                        invoiceUrl
+                        createdAt
+                        customer {
+                            firstName
+                            lastName
+                            email
+                        }
+                        shippingAddress {
+                            address1
+                            city
+                            province
+                            country
+                            zip
+                        }
+                        lineItems {
+                            title
+                            quantity
+                            variant {
+                                id
+                                title
+                                price
+                                metafields {
+                                    key
+                                    value
+                                }
+                            }
+                        }
+                    }
+                }
+            `;
 
-            mainView.removeClass('x-hidden');
-            orderView.addClass('x-hidden');
-        });
+        try {
+            const response = await fetchData(query);
+            if (!response || !response.data || !response.data.draftOrders) {
+                throw new Error("Failed to fetch draft orders.");
+            }
+
+            const orders = response.data.draftOrders;
+            const order = orders.find(order => order.id.split('/').pop() === orderId);
+
+            if (!order) {
+                throw new Error(`Order with ID ${orderId} not found`);
+            }
+
+            const tagQuery = `
+                query {
+                    getDraftOrderTags(draftOrderId: "${order.id}") {
+                        tag
+                    }
+                }
+            `;
+            const tagData = await fetchData(tagQuery);
+            const tags = tagData.data?.getDraftOrderTags || [];
+            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
+            const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
+            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "No Notes Provided";
+
+            const orderName = order.name || `Order ${orderId}`;
+            const shippingFee = await checkForShippingFee(orderId);
+
+            return {
+                orderNumber: orderName,
+                purchaseOrder: purchaseOrder, // Placeholder
+                orderDate: new Date(order.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
+                customerName: `${order.customer?.firstName || 'N/A'} ${order.customer?.lastName || 'N/A'}`,
+                items: order.lineItems.map(item => {
+                    const metafields = item.variant?.metafields.reduce((fields, mf) => {
+                        fields[mf.key] = mf.value;
+                        return fields;
+                    }, {}) || {};
+
+                    return {
+                        id: item.variant?.id,
+                        name: item.title || 'N/A',
+                        code: item.variant.title || 'N/A',
+                        description: metafields.description || 'N/A',
+                        cutSize: metafields.cut_size || 'N/A',
+                        packing: metafields.packing || 'N/A',
+                        color: metafields.color || 'N/A',
+                        quantity: item.quantity,
+                        subtotal: `$${(parseFloat(item.variant?.price || 0) * item.quantity).toFixed(2)}`,
+                    };
+                }),
+                subtotal: `$${order.lineItems.reduce((acc, item) => {
+                    const price = parseFloat(item.variant?.price || 0);
+                    return acc + price * item.quantity;
+                }, 0).toFixed(2)}`,
+                shipping: shippingFee,
+                total: `$${order.lineItems.reduce((acc, item) => {
+                    const price = parseFloat(item.variant?.price || 0);
+                    return acc + price * item.quantity;
+                }, 0) + parseFloat(shippingFee.replace('$', ''))}`,
+                contact: {
+                    firstName: order.customer?.firstName || 'N/A',
+                    lastName: order.customer?.lastName || 'N/A',
+                    email: order.customer?.email || 'N/A',
+                },
+                shippingAddress: {
+                    name: `${order.customer?.firstName || ''} ${order.customer?.lastName || ''}`.trim(),
+                    street: order.shippingAddress?.address1 || 'N/A',
+                    city: order.shippingAddress?.city || 'N/A',
+                    state: order.shippingAddress?.province || 'N/A',
+                    zip: order.shippingAddress?.zip || 'N/A',
+                    country: order.shippingAddress?.country || 'N/A',
+                },
+                notes: notes, // Placeholder for notes
+            };
+        } catch (error) {
+            console.error('Error fetching order details:', error.message);
+            return null;
+        }
+    }
+
+    async function reorderDraftOrder(orderId) {
+        try {
+            // Fetch the existing draft order details
+            const orderDetails = await fetchOrderDetails(orderId);
+
+            if (!orderDetails || !orderDetails.items || orderDetails.items.length === 0) {
+                console.error('No items found in the draft order.');
+                return;
+            }
+
+            // Prepare line items for the new draft order
+            const lineItems = orderDetails.items.map(item => ({
+                variantId: item.id,
+                quantity: item.quantity,
+                originalUnitPrice: parseFloat(item.subtotal.replace('$', '')) / item.quantity,
+            }));
+
+            // Map the shipping address to Shopify's required format
+            const shippingAddress = {
+                address1: orderDetails.shippingAddress?.street || '', // Map 'street' to 'address1'
+                city: orderDetails.shippingAddress?.city || '',
+                province: orderDetails.shippingAddress?.state || '', // Map 'state' to 'province'
+                country: orderDetails.shippingAddress?.country || '',
+                zip: orderDetails.shippingAddress?.zip || '',
+                name: orderDetails.shippingAddress?.name || '',
+            };
+
+            // Log the shipping address to ensure it's correctly mapped
+            console.log('Shipping Address:', shippingAddress);
+
+            // Create a new draft order
+            const newDraftOrderId = await createDraftOrder(
+                `gid://shopify/Customer/${window.ShopifyData.customerId}`, // Customer ID
+                lineItems,
+                shippingAddress,
+            );
+
+            if (newDraftOrderId) {
+                // Redirect to the checkout page with the new draft order ID
+                window.location.href = `/pages/checkout?draftOrderId=${newDraftOrderId}`;
+            } else {
+                console.error('Failed to create a new draft order.');
+            }
+        } catch (error) {
+            console.error('Error during reorder:', error);
+        }
+    }
+
+    async function createDraftOrder(customerId, lineItems, shippingAddress) {
+        const formattedCustomerId = customerId.startsWith('gid://shopify/Customer/')
+            ? customerId
+            : `gid://shopify/Customer/${customerId}`;
+
+        // Filter out invalid line items
+        const validLineItems = lineItems.filter(item => item.variantId && item.variantId !== 'N/A');
+
+        if (validLineItems.length === 0) {
+            console.error('No valid line items found. Draft order cannot be created.');
+            return null;
+        }
+
+        if (!shippingAddress.address1 || shippingAddress.address1 === 'undefined') {
+            console.error('Invalid shipping address. Address1 is required.');
+            return null;
+        }
+
+        try {
+            const mutation = `
+                mutation {
+                    createDraftOrder(
+                        customerId: "${formattedCustomerId}",
+                        lineItems: [
+                            ${validLineItems
+                                .map(
+                                    item => `{
+                                        variantId: "${item.variantId}",
+                                        quantity: ${item.quantity}
+                                    }`
+                                )
+                                .join(',')}
+                        ],
+                        shippingAddress: {
+                            address1: "${shippingAddress.address1}",
+                            city: "${shippingAddress.city}",
+                            province: "${shippingAddress.province}",
+                            country: "${shippingAddress.country}",
+                            zip: "${shippingAddress.zip}"
+                        }
+                    ){
+                        id
+                    }
+                }
+            `;
+
+            const response = await fetchData(mutation);
+
+            if (response?.data?.createDraftOrder?.id) {
+                const draftOrderId = response.data.createDraftOrder.id;
+                console.log('Draft Order Created, ID:', draftOrderId);
+                return draftOrderId; 
+            } else {
+                console.error('Failed to create draft order:', response?.errors || 'Unknown error');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error creating draft order:', error);
+            return null;
+        }
     }
 
     //REQUESTED SHIPPING TAB
     async function populateRequestShippingOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const query = `{
-            draftOrders {
-                id
-                name
-                createdAt
-                customerId
-                lineItems {
-                    title
-                    quantity
-                    variantTitle
-                    variant {
-                        price
-                        metafields {
-                            key
-                            value
+        const query = `
+            {
+                draftOrders {
+                    id
+                    name
+                    invoiceUrl
+                    createdAt
+                    customer {
+                        firstName
+                        lastName
+                        email
+                    }
+                    shippingAddress {
+                        address1
+                        city
+                        province
+                        country
+                        zip
+                    }
+                    lineItems {
+                        title
+                        quantity
+                        variant {
+                            title
+                            price
+                            metafields {
+                                key
+                                value
+                            }
                         }
                     }
                 }
-                shippingAddress {
-                    address1
-                    city
-                    province
-                    country
-                    zip
-                }
             }
-        }`;
+        `;
         const draftOrdersList = document.querySelector(".saved-orders-list");
 
         // Add loading animation
@@ -1001,7 +1370,7 @@
             const data = await fetchData(query);
 
             if (data && data.data && data.data.draftOrders) {
-                const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
+                const orders = data.data.draftOrders.filter(order => currentUserId).reverse();
 
                 const filteredOrders = [];
                 for (const order of orders) {
@@ -1047,7 +1416,8 @@
                         const orderId = order.id.split('/').pop();
                         const formattedDate = new Date(order.createdAt).toLocaleDateString();
                         const orderName = order.name || `Order #${orderId}`;
-                        const totalPrice = order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0);                        const totalWithShipping = totalPrice + order.numericShippingFee;
+                        const totalPrice = order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0);                        
+                        const totalWithShipping = totalPrice + order.numericShippingFee;
 
                         const collapsableDiv = document.createElement("div");
                         collapsableDiv.classList.add("collapsable");
@@ -1096,7 +1466,7 @@
                                                     </thead>
                                                     <tbody class="x-text-center">
                                                         <tr class="x-border-b-[1px] x-border-gray-400">
-                                                                <td class="x-text-start x-p-[8px]">${item.variantTitle || "N/A"}</td>
+                                                                <td class="x-text-start x-p-[8px]">${item.variant?.title|| "N/A"}</td>
                                                                 <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
                                                                 <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
                                                                 <td class="x-p-[8px]">${metafields.packing}</td>
@@ -1158,7 +1528,7 @@
         `;
 
         try {
-            const response = await fetch("https://323a-158-62-75-42.ngrok-free.app/graphql", {
+            const response = await fetch("https://kseshopify-production.up.railway.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -1180,7 +1550,7 @@
     //DRAFT ORDERS TAB
     async function fetchData(query) {
         try {
-            const response = await fetch("https://323a-158-62-75-42.ngrok-free.app/graphql", {
+            const response = await fetch("https://kseshopify-production.up.railway.app/graphql", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -1196,33 +1566,41 @@
 
     async function populateDraftOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const query = `{
-            draftOrders {
-                id
-                name
-                createdAt
-                customerId
-                lineItems {
-                    title
-                    quantity
-                    variantTitle
-                    variant {
-                        price
-                        metafields {
-                            key
-                            value
+        const query = `
+            {
+                draftOrders {
+                    id
+                    name
+                    invoiceUrl
+                    createdAt
+                    customer {
+                        firstName
+                        lastName
+                        email
+                    }
+                    shippingAddress {
+                        address1
+                        city
+                        province
+                        country
+                        zip
+                    }
+                    lineItems {
+                        title
+                        quantity
+                        variant {
+                            title
+                            price
+                            metafields {
+                                key
+                                value
+                            }
                         }
                     }
                 }
-                shippingAddress {
-                    address1
-                    city
-                    province
-                    country
-                    zip
-                }
             }
-        }`;
+        `;
+
         const draftOrdersList = document.querySelector(".draft-orders-list");
 
         // Add loading animation
@@ -1237,7 +1615,7 @@
             const data = await fetchData(query);
 
             if (data && data.data && data.data.draftOrders) {
-                const orders = data.data.draftOrders.filter(order => order.customerId === currentUserId).reverse();
+                const orders = data.data.draftOrders.reverse();
 
                 const filteredOrders = [];
                 for (const order of orders) {
@@ -1265,7 +1643,6 @@
                         const orderId = order.id.split('/').pop();
                         const formattedDate = new Date(order.createdAt).toLocaleDateString();
                         const orderName = order.name || `Order #${orderId}`;
-                        console.log(order);
 
                         const collapsableDiv = document.createElement("div");
                         collapsableDiv.classList.add("collapsable");
@@ -1307,7 +1684,7 @@
                                                         </thead>
                                                         <tbody class="x-text-center">
                                                             <tr class="x-border-b-[1px] x-border-gray-400">
-                                                                <td class="x-text-start x-p-[8px]">${item.variantTitle || "N/A"}</td>
+                                                                <td class="x-text-start x-p-[8px]">${item.variant.title|| "N/A"}</td>
                                                                 <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
                                                                 <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
                                                                 <td class="x-p-[8px]">${metafields.packing}</td>
@@ -1368,7 +1745,6 @@
             }
         });
     }
-
 
     // ADDRESSES TAB     
     //EDIT MODAL IS IN HERE
@@ -1456,7 +1832,6 @@
                 const address = addresses.find((addr) => addr.id === addressId);
 
                 if (address) {
-                    console.log('Editing Address: ', address); // Debugging
                     document.getElementById('edit-first-name').value = address.first_name || '';
                     document.getElementById('edit-last-name').value = address.last_name || '';
                     document.getElementById('edit-company').value = address.company || '';
@@ -1686,7 +2061,6 @@
         const addressContainer = document.getElementById('shipping-addresses');
         addressContainer.innerHTML = '';
 
-        console.log("Addresses Array: ", addresses); // Debugging
 
         if (addresses.length === 0) {
             addressContainer.innerHTML = '<div>No addresses found. Please add a new address.</div>';
@@ -1721,7 +2095,7 @@
             });
         });
     }
-
+    // DELETE ADDRESS
     async function deleteAddress(addressId) {
         if (!confirm('Are you sure you want to delete this address?')) return;
 
@@ -1743,9 +2117,6 @@
         }
     }
 
-
-
-
     // ORDERS TAB                
     function initializeOrdersView() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -1756,6 +2127,157 @@
             const view = $(this).attr('class').split(' ')[0];
             updateSubView(view);
         });
+    }
+
+    async function populateDraftOrderTab() {
+        const currentUserId = `gid://shopify/Customer/${customerId}`;
+        const query = `
+            {
+                draftOrders {
+                    id
+                    name
+                    invoiceUrl
+                    createdAt
+                    customer {
+                        firstName
+                        lastName
+                        email
+                    }
+                    shippingAddress {
+                        address1
+                        city
+                        province
+                        country
+                        zip
+                    }
+                    lineItems {
+                        quantity
+                        variant {
+                            price
+                            metafields {
+                                key
+                                value
+                            }
+                        }
+                    }
+                }
+            }
+        `;
+        const companyOrdersTableBody = document.querySelector(".company-orders .x-w-full tbody");
+        const myOrdersTableBody = document.querySelector(".my-orders .x-w-full tbody");
+
+        // loading animation for Company Orders
+        const companyOrdersLoadingRow = document.createElement("tr");
+        const companyOrdersLoadingCell = document.createElement("td");
+        companyOrdersLoadingCell.colSpan = 6; 
+        companyOrdersLoadingCell.style.textAlign = "center";
+        companyOrdersLoadingCell.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner">
+                </div>
+            </div>
+        `;
+        companyOrdersLoadingRow.appendChild(companyOrdersLoadingCell);
+        companyOrdersTableBody.innerHTML = "";
+        companyOrdersTableBody.appendChild(companyOrdersLoadingRow);
+
+        //  loading animation for My Orders
+        const myOrdersLoadingRow = document.createElement("tr");
+        const myOrdersLoadingCell = document.createElement("td");
+        myOrdersLoadingCell.colSpan = 6; 
+        myOrdersLoadingCell.style.textAlign = "center";
+        myOrdersLoadingCell.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner">
+                </div>
+            </div>
+        `;
+        myOrdersLoadingRow.appendChild(myOrdersLoadingCell);
+        myOrdersTableBody.innerHTML = ""; 
+        myOrdersTableBody.appendChild(myOrdersLoadingRow);
+
+
+        try {
+            const data = await fetchData(query);
+
+            if (data && data.data && data.data.draftOrders) {
+                const orders = data.data.draftOrders.reverse();
+
+                const companyOrders = [];
+                const myOrders = [];
+
+                for (const order of orders) {
+                    const orderId = order.id.split('/').pop();
+
+                    // Check if the order has the "Placed" tag
+                    const tagQuery = `{
+                        getDraftOrderTags(draftOrderId: "${orderId}") {
+                            tag
+                        }
+                    }`;
+                    const tagData = await fetchData(tagQuery);
+                    const tags = tagData.data?.getDraftOrderTags || [];
+                    const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed");
+
+                    if (!hasPlacedTag) {
+                        // Skip orders that do not have the "Placed" tag
+                        continue;
+                    }
+                    const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+                    const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
+                    
+                    const shippingFee = await checkForShippingFee(orderId);
+                    const shippingFeeValue = parseFloat(shippingFee.replace('$', '')) || 0;
+
+                    // Determine if this order belongs to the current user
+                    const orderedBy = order.customerId === customerId
+                        ? "My Orders"
+                        : "{{ customer.first_name }} {{ customer.last_name }}" || "Company Orders";
+
+                    const totalPrice = order.lineItems.reduce(
+                        (sum, item) => sum + (item.variant?.price || 0) * item.quantity,
+                        0
+                    ) + shippingFeeValue;
+
+                    const formattedDate = new Date(order.createdAt).toLocaleDateString();
+                    const orderRow = `
+                        <tr class="md:x-text-center">
+                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">${order.name || `Order #${orderId}`}</div>
+                            </td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${orderedBy}</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Placed</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${purchaseOrder}</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$${totalPrice.toFixed(2)}</td>
+                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                    <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="${orderId}">VIEW</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+
+                    if (orderedBy === "Company Orders") {
+                        companyOrders.push(orderRow);
+                    } else {
+                        myOrders.push(orderRow);
+                    }
+                }
+
+                // Update Company Orders Table
+                companyOrdersTableBody.innerHTML = companyOrders.length > 0 ? companyOrders.join('') : "<tr><td colspan='6'>No company orders available.</td></tr>";
+
+                // Update My Orders Table
+                myOrdersTableBody.innerHTML = myOrders.length > 0 ? myOrders.join('') : "<tr><td colspan='6'>No personal orders available.</td></tr>";
+            } else {
+                companyOrdersTableBody.innerHTML = "<tr><td colspan='6'>Failed to fetch orders.</td></tr>";
+                myOrdersTableBody.innerHTML = "<tr><td colspan='6'>Failed to fetch orders.</td></tr>";
+            }
+        } catch (error) {
+            console.error("Error fetching draft orders:", error);
+            companyOrdersTableBody.innerHTML = "<tr><td colspan='6'>An error occurred while fetching orders.</td></tr>";
+            myOrdersTableBody.innerHTML = "<tr><td colspan='6'>An error occurred while fetching orders.</td></tr>";
+        }
     }
 
     function clearSubViewButtonStyles() {

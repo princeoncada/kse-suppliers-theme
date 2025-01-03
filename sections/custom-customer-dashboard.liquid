@@ -1306,7 +1306,6 @@
 
             if (response?.data?.createDraftOrder?.id) {
                 const draftOrderId = response.data.createDraftOrder.id;
-                console.log('Draft Order Created, ID:', draftOrderId);
                 return draftOrderId; 
             } else {
                 console.error('Failed to create draft order:', response?.errors || 'Unknown error');
@@ -1581,7 +1580,6 @@
 
             tagDraftOrder(draftOrderId, userId)
                 .done(async (response) => {
-                    console.log('Tag added successfully:', response);
                     alert('Follow Up tag has been added successfully.');
 
                     // Update the button dynamically
@@ -1638,7 +1636,6 @@
                     const result = await response.json();
 
                     if (response.ok && result.data?.deleteDraftOrder) {
-                        console.log(result.data.deleteDraftOrder);
                         alert(`Draft order with ID ${draftOrderId} was successfully deleted.`);
                         // Remove the order element from the DOM
                         e.target.closest('.collapsable').remove();
@@ -1848,7 +1845,7 @@
                             hasOrders = true;
                         } 
                         if (!hasOrders) {
-                            draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
+                            draftOrdersList.innerHTML = "<p>No Draft orders available.</p>";
                         }
                     }
                     initializeCollapses(draftOrdersList);
@@ -2349,19 +2346,16 @@
 
             if (data && data.data && data.data.draftOrders) {
                 const orders = data.data.draftOrders.reverse();
-                console.log(orders);
 
                 const companyOrders = [];
                 const myOrders = [];
                 const currentCompanyName = orders
                 .find((order) => order.customer?.id === currentUserId)
                 ?.customer?.companyContactProfiles?.[0]?.company?.name;
-                console.log(currentCompanyName);
 
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();
-                    console.log(`Order ID: ${order.customer.id}`);
-                    console.log(currentUserId);
+
 
                     // Check if the order has the "Placed" tag
                     const tagQuery = `{
@@ -2413,13 +2407,11 @@
 
                     // Add to My Orders if it matches the current user
                     if (order.customer?.id === currentUserId) {
-                        console.log('Pushing to My Orders');
                         myOrders.push(orderRow);
                     }
 
                     // Add to Company Orders if it matches the current company
                     if (order.customer?.companyContactProfiles?.[0]?.company?.name === currentCompanyName) {
-                        console.log('Pushing to Company Orders');
                         companyOrders.push(orderRow);
                     }
                 }

@@ -639,6 +639,7 @@
                 address1: document.getElementById('street_address').value || '',
                 city: document.getElementById('town_city').value || '',
                 province: document.getElementById('state').value || '',
+                company_name: document.getElementById('company_name').value || '',
                 country: document.getElementById('country').value || '',
                 zip: document.getElementById('zip').value || ''
             };
@@ -650,6 +651,7 @@
                 href += `&address1=${encodeURIComponent(selectedAddress.address1)}`;
                 href += `&city=${encodeURIComponent(selectedAddress.city)}`;
                 href += `&province=${encodeURIComponent(selectedAddress.province)}`;
+                href += `&company=${encodeURIComponent(selectedAddress.company_name)}`;
                 href += `&country=${encodeURIComponent(selectedAddress.country)}`;
                 href += `&zip=${encodeURIComponent(selectedAddress.zip)}`;
 

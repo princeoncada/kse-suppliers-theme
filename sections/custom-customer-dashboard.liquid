@@ -1515,7 +1515,7 @@
                             hasOrders = true;
                         } 
                         if (!hasOrders) {
-                            draftOrdersList.innerHTML = "<p>No draft orders available.</p>";
+                            draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
                         }
                     }
                     initializeCollapses(draftOrdersList);
@@ -1748,6 +1748,8 @@
 
         try {
             const data = await fetchData(query);
+            let hasOrders = false;
+
 
             if (data && data.data && data.data.draftOrders) {
                 const orders = data.data.draftOrders.reverse();
@@ -1843,11 +1845,13 @@
                         `;
                         if (order.customer?.id === currentUserId) {
                             draftOrdersList.appendChild(collapsableDiv);
+                            hasOrders = true;
+                        } 
+                        if (!hasOrders) {
+                            draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
                         }
                     }
                     initializeCollapses(draftOrdersList);
-                } else {
-                    draftOrdersList.innerHTML = "<p>No draft orders available.</p>";
                 }
             } else {
                 draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";

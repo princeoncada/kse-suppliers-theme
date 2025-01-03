@@ -1246,7 +1246,7 @@
 
             if (newDraftOrderId) {
                 // Redirect to the checkout page with the new draft order ID
-                window.location.href = `/pages/checkout?draftOrderId=${newDraftOrderId}`;
+                window.location.href = `/pages/place-order?draftOrderId=${newDraftOrderId}`;
             } else {
                 console.error('Failed to create a new draft order.');
             }
@@ -1490,8 +1490,8 @@
                                                 <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
                                             </div>
                                             <div class="x-w-full x-flex x-justify-end">
-                                                <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
-                                                    Checkout
+                                                <a href="/pages/place-order?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
+                                                    Place Order
                                                 </a>
                                             </div>
                                             `
@@ -1702,7 +1702,7 @@
                                         <div class="x-text-[16px]">$${order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0).toFixed(2)}</div>
                                     </div>
                                     <div class="x-w-full x-flex x-justify-end">
-                                        <a href="/pages/checkout?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">Checkout</a>
+                                        <a href="/pages/place-order?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">Place Order</a>
                                     </div>
                                 </div>
                             </div>

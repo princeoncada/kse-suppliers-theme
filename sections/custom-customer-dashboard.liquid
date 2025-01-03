@@ -2347,7 +2347,7 @@
                 const companyOrders = [];
                 const myOrders = [];
                 const currentCompanyName = orders.find((order) => order.customer?.companyContactProfiles?.[0]?.company?.name)?.customer?.companyContactProfiles?.[0]?.company?.name;
-                
+                console.log(currentCompanyName);
 
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();

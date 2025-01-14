@@ -1,14 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
-      "type": "custom-customer-dashboard2"
+      "type": "custom-customer-dashboard2",
+      "settings": {}
     },
     "support": {
-        "type": "custom-support"
-    },
+      "type": "custom-support",
+      "settings": {}
+    }
   },
   "order": [
-    "main", "support"
+    "main",
+    "support"
   ]
 }
-

@@ -202,7 +202,7 @@
         "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_price/27ce59c5-d805-4118-89c7-4a7fe286ddce",
         "disabled": false,
         "settings": {
-          "product-price-locator": "#product-price",
+          "product-price-locator": "#prod-price",
           "collection-item-locator": ".card-wrapper",
           "collection-item-price-locator": ".price-item.price-item--regular",
           "delay-after-page-load": 100,

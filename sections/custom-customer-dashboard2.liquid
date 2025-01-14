@@ -152,7 +152,6 @@
                                 </table>
                             </div>  
                         </div>
-
                         {% comment %} <div class="recurring-orders sub-view x-hidden">
                             <div class="x-overflow-x-auto x-max-w-full">
                                 <table class="x-w-full">
@@ -1320,19 +1319,14 @@
     //REQUESTED SHIPPING TAB
     async function populateRequestShippingOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const today = new Date().toISOString().split('T')[0];
         const query = `
-            {
-                draftOrders {
+            query getDraftOrdersByCustomerId($customerId: String!, $includeTags: [String!]) {
+                getDraftOrdersByCustomerId(customerId: $customerId, includeTags: $includeTags) {
                     id
                     name
-                    invoiceUrl
                     createdAt
                     customer {
                         id
-                        firstName
-                        lastName
-                        email
                     }
                     shippingAddress {
                         address1
@@ -1356,177 +1350,154 @@
                 }
             }
         `;
+
         const draftOrdersList = document.querySelector(".saved-orders-list");
 
         // Add loading animation
-        const loadingSpinner = document.createElement("div");
-        loadingSpinner.className = "loading-spinner";
-        loadingSpinner.innerHTML = `
-            <div class="spinner">
+        draftOrdersList.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
             </div>
         `;
-        draftOrdersList.innerHTML = ""; // Clear content
-        draftOrdersList.appendChild(loadingSpinner);
+
+        const variables = {
+            customerId: currentUserId,
+            includeTags: ["ShipRequested"], // Include only ShipRequested tag orders
+        };
 
         try {
-            const data = await fetchData(query);
+            const data = await fetchData2(query, variables);
             let hasOrders = false;
 
-            if (data && data.data && data.data.draftOrders) {
-                const orders = data.data.draftOrders.filter(order => currentUserId).reverse();
+            if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
+                const orders = data.data.getDraftOrdersByCustomerId;
 
-                const filteredOrders = [];
+                draftOrdersList.innerHTML = ""; // Clear loading spinner
+
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();
-
-                    // Check if the order has the "ShipRequested" tag
-                    const tagQuery = `
-                        query {
-                            getDraftOrderTags(draftOrderId: "${orderId}") {
-                                tag
-                            }
-                        }
-                    `;
-                    const tagData = await fetchData(tagQuery);
-                    const hasShipRequestedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "ShipRequested");
-
-
-                    if (!hasShipRequestedTag) {
-                        continue;
-                    }
 
                     // Check for the shipping fee
                     const shippingFee = await checkForShippingFee(orderId);
 
-
                     // Ensure shippingFee is a string and handle cases where it's null or undefined
                     const feeString = typeof shippingFee === "string" ? shippingFee : "$0";
-
 
                     // Remove the "$" and parse as a float
                     const numericShippingFee = parseFloat(feeString.replace("$", ""));
 
-
                     // Determine the shipping status based on the numeric value
                     const shippingStatus = numericShippingFee > 0 ? "Shipping Quote Applied" : "Shipping Quote Requested";
 
+                    // Fetch follow-up tag status
+                    const { buttonClass, buttonText, buttonState } = await tagQuery(orderId);
 
-                    filteredOrders.push({ ...order, shippingStatus, numericShippingFee });
-                }
+                    const formattedDate = new Date(order.createdAt).toLocaleDateString();
+                    const orderName = order.name || `Order #${orderId}`;
+                    const totalPrice = order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0);
+                    const totalWithShipping = totalPrice + numericShippingFee;
 
-                draftOrdersList.innerHTML = ""; // Clear loading spinner
-                if (filteredOrders.length > 0) {
-                    for (const order of filteredOrders) {
-                        const orderId = order.id.split('/').pop();
-                        const formattedDate = new Date(order.createdAt).toLocaleDateString();
-                        const orderName = order.name || `Order #${orderId}`;
-                        const totalPrice = order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0);                        
-                        const totalWithShipping = totalPrice + order.numericShippingFee;
-                        const { buttonClass, buttonText, buttonState } = await tagQuery(orderId);
-                        const collapsableDiv = document.createElement("div");
-                        collapsableDiv.classList.add("collapsable");
+                    const collapsableDiv = document.createElement("div");
+                    collapsableDiv.classList.add("collapsable");
 
-                        collapsableDiv.innerHTML = `
-                            <input type="checkbox" class="x-hidden">
-                            <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                                <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${order.shippingStatus}</div>
-                                <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                    <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
-                                    &nbsp;
-                                    </div>
-                                    <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
-                                    </div>
+                    collapsableDiv.innerHTML = `
+                        <input type="checkbox" class="x-hidden">
+                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                            <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${shippingStatus}</div>
+                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
+                                &nbsp;
                                 </div>
-                            </button>
-                            <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                                <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                    <div class="x-flex x-justify-end x-gap-[12px]">
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
+                                </div>
+                            </div>
+                        </button>
+                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                <div class="x-flex x-justify-end x-gap-[12px]">
                                     <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] delete-draft-order" data-id="${order.id}">Delete Order</button>
-                                    </div>
-                                    <div class="x-flex x-flex-col x-gap-[16px]">
-                                        ${order.lineItems.map(item => {
-                                            const metafields = item.variant?.metafields.reduce((fields, mf) => {
-                                                fields[mf.key] = mf.value;
-                                                return fields;
-                                            }, {}) || {};
-                                            return  `
+                                </div>
+                                <div class="x-flex x-flex-col x-gap-[16px]">
+                                    ${order.lineItems.map(item => {
+                                        const metafields = item.variant?.metafields.reduce((fields, mf) => {
+                                            fields[mf.key] = mf.value;
+                                            return fields;
+                                        }, {}) || {};
+                                        return `
                                             <div class="x-space-y-[14px]">
                                                 <div class="x-text-[#951828] x-text-[24px]">${item.title}</div>
                                                 <table class="x-w-full table-alternating-rows">
                                                     <thead>
                                                         <tr class="x-text-white x-bg-[#404042]">
-                                                                <th class="x-text-start x-p-[8px] x-font-normal x-w-[15%]">Item Code</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Description</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Cut Size</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Packing</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Qty</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Price</th>
+                                                            <th class="x-text-start x-p-[8px] x-font-normal x-w-[15%]">Item Code</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Description</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Cut Size</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Packing</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Qty</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Price</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="x-text-center">
                                                         <tr class="x-border-b-[1px] x-border-gray-400">
-                                                                <td class="x-text-start x-p-[8px]">${item.variant?.title|| "N/A"}</td>
-                                                                <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
-                                                                <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
-                                                                <td class="x-p-[8px]">${metafields.packing}</td>
-                                                                <td class="x-p-[8px]">${item.quantity}</td>
-                                                                <td class="x-p-[8px]">$${(item.variant?.price * item.quantity).toFixed(2) || "0.00"}</td>
+                                                            <td class="x-text-start x-p-[8px]">${item.variant?.title || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${metafields.packing}</td>
+                                                            <td class="x-p-[8px]">${item.quantity}</td>
+                                                            <td class="x-p-[8px]">$${(item.variant?.price * item.quantity).toFixed(2)}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        `;}).join("")}
-                                    </div>
-                                    ${
-                                        order.numericShippingFee > 0
-                                            ? `
-                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                                <div class="x-text-[16px]">Shipping:</div>
-                                                <div class="x-text-[16px]">$${order.numericShippingFee.toFixed(2)}</div>
-                                            </div>
-                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                                <div class="x-text-[16px]">Total + Shipping:</div>
-                                                <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
-                                            </div>
-                                            <div class="x-w-full x-flex x-justify-end">
-                                                <a href="/pages/place-order?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
-                                                    Place Order
-                                                </a>
-                                            </div>
-                                            `
-                                            : `
-                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                                <div class="x-text-[16px]">Total:</div>
-                                                <div class="x-text-[16px]">$${totalPrice.toFixed(2)}</div>
-                                            </div> 
-                                            <div class="x-w-full x-flex x-justify-end">
-                                                <button class="${buttonClass}" ${buttonState} data-id="${order.id}">
-                                                    ${buttonText}
-                                                </button>
-                                            </div>                                          
-                                            `
-                                    }
+                                        `;
+                                    }).join("")}
                                 </div>
+                                ${
+                                    numericShippingFee > 0
+                                        ? `
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Shipping:</div>
+                                            <div class="x-text-[16px]">$${numericShippingFee.toFixed(2)}</div>
+                                        </div>
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Total + Shipping:</div>
+                                            <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
+                                        </div>
+                                        `
+                                        : `
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Total:</div>
+                                            <div class="x-text-[16px]">$${totalPrice.toFixed(2)}</div>
+                                        </div>
+                                        <div class="x-w-full x-flex x-justify-end">
+                                            <button class="${buttonClass}" ${buttonState} data-id="${order.id}">
+                                                ${buttonText}
+                                            </button>
+                                        </div>   
+                                        `
+                                }
                             </div>
-                        `;
-                        if (order.customer?.id === currentUserId) {
-                            draftOrdersList.appendChild(collapsableDiv);
-                            hasOrders = true;
-                        } 
-                        if (!hasOrders) {
-                            draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
-                        }
-                    }
+                        </div>
+                    `;
+
+                    draftOrdersList.appendChild(collapsableDiv);
+                    hasOrders = true;
                     initializeCollapses(draftOrdersList);
+
+                }
+
+                if (!hasOrders) {
+                    draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
                 }
             } else {
-                draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";
+                draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
             }
         } catch (error) {
-            console.error("Error fetching draft orders:", error);
-            draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
+            console.error("Error fetching requested shipping orders:", error);
+            draftOrdersList.innerHTML = "<p>An error occurred while fetching requested shipping orders.</p>";
         }
     }
+
 
     function tagDraftOrder(draftOrderId, userId) {
         const today = new Date();
@@ -1718,8 +1689,8 @@
     async function populateDraftOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
-            query getDraftOrdersByCustomerId($customerId: String!) {
-                getDraftOrdersByCustomerId(customerId: $customerId) {
+            query getDraftOrdersByCustomerId($customerId: String!, $excludeTags: [String!]) {
+                getDraftOrdersByCustomerId(customerId: $customerId, excludeTags: $excludeTags) {
                     id
                     name
                     createdAt
@@ -1758,7 +1729,11 @@
             </div>
         `;
 
-        const variables = { customerId: currentUserId };
+        // Query variables to exclude "Placed" and "ShipRequested" tags
+        const variables = {
+            customerId: currentUserId,
+            excludeTags: ["Placed", "ShipRequested"],
+        };
 
         try {
             const data = await fetchData2(query, variables);
@@ -1766,6 +1741,7 @@
             // Validate response data
             if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
                 const orders = data.data.getDraftOrdersByCustomerId;
+                console.log(orders);
 
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
 
@@ -1786,10 +1762,8 @@
                         <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
                             <div class="x-text-white">Order Name: ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
                             <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
-                                </div>
-                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
-                                </div>
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500"></div>
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute"></div>
                             </div>
                         </button>
                         <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
@@ -1848,167 +1822,6 @@
             draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
         }
     }
-
-    // async function populateDraftOrders() {
-    //     const currentUserId = `gid://shopify/Customer/${customerId}`;
-    //     const query = `
-    //         query getDraftOrdersByCustomerId($customerId: String!) {
-    //             getDraftOrdersByCustomerId(customerId: $customerId) {
-    //                 id
-    //                 name
-    //                 createdAt
-    //                 customer {
-    //                     id
-    //                 }
-    //                 shippingAddress {
-    //                     address1
-    //                     city
-    //                     province
-    //                     country
-    //                     zip
-    //                 }
-    //                 lineItems {
-    //                     title
-    //                     quantity
-    //                     variant {
-    //                         title
-    //                         price
-    //                         metafields {
-    //                             key
-    //                             value
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     `;
-
-    //     const draftOrdersList = document.querySelector(".draft-orders-list");
-
-    //     // Add loading animation
-    //     const loadingSpinner = document.createElement("div");
-    //     loadingSpinner.className = "loading-spinner";
-    //     loadingSpinner.innerHTML = `<div class="spinner">
-    //     </div>`;
-    //     draftOrdersList.innerHTML = ""; // Clear content
-    //     draftOrdersList.appendChild(loadingSpinner);
-    //     const variables = { customerId: currentUserId };
-
-    //     try {
-    //         const data = await fetchData2(query, variables);
-    //         let hasOrders = false;
-
-
-    //         if (data && data.data && data.data.draftOrders) {
-    //             const orders = data.data.draftOrders.reverse();
-
-    //             const filteredOrders = [];
-    //             for (const order of orders) {
-    //                 const orderId = order.id.split('/').pop();
-
-    //                 // Check if the order has the "Placed" or "ShipRequested" tag
-    //                 const tagQuery = `{
-    //                     getDraftOrderTags(draftOrderId: "${orderId}") {
-    //                         tag
-    //                     }
-    //                 }`;
-    //                 const tagData = await fetchData(tagQuery);
-    //                 const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed" || tag.tag === "ShipRequested");
-
-    //                 if (hasPlacedTag) {
-    //                     continue;
-    //                 }
-
-    //                 filteredOrders.push(order);
-    //             }
-
-    //             draftOrdersList.innerHTML = ""; // Clear loading spinner
-    //             if (filteredOrders.length > 0) {
-    //                 for (const order of filteredOrders) {
-    //                     const orderId = order.id.split('/').pop();
-    //                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
-    //                     const orderName = order.name || `Order #${orderId}`;
-
-    //                     const collapsableDiv = document.createElement("div");
-    //                     collapsableDiv.classList.add("collapsable");
-
-    //                     collapsableDiv.innerHTML = `
-    //                         <input type="checkbox" class="x-hidden">
-    //                         <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-    //                             <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
-    //                             <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-    //                                 <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500"></div>
-    //                                 <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute"></div>
-    //                             </div>
-    //                         </button>
-    //                         <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-    //                             <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-    //                                 <div class="x-flex x-justify-end x-gap-[12px]">
-    //                                     <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] delete-draft-order" data-id="${order.id}">Delete Order</button>
-    //                                 </div>
-    //                                 <div class="x-flex x-flex-col x-gap-[16px]">
-    //                                     ${order.lineItems.map(item => {
-    //                                         const metafields = item.variant?.metafields.reduce((fields, mf) => {
-    //                                             fields[mf.key] = mf.value;
-    //                                             return fields;
-    //                                         }, {}) || {};
-    //                                         return `
-    //                                             <div class="x-space-y-[14px]">
-    //                                                 <div class="x-text-[#951828] x-text-[24px]">${item.title}</div>
-    //                                                 <table class="x-w-full table-alternating-rows">
-    //                                                     <thead>
-    //                                                         <tr class="x-text-white x-bg-[#404042]">
-    //                                                             <th class="x-text-start x-p-[8px] x-font-normal x-w-[15%]">Item Code</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Description</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Cut Size</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Packing</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Qty</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Price</th>
-    //                                                         </tr>
-    //                                                     </thead>
-    //                                                     <tbody class="x-text-center">
-    //                                                         <tr class="x-border-b-[1px] x-border-gray-400">
-    //                                                             <td class="x-text-start x-p-[8px]">${item.variant.title|| "N/A"}</td>
-    //                                                             <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
-    //                                                             <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
-    //                                                             <td class="x-p-[8px]">${metafields.packing}</td>
-    //                                                             <td class="x-p-[8px]">${item.quantity}</td>
-    //                                                             <td class="x-p-[8px]">$${(item.variant?.price * item.quantity).toFixed(2) || "0.00"}</td>
-    //                                                         </tr>
-    //                                                     </tbody>
-    //                                                 </table>
-    //                                             </div>
-    //                                         `;
-    //                                     }).join("")}
-    //                                 </div>
-    //                                 <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-    //                                     <div class="x-text-[16px]">Total: </div>
-    //                                     <div class="x-text-[16px]">$${order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0).toFixed(2)}</div>
-    //                                 </div>
-    //                                 <div class="x-w-full x-flex x-justify-end">
-    //                                     <a href="/pages/place-order?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">Place Order</a>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     `;
-    //                     if (order.customer?.id === currentUserId) {
-    //                         draftOrdersList.appendChild(collapsableDiv);
-    //                         hasOrders = true;
-    //                     } 
-    //                     if (!hasOrders) {
-    //                         draftOrdersList.innerHTML = "<p>No Draft orders available.</p>";
-    //                     }
-    //                 }
-    //                 initializeCollapses(draftOrdersList);
-    //             }
-    //         } else {
-    //             draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching draft orders:", error);
-    //         draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
-    //     }
-    // }
 
     function initializeCollapses(targetContainer) {
         $(targetContainer).find('.collapse-trigger').off('click').on('click', function () {
@@ -2420,13 +2233,20 @@
     async function populateDraftOrderTab() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
-        query getDraftOrdersByCustomerId($customerId: String!) {
-            getDraftOrdersByCustomerId(customerId: $customerId) {
+            query getDraftOrdersByCustomerId($customerId: String!, $includeTags: [String!]) {
+                getDraftOrdersByCustomerId(customerId: $customerId, includeTags: $includeTags) {
                     id
                     name
                     createdAt
                     customer {
                         id
+                        firstName
+                        lastName
+                        companyContactProfiles {
+                            company {
+                                name
+                            }
+                        }
                     }
                     shippingAddress {
                         address1
@@ -2449,82 +2269,61 @@
                 }
             }
         `;
+        const variables = {
+            customerId: currentUserId,
+            includeTags: ["Placed"], 
+        };
+
         const companyOrdersTableBody = document.querySelector(".company-orders .x-w-full tbody");
         const myOrdersTableBody = document.querySelector(".my-orders .x-w-full tbody");
 
-        // loading animation for Company Orders
+        // Loading animation for Company Orders
         const companyOrdersLoadingRow = document.createElement("tr");
         const companyOrdersLoadingCell = document.createElement("td");
-        companyOrdersLoadingCell.colSpan = 6; 
+        companyOrdersLoadingCell.colSpan = 6;
         companyOrdersLoadingCell.style.textAlign = "center";
         companyOrdersLoadingCell.innerHTML = `
             <div class="loading-spinner">
-                <div class="spinner">
-                </div>
+                <div class="spinner"></div>
             </div>
         `;
         companyOrdersLoadingRow.appendChild(companyOrdersLoadingCell);
         companyOrdersTableBody.innerHTML = "";
         companyOrdersTableBody.appendChild(companyOrdersLoadingRow);
 
-        //  loading animation for My Orders
+        // Loading animation for My Orders
         const myOrdersLoadingRow = document.createElement("tr");
         const myOrdersLoadingCell = document.createElement("td");
-        myOrdersLoadingCell.colSpan = 6; 
+        myOrdersLoadingCell.colSpan = 6;
         myOrdersLoadingCell.style.textAlign = "center";
         myOrdersLoadingCell.innerHTML = `
             <div class="loading-spinner">
-                <div class="spinner">
-                </div>
+                <div class="spinner"></div>
             </div>
         `;
         myOrdersLoadingRow.appendChild(myOrdersLoadingCell);
-        myOrdersTableBody.innerHTML = ""; 
+        myOrdersTableBody.innerHTML = "";
         myOrdersTableBody.appendChild(myOrdersLoadingRow);
-        const variables = { customerId: currentUserId };
-
 
         try {
-            const data = await fetchData2(query,variables);
+            const data = await fetchData2(query, variables);
 
-            if (data && data.data && data.data.draftOrders) {
-                const orders = data.data.draftOrders.reverse();
+            if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
+                const orders = data.data.getDraftOrdersByCustomerId.reverse();
 
                 const companyOrders = [];
                 const myOrders = [];
                 const currentCompanyName = orders
-                .find((order) => order.customer?.id === currentUserId)
-                ?.customer?.companyContactProfiles?.[0]?.company?.name;
+                    .find((order) => order.customer?.id === currentUserId)
+                    ?.customer?.companyContactProfiles?.[0]?.company?.name;
 
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();
-                    console.log(orders);
+                    const purchaseOrder = order.tags?.find(tag => tag.startsWith("PO:"))?.replace("PO:", "").trim() || "Not Available";
 
-
-                    // Check if the order has the "Placed" tag
-                    const tagQuery = `{
-                        getDraftOrderTags(draftOrderId: "${orderId}") {
-                            tag
-                        }
-                    }`;
-                    const tagData = await fetchData(tagQuery);
-                    const tags = tagData.data?.getDraftOrderTags || [];
-                    const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed");
-
-                    if (!hasPlacedTag) {
-                        // Skip orders that do not have the "Placed" tag
-                        continue;
-                    }
-                    const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
-                    const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
-                    
+                    // Check for the shipping fee
                     const shippingFee = await checkForShippingFee(orderId);
                     const shippingFeeValue = parseFloat(shippingFee.replace('$', '')) || 0;
-
-                    // Determine if this order belongs to the current user
-                    const orderedBy = order.customer.id === customerId
-                        ? "My Orders"
-                        : "{{ customer.first_name }} {{ customer.last_name }}" || "Company Orders";
 
                     const totalPrice = order.lineItems.reduce(
                         (sum, item) => sum + (item.variant?.price || 0) * item.quantity,
@@ -2566,8 +2365,8 @@
                 // Update My Orders Table
                 myOrdersTableBody.innerHTML = myOrders.length > 0 ? myOrders.join('') : "<tr><td colspan='6'>No personal orders available.</td></tr>";
             } else {
-                companyOrdersTableBody.innerHTML = "<tr><td colspan='6'>Failed to fetch orders.</td></tr>";
-                myOrdersTableBody.innerHTML = "<tr><td colspan='6'>Failed to fetch orders.</td></tr>";
+                companyOrdersTableBody.innerHTML = "<tr><td colspan='6'>No draft orders found.</td></tr>";
+                myOrdersTableBody.innerHTML = "<tr><td colspan='6'>No draft orders found.</td></tr>";
             }
         } catch (error) {
             console.error("Error fetching draft orders:", error);
@@ -2575,6 +2374,7 @@
             myOrdersTableBody.innerHTML = "<tr><td colspan='6'>An error occurred while fetching orders.</td></tr>";
         }
     }
+
 
     function clearSubViewButtonStyles() {
         $('.sub-view-button').removeClass('x-underline');

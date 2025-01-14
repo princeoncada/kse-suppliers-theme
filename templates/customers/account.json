@@ -1,7 +1,7 @@
 {
   "sections": {
     "main": {
-      "type": "custom-customer-dashboard"
+      "type": "custom-customer-dashboard2"
     },
     "support": {
         "type": "custom-support"

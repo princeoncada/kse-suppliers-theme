@@ -440,13 +440,6 @@
                             query getDraftOrder($id: String!) {
                                 getDraftOrder(id: $id) {
                                     id
-                                    shippingAddress {
-                                        address1
-                                        city
-                                        province
-                                        country
-                                        zip
-                                    }
                                     lineItems {
                                         title
                                         quantity
@@ -484,7 +477,6 @@
 
                 return {
                     id: draftOrder.id,
-                    shippingAddress: draftOrder.shippingAddress,
                     lineItems: draftOrder.lineItems.map((item) => ({
                         title: item.title,
                         quantity: item.quantity,

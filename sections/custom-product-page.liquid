@@ -110,6 +110,9 @@
                     {% if product.metafields.custom.show_barrier_color %}
                         {% assign barrier_color = variant_details.barrier_color.value %}
                     {% endif %}
+                    {% if product.metafields.custom.show_soaker %}
+                        {% assign soaker = variant_details.soaker.value %}
+                    {% endif %}
                     {% assign variant_type = variant_details.type.value %}
                     {% assign variant_desc = variant_details.description.value %}
                     {% assign variant_cut_size = variant_details.cut_size.value %}
@@ -141,6 +144,12 @@
                                 <div>
                                     <div class="x-font-semibold x-text-[#ac1200]">Barrier Color</div>
                                     <div>{{ barrier_color }}</div>
+                                </div>
+                            {% endif %}
+                            {% if product.metafields.custom.show_soaker %}
+                                <div>
+                                    <div class="x-font-semibold x-text-[#ac1200]">Soaker</div>
+                                    <div>{{ soaker }}</div>
                                 </div>
                             {% endif %}
                             <div>
@@ -201,6 +210,9 @@
                         {% if product.metafields.custom.show_barrier_color %}
                             <th class="x-text-start x-p-[8px]">Barrier Color</th>
                         {% endif %}
+                        {% if product.metafields.custom.show_soaker %}
+                            <th class="x-text-start x-p-[8px]">Soaker</th>
+                        {% endif %}
                         <th class="x-text-start x-p-[8px]">Cut Size</th>
                         <th class="x-text-start x-p-[8px]">Packing</th>
                         <th class="x-text-start x-p-[8px]">Price</th>
@@ -215,6 +227,9 @@
                     {% endif %}
                     {% if product.metafields.custom.show_barrier_color %}
                         {% assign barrier_color = variant_details.barrier_color.value %}
+                    {% endif %}
+                    {% if product.metafields.custom.show_soaker %}
+                        {% assign soaker = variant_details.soaker.value %}
                     {% endif %}
                     {% assign variant_type = variant_details.type.value %}
                     {% assign variant_desc = variant_details.description.value %}
@@ -232,6 +247,9 @@
                         {% endif %}
                         {% if product.metafields.custom.show_barrier_color %}
                             <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ barrier_color }}</td>
+                        {% endif %}
+                        {% if product.metafields.custom.soaker %}
+                            <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ soaker }}</td>
                         {% endif %}
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_cut_size }}</td>
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_packing }}</td>

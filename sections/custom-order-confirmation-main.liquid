@@ -59,18 +59,19 @@
         to { transform: rotate(360deg); }
     }
 </style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     const draftOrderId = params.get('draftOrderId');
     const requestedShipping = params.get('requestedShipping') === 'true';
-    const userId = {{customer.id}}; 
+    const userId = {{customer.id}};
     const selectedAddress = {
-        addressText: "123 Test St, Test City", 
-        province: "Florida",
-        country: "United States",
-        zip: "32003",
+        address1: params.get('address1') || '',
+        city: params.get('city') || '',
+        province: params.get('province') || '',
+        company: params.get('company') || '',
+        country: params.get('country') || '',
+        zip: params.get('zip') || ''
     };
 
     if (draftOrderId) {
@@ -86,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         `;
 
-
         async function requestShipping(draftOrderId, userId, selectedAddress) {
             const mutation = `
                 mutation {
@@ -94,98 +94,154 @@ document.addEventListener('DOMContentLoaded', function () {
                         userId: "${userId}",
                         draftOrderId: "${draftOrderId}",
                         shippingAddress: {
-                            address1: "${selectedAddress.addressText.split(',')[0] || ''}",
-                            city: "${selectedAddress.addressText.split(',')[1] || ''}",
-                            province: "${selectedAddress.province || ''}",
-                            country: "${selectedAddress.country || ''}",
-                            zip: "${selectedAddress.zip || ''}"
+                            address1: "${selectedAddress.address1}",
+                            city: "${selectedAddress.city}",
+                            province: "${selectedAddress.province}",
+                            company: "${selectedAddress.company}",
+                            country: "${selectedAddress.country}",
+                            zip: "${selectedAddress.zip}"
                         }
                     )
                 }
             `;
 
             try {
-                const response = await fetch("https://38df-158-62-79-92.ngrok-free.app/graphql", {
+                const response = await $.ajax({
+                    url: "https://kseshopify-production.up.railway.app/graphql",
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ query: mutation }),
+                    contentType: "application/json",
+                    data: JSON.stringify({ query: mutation }),
                 });
-                const result = await response.json();
 
-                if (result.data?.requestShippingFee) {
+                if (response.data?.requestShippingFee) {
                     console.log("Shipping request sent successfully.");
+                    return true;
                 } else {
-                    alert("Failed to send shipping request email.");
+                    console.error("Failed to send shipping request email.", response.errors);
+                    return false;
                 }
             } catch (error) {
                 console.error("Error sending shipping request:", error);
+                return false;
             }
         }
 
-        // Function to tag draft order
+        async function completeOrder(draftOrderId, userId, selectedAddress) {
+            const mutation = `
+                mutation {
+                    requestShippingFee(
+                        userId: "${userId}",
+                        draftOrderId: "${draftOrderId}",
+                        shippingAddress: {
+                            address1: "${selectedAddress.address1}",
+                            city: "${selectedAddress.city}",
+                            province: "${selectedAddress.province}",
+                            company: "${selectedAddress.company}",
+                            country: "${selectedAddress.country}",
+                            zip: "${selectedAddress.zip}"
+                        }
+                    )
+                }
+            `;
+
+            try {
+                const response = await $.ajax({
+                    url: "https://kseshopify-production.up.railway.app/graphql",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ query: mutation }),
+                });
+                console.log("Server Response:", response);
+
+                if (response.data?.requestShippingFee) {
+                    console.log("Order completed successfully.");
+                    return true;
+                } else {
+                    console.error("Failed to complete the order:", response.errors || response.data);
+                    return false;
+                }
+            } catch (error) {
+                console.error("Error completing order (AJAX):", error);
+                return false;
+            }
+        }
+
         function tagDraftOrder() {
             return $.ajax({
-                url: 'https://38df-158-62-79-92.ngrok-free.app/graphql',
+                url: 'https://kseshopify-production.up.railway.app/graphql',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ query: tagMutation }),
             });
         }
 
-        // Tag and display confirmation
-        tagDraftOrder().done(async function (tagResponse) {
-            console.log('Draft Order Tagging Response:', tagResponse);
+        tagDraftOrder()
+            .done(async function (tagResponse) {
+                console.log('Draft Order Tagging Response:', tagResponse);
+                console.log("Selected Address:", selectedAddress);
 
-            if (tagResponse.data?.createDraftOrderTag) {
-                if (requestedShipping) {
-                    console.log("Shipping fee requested. Triggering requestShipping...");
+                if (tagResponse.data?.createDraftOrderTag) {
+                    if (requestedShipping) {
+                        console.log("Shipping fee requested. Triggering requestShipping...");
 
-                    await requestShipping(draftOrderId, userId, selectedAddress);
+                        const success = await requestShipping(draftOrderId, userId, selectedAddress);
+                        if (success) {
+                            spinnerContainer.style.display = 'none';
+                            confirmationContent.innerHTML = `
+                                <div><i class='bx bx-check-circle x-text-[#9E0B0F] x-text-[96px]'></i></div>
+                                <div class="x-text-[32px] md:x-text-[36px]">SHIPPING FEE REQUESTED!</div>
+                                <div>Thank you! Your shipping fee request has been received.</div>
+                            `;
+                        } else {
+                            spinnerContainer.style.display = 'none';
+                            confirmationContent.innerHTML = `
+                                <div><i class='bx bx-error-circle x-text-[#951828] x-text-[96px]'></i></div>
+                                <div class="x-text-[32px] md:x-text-[36px]">SHIPPING REQUEST FAILED!</div>
+                                <div>Please try again later.</div>
+                            `;
+                        }
+                    } else {
+                        const orderCompleted = await completeOrder(draftOrderId, userId, selectedAddress);
+                        if (orderCompleted) {
+                            spinnerContainer.style.display = 'none';
+                            confirmationContent.innerHTML = `
+                                <div><i class='bx bx-check-circle x-text-[#9E0B0F] x-text-[96px]'></i></div>
+                                <div class="x-text-[32px] md:x-text-[36px]">ORDER CONFIRMED!</div>
+                                <div>
+                                    Thank you for placing your order! We hope you enjoyed shopping with us. <br class="x-hidden md:x-block" />
+                                    We have sent you a confirmation email.
+                                </div>
+                                <div class="x-font-semibold">
+                                    Your order number is: <span id="order-number" class="x-text-[#9E0B0F]">${draftOrderId.split('/').pop()}</span>
+                                </div>
+                            `;
+                        } else {
+                            spinnerContainer.style.display = 'none';
+                            confirmationContent.innerHTML = `
+                                <div><i class='bx bx-error-circle x-text-[#951828] x-text-[96px]'></i></div>
+                                <div class="x-text-[32px] md:x-text-[36px]">ORDER COMPLETION FAILED!</div>
+                                <div>Please try again later.</div>
+                            `;
+                        }
+                    }
 
-                    spinnerContainer.style.display = 'none';
-                    confirmationContent.innerHTML = `
-                        <div><i class='bx bx-check-circle x-text-[#9E0B0F] x-text-[96px]'></i></div>
-                        <div class="x-text-[32px] md:x-text-[36px]">SHIPPING FEE REQUESTED!</div>
-                        <div>Thank you! Your shipping fee request has been received.</div>
-                    `;
-                } else {
-
-                    
-                    spinnerContainer.style.display = 'none';
-                    confirmationContent.innerHTML = `
-                        <div><i class='bx bx-check-circle x-text-[#9E0B0F] x-text-[96px]'></i></div>
-                        <div class="x-text-[32px] md:x-text-[36px]">ORDER CONFIRMED!</div>
-                        <div>
-                            Thank you for placing your order! We hope you enjoyed shopping with us. <br class="x-hidden md:x-block" />
-                            We have sent you a confirmation email.
-                        </div>
-                        <div class="x-font-semibold">
-                            Your order number is: <span id="order-number" class="x-text-[#9E0B0F]">${draftOrderId.split('/').pop()}</span>
-                        </div>
-                    `;
+                    confirmationContent.style.display = 'block';
+                    actionButton.style.display = 'inline-block';
+                    actionButton.href = "/account?view=orders";
+                    actionButton.textContent = "View Saved Orders";
                 }
-
-                confirmationContent.style.display = 'block';
+            })
+            .fail(function (error) {
+                console.error('Error tagging draft order:', error.responseJSON || error);
+                spinnerContainer.style.display = 'none';
+                confirmationContent.innerHTML = `<div class="x-text-[#951828]">Failed to process the draft order. Please try again later.</div>`;
                 actionButton.style.display = 'inline-block';
                 actionButton.href = "/account?view=saved";
-                actionButton.textContent = "View Saved Orders";
-            } else {
-                throw new Error("Failed to tag the draft order.");
-            }
-        }).fail(function (error) {
-            console.error('Error tagging draft order:', error.responseJSON || error);
-            spinnerContainer.style.display = 'none';
-            confirmationContent.innerHTML = `<div class="x-text-[#951828]">Failed to process the draft order. Please try again later.</div>`;
-            actionButton.style.display = 'inline-block';
-            actionButton.href = "/account?view=saved";
-            actionButton.textContent = "Back to Saved Orders";
-        });
+                actionButton.textContent = "Back to Saved Orders";
+            });
     } else {
         console.error('No draftOrderId found in URL parameters.');
         alert('No draft order ID provided. Please try again.');
     }
 });
-
-
 </script>
-

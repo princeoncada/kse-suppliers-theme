@@ -1,3 +1,6 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+{{ 'tingle.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tingle.js' | asset_url }}"></script>
 <section>
     <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px] lg:x-max-w-[1440px] lg:x-mx-auto">
         <div class="x-text-[40px]">CHECKOUT</div>
@@ -35,9 +38,13 @@
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px]">
                                 <label for="country" class="x-text-[14px]">Country/Region</label>
-                                <select name="country" class="x-border x-p-[12px] x-text-[14px]">
-                                    <option value="united_states">United States</option>
-                                </select>
+                                <input id="country" class="x-border x-p-[12px] x-text-[14px]" type="text" name="country" readonly>
+                            </div>
+                        </div>
+                        <div>
+                            <div id="province-wrapper" class="x-flex x-flex-col x-gap-[4px]">
+                                <label for="state" class="x-text-[14px]">Province/State</label>
+                                <input id="state" class="x-border x-p-[12px] x-text-[14px]" type="text" name="state" placeholder="Province/State">
                             </div>
                         </div>
                         <div>
@@ -63,16 +70,12 @@
                         </div>
                         <div class="x-flex x-flex-row x-gap-4">
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
-                                <label for="state" class="x-text-[14px]">State</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="state" id="state"
-                                    placeholder="State" readonly>
-                            </div>
-                            <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="zip" class="x-text-[14px]">ZIP Code</label>
                                 <input class="x-border x-p-[12px] x-text-[14px]" type="number" name="zip" id="zip"
                                     placeholder="Zip Code" readonly>
                             </div>
                         </div>
+                        <button id="select-address-btn" class="x-p-[12px] x-bg-red-800 x-text-white x-rounded">Select Address</button>
                         {% comment %} <div class="x-py-[12px]">
                             <div class="x-flex x-flex-row x-gap-[8px] x-items-center">
                                 <input class="x-min-w-[16px] x-min-h-[16px]" type="checkbox" name="save_address" id="">
@@ -93,7 +96,7 @@
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="job_code" class="x-text-[14px]">PO/Job Code (Optional)</label>
-                                <input class="x-border x-p-[12px] x-text-[14px]" type="text" name="job_code"
+                                <input id="job_code" class="x-border x-p-[12px] x-text-[14px]" type="text" name="job_code"
                                     placeholder="Enter Code">
                             </div>
                         </div>
@@ -134,7 +137,7 @@
                         <div>
                             <div class="x-flex x-flex-col x-gap-[4px] x-w-full">
                                 <label for="message" class="x-text-[14px]">Message</label>
-                                <textarea name="message" class="x-border x-p-[12px]" placeholder="Write Message"
+                                <textarea id="message"name="message" class="x-border x-p-[12px]" placeholder="Write Message"
                                     rows="10"></textarea>
                             </div>
                         </div>
@@ -268,6 +271,134 @@
             zip: "{{ customer.default_address.zip }}"
         }
     };
+    async function saveDraftOrderTags(draftOrderId, userId, jobCode, message) {
+        const tags = [];
+        
+        // Add job code tag if provided
+        if (jobCode) {
+            tags.push(`PO:${jobCode}`);
+        }
+        
+        // Add message tag if provided
+        if (message) {
+            tags.push(`NOTES:${message}`);
+        }
+
+        // Loop through the tags and create them one by one
+        for (const tag of tags) {
+            const mutation = `
+                mutation {
+                    createDraftOrderTag(draftOrderId: "${draftOrderId}", tag: "${tag}", userId: "${userId}")
+                }
+            `;
+
+            try {
+                // Call your GraphQL endpoint
+                const response = await fetch('https://kseshopify-production.up.railway.app/graphql', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: mutation }),
+                });
+
+                const result = await response.json();
+                console.log(`Tag created successfully: ${tag}`, result);
+            } catch (error) {
+                console.error(`Error creating tag: ${tag}`, error);
+            }
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAddressBtn = document.getElementById('select-address-btn');
+        const provinceWrapper = document.getElementById('province-wrapper');
+        const countryInput = document.getElementById('country');
+        const addresses = {{ customer.addresses | json }};
+
+        
+
+
+        // Populate default address if available
+        if (addresses.length > 0) {
+            const defaultAddress = addresses[0];
+            document.getElementById('company_name').value = defaultAddress.company || '';
+            document.getElementById('street_address').value = defaultAddress.address1 || '';
+            document.getElementById('town_city').value = defaultAddress.city || '';
+            document.getElementById('state').value = defaultAddress.province || '';
+            document.getElementById('zip').value = defaultAddress.zip || '';
+            countryInput.value = defaultAddress.country || '';
+
+            // Hide province field if no province exists
+            if (!defaultAddress.province) {
+                provinceWrapper.style.display = 'none';
+            }
+        }
+
+        const modal = new tingle.modal({
+            footer: true,
+            stickyFooter: false,
+            closeMethods: ['overlay', 'button', 'escape'],
+            closeLabel: "Close",
+            cssClass: ['custom-class'],
+        });
+
+        modal.addFooterBtn('Close', 'tingle-btn tingle-btn--primary', function () {
+            modal.close();
+        });
+
+        selectAddressBtn.addEventListener('click', function () {
+            // Create the modal content dynamically
+            let content = '<div class="x-flex x-flex-col x-gap-[12px]">';
+            addresses.forEach(address => {
+                content += `
+                    <div class="x-space-y-[8px]">
+                        <div class="x-border x-p-[16px] x-cursor-pointer select-address-option" 
+                            data-id="${address.id}" 
+                            data-company="${address.company || ''}" 
+                            data-address1="${address.address1 || ''}" 
+                            data-city="${address.city || ''}" 
+                            data-province="${address.province || ''}" 
+                            data-zip="${address.zip || ''}" 
+                            data-country="${address.country || ''}">
+                            <div>${address.first_name || ''} ${address.last_name || ''}</div>
+                            <div>${address.company || ''}</div>
+                            <div>${address.address1 || ''}</div>
+                            <div>${address.city || ''}, ${address.province || ''} ${address.zip || ''}</div>
+                            <div>${address.country || ''}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            content += '</div>';
+
+            modal.setContent(content);
+            modal.open();
+
+            document.querySelectorAll('.select-address-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.getElementById('company_name').value = this.dataset.company || '';
+                    document.getElementById('street_address').value = this.dataset.address1 || '';
+                    document.getElementById('town_city').value = this.dataset.city || '';
+                    document.getElementById('state').value = this.dataset.province || '';
+                    document.getElementById('zip').value = this.dataset.zip || '';
+                    countryInput.value = this.dataset.country || '';
+
+                    // Hide province field if no province exists
+                    if (!this.dataset.province) {
+                        provinceWrapper.style.display = 'none';
+                    } else {
+                        provinceWrapper.style.display = 'block';
+                    }
+
+                    modal.close();
+                });
+            });
+        });
+    });
+
+
 
     document.addEventListener('DOMContentLoaded', function () {
     const placeOrderButton = document.getElementById('place-order');
@@ -278,9 +409,6 @@
         });
     });
 });
-
-
-
 
     document.addEventListener('DOMContentLoaded', async function () {
         const params = new URLSearchParams(window.location.search);
@@ -304,7 +432,7 @@
                 : `gid://shopify/DraftOrder/${id}`;
 
             try {
-                const response = await fetch('https://38df-158-62-79-92.ngrok-free.app/graphql', {
+                const response = await fetch('https://kseshopify-production.up.railway.app/graphql', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -312,18 +440,11 @@
                             query getDraftOrder($id: String!) {
                                 getDraftOrder(id: $id) {
                                     id
-                                    shippingAddress {
-                                        address1
-                                        city
-                                        province
-                                        country
-                                        zip
-                                    }
                                     lineItems {
                                         title
                                         quantity
-                                        variantTitle
                                         variant {
+                                            title
                                             price
                                             metafields {
                                                 key
@@ -356,12 +477,11 @@
 
                 return {
                     id: draftOrder.id,
-                    shippingAddress: draftOrder.shippingAddress,
                     lineItems: draftOrder.lineItems.map((item) => ({
                         title: item.title,
                         quantity: item.quantity,
-                        variantTitle: item.variantTitle,
                         variant: {
+                            title: item.variant?.title,
                             price: item.variant?.price,
                             metafields: item.variant?.metafields || [],
                         },
@@ -384,7 +504,7 @@
             `;
 
             try {
-                const response = await fetch("https://38df-158-62-79-92.ngrok-free.app/graphql", {
+                const response = await fetch("https://kseshopify-production.up.railway.app/graphql", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -428,7 +548,7 @@
                         <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">${item.title} </div>
                         <div class="x-border-b-[1px]">
                             <div class="x-grid x-grid-cols-[30%_40%_auto] x-gap-[4px] x-border-t-[1px] x-py-[8px]">
-                                <div>Code:${variantTitle || 'N/A'}</div>
+                                <div>Code:${item.variant?.title || "N/A"}</div>
                                 <div>Size: ${metafields.cut_size || 'N/A'}</div>
                                 <div>Qty: ${quantity}</div>
                                 <div>Color: ${metafields.color || 'N/A'}</div>
@@ -495,13 +615,37 @@
         /**
          * Place Order Button Logic
          */
-        document.getElementById('place-order').addEventListener('click', function () {
+        document.getElementById('place-order').addEventListener('click', async function () {
             const params = new URLSearchParams(window.location.search);
             const draftOrderId = params.get('draftOrderId');
             const placeOrderButton = document.getElementById('place-order');
+            const jobCode = document.getElementById('job_code').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const userId = {{customer.id}};
+            console.log(userId);
+
+            // Call the function to save the tags
+            await saveDraftOrderTags(draftOrderId, userId, jobCode, message);
+
+            const selectedAddress = {
+                address1: document.getElementById('street_address').value || '',
+                city: document.getElementById('town_city').value || '',
+                province: document.getElementById('state').value || '',
+                company_name: document.getElementById('company_name').value || '',
+                country: document.getElementById('country').value || '',
+                zip: document.getElementById('zip').value || ''
+            };
 
             if (draftOrderId) {
                 let href = `/pages/order-confirmation?draftOrderId=${draftOrderId}`;
+
+                // Add selected address as query parameters
+                href += `&address1=${encodeURIComponent(selectedAddress.address1)}`;
+                href += `&city=${encodeURIComponent(selectedAddress.city)}`;
+                href += `&province=${encodeURIComponent(selectedAddress.province)}`;
+                href += `&company=${encodeURIComponent(selectedAddress.company_name)}`;
+                href += `&country=${encodeURIComponent(selectedAddress.country)}`;
+                href += `&zip=${encodeURIComponent(selectedAddress.zip)}`;
 
                 // Check if "Request Shipping" is the button's text content
                 if (placeOrderButton.textContent === 'Request Shipping') {
@@ -514,5 +658,6 @@
                 alert('Failed to place the order. Please try again.');
             }
         });
+
     });
 </script>

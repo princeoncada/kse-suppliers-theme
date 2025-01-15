@@ -1,15 +1,50 @@
 <section class="x-px-[16px]">
     <div class="x-flex x-flex-col x-shadow-md md:x-shadow-xl x-max-w-[1440px] x-mx-auto x-rounded-b-lg">
-        <div class="lg:x-w-[85%] lg:x-mx-auto">
+        <div class="lg:x-w-[85%] lg:x-mx-auto x-pb-[16px]">
             <div class="x-w-full">
                 <h1 class="x-text-start x-text-[28px] x-p-[16px] md:x-pt-[32px] x-text-[#a80505]">{{ product.title }}
                 </h1>
             </div>
             <div class="x-flex x-flex-col md:x-flex-row md:x-gap-[32px]">
-                <div href="{{ product.url }}" class="x-w-full md:x-w-1/2 x-p-[4px]">
-                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
-                        src="{{ product.featured_image |  image_url: width: 400 }}"
-                        alt="{{ product.featured_image.alt }}" width="100%" height="100%">
+                <div class="x-w-full md:x-w-1/2 x-p-[4px]">
+                    {% if product.metafields.custom.additional_images %}
+                        {% assign image_list = product.metafields.custom.additional_images.value %}
+                        <div class="x-w-full x-h-full x-flex x-flex-col x-gap-[16px]">
+                            <div class="image-carousel x-shadow-none x-h-[400px]" data-flickity='{ "contain": true, "pageDots": false, "prevNextButtons": false }'>
+                                <div class="image-cell x-w-full x-h-full">
+                                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
+                                    src="{{ product.featured_image |  image_url: width: 400 }}"
+                                    alt="{{ product.featured_image.alt }}" width="100%" height="100%">
+                                </div>
+                                {% for image in image_list %}
+                                    <div class="image-cell x-w-full x-h-full">
+                                        <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
+                                        src="{{ image }}"
+                                        alt="{{ image }}" width="100%" height="100%">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="carousel-nav x-shadow-none" data-flickity='{ "asNavFor": ".image-carousel", "contain": true, "pageDots": false }'>
+                                <div class="nav-cell x-w-[150px] x-h-[150px] x-mr-[12px] x-border x-rounded-[8px]">
+                                    <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
+                                    src="{{ product.featured_image |  image_url: width: 400 }}"
+                                    alt="{{ product.featured_image.alt }}" width="100%" height="100%">
+                                </div>
+
+                                {% for image in image_list %}
+                                    <div class="nav-cell x-w-[150px] x-h-[150px] x-mr-[12px] x-border x-rounded-[8px]">
+                                        <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
+                                        src="{{ image }}"
+                                        alt="{{ image }}" width="100%" height="100%">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}    
+                        <img class="x-object-contain x-w-full x-h-full x-rounded-[16px]"
+                            src="{{ product.featured_image |  image_url: width: 400 }}"
+                            alt="{{ product.featured_image.alt }}" width="100%" height="100%">
+                    {% endif %}
                 </div>
                 <div class="x-flex x-flex-col x-gap-[20px] x-p-[16px] md:x-pl-[32px] md:x-w-1/2 x-text-[16px]">
                     <div>{{ product.description }}</div>
@@ -19,6 +54,31 @@
                                 class='bx bx-radio-circle-marked x-text-[#9e0b0f] x-text-[12px]'></i>{{ feature }}</li>
                         {% endfor %}
                     </ul>
+                    {% if product.metafields.custom.videos %}
+                        <div>
+                            {% for video in product.metafields.custom.videos.value %}
+                                <video controls style="max-width: 100%; margin-bottom: 16px;">
+                                    <source src="{{ video | strip }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if product.metafields.custom.pdfs %}
+                        <div>
+                            <ul style="list-style: none; padding: 0;">
+                                {% for pdf in product.metafields.custom.pdfs.value %}
+                                    <li style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <i class='bx bxs-file-pdf x-text-[28px] x-text-[#9e0b0f]'></i>
+                                        <a class="x-ml-[8px]" href="{{ pdf | strip }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                                            {{ pdf | strip | split: '/' | last | split: '?' | first | replace: '_', ' ' | replace: '.pdf', '' }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
                     <div class="x-flex x-items-center x-pt-[10px] x-text-[24px] x-gap-[4px]">
                         See product listing below <i
                             class='bx bx-down-arrow-alt x-leading-[0px] x-text-[36px] x-text-[#9e0b0f]'></i>
@@ -41,6 +101,12 @@
                 <div>
                     {% for variant in product.variants %}
                     {% assign variant_details = variant.metafields.custom %}
+                    {% if product.metafields.custom.show_color %}
+                        {% assign variant_color = variant_details.color.value %}
+                    {% endif %}
+                    {% if product.metafields.custom.show_thread_color %}
+                        {% assign thread_color = variant_details.thread_color.value %}
+                    {% endif %}
                     {% assign variant_type = variant_details.type.value %}
                     {% assign variant_desc = variant_details.description.value %}
                     {% assign variant_cut_size = variant_details.cut_size.value %}
@@ -56,6 +122,18 @@
                                 <div class="x-font-semibold x-text-[#ac1200]">Description</div>
                                 <div>{{ variant_desc }}</div>
                             </div>
+                            {% if product.metafields.custom.show_color %}
+                                <div>
+                                    <div class="x-font-semibold x-text-[#ac1200]">Color</div>
+                                    <div>{{ variant_color }}</div>
+                                </div>
+                            {% endif %}
+                            {% if product.metafields.custom.show_thread_color %}
+                                <div>
+                                    <div class="x-font-semibold x-text-[#ac1200]">Thread Color</div>
+                                    <div>{{ thread_color }}</div>
+                                </div>
+                            {% endif %}
                             <div>
                                 <div class="x-font-semibold x-text-[#ac1200]">Cut Size</div>
                                 <div>{{ variant_cut_size }}</div>
@@ -103,14 +181,26 @@
                 </div>
                 <table class="x-w-full x-text-start">
                     <tr class="x-h-[32px] x-text-white x-bg-[#ac1200]">
-                        <th class="x-text-start x-p-[8px] x-w-1/5">Item Code</th>
-                        <th class="x-text-start x-p-[8px] x-w-1/5">Description</th>
-                        <th class="x-text-start x-p-[8px] x-w-1/5">Cut Size</th>
-                        <th class="x-text-start x-p-[8px] x-w-1/5">Packing</th>
-                        <th class="x-text-start x-p-[8px] x-w-1/5">Price</th>
+                        <th class="x-text-start x-p-[8px]">Item Code</th>
+                        <th class="x-text-start x-p-[8px]">Description</th>
+                        {% if product.metafields.custom.show_color %}
+                            <th class="x-text-start x-p-[8px]">Color</th>
+                        {% endif %}
+                        {% if product.metafields.custom.show_thread_color %}
+                            <th class="x-text-start x-p-[8px]">Thread Color</th>
+                        {% endif %}
+                        <th class="x-text-start x-p-[8px]">Cut Size</th>
+                        <th class="x-text-start x-p-[8px]">Packing</th>
+                        <th class="x-text-start x-p-[8px]">Price</th>
                     </tr>
                     {% for variant in product.variants %}
                     {% assign variant_details = variant.metafields.custom %}
+                    {% if product.metafields.custom.show_color %}
+                        {% assign variant_color = variant_details.color.value %}
+                    {% endif %}
+                    {% if product.metafields.custom.show_thread_color %}
+                        {% assign thread_color = variant_details.thread_color.value %}
+                    {% endif %}
                     {% assign variant_type = variant_details.type.value %}
                     {% assign variant_desc = variant_details.description.value %}
                     {% assign variant_cut_size = variant_details.cut_size.value %}
@@ -119,6 +209,12 @@
                     <tr class="x-text-[20px]">
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant.title }}</td>
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_desc }}</td>
+                        {% if product.metafields.custom.show_color %}
+                            <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_color }}</td>
+                        {% endif %}
+                        {% if product.metafields.custom.show_thread_color %}
+                            <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ thread_color }}</td>
+                        {% endif %}
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_cut_size }}</td>
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_packing }}</td>
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">

@@ -7,7 +7,7 @@
             {% for collection in collections %}
                 <a href="{{ collection.url }}" class="carousel-cell x-p-[24px] x-flex x-flex-col x-gap-[24px] x-mr-[16px] x-rounded-[8px] x-border-[1.5px] x-border-gray-300">
                     <div class="x-text-[18px]">{{ collection.title }}</div>
-                    <div>
+                    <div class="x-h-full x-w-full x-flex x-justify-center x-items-center">
                         <img src="{{ collection.image.src | image_url: width: 400, height: 400 }}" alt="{{ collection.image.alt }}" width="350px" height="350px"/>
                     </div>
                 </a>
@@ -17,17 +17,20 @@
 </div>
 
 <style>
+    .carousel-cell {
+        height: 480px !important;
+    }
 
-.category-carousel .flickity-page-dots {
-  display: none;
-}
+    .category-carousel .flickity-page-dots {
+        display: none;
+    }
 
-.category-carousel .flickity-button {
-  background: transparent;
-}
-.category-carousel .flickity-prev-next-button {
-  width: 50px;
-  height: 50px;
-}
+    .category-carousel .flickity-button {
+        background: transparent;
+    }
+    .category-carousel .flickity-prev-next-button {
+        width: 50px;
+        height: 50px;
+    }
 
 </style>

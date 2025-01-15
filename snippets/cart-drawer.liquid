@@ -47,9 +47,9 @@
                     {{ 'general.continue_shopping' | t }}
                   </a>
     
-                  <a href="{{ routes.cart_url }}" class="button">
+                  {% comment %} <a href="{{ routes.cart_url }}" class="button">
                     View Cart
-                  </a>
+                  </a> {% endcomment %}
               </div>
               {%- if shop.customer_accounts_enabled and customer == null -%}
                 <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
@@ -534,14 +534,14 @@
                 >
                     View Cart
                 </a> {% endcomment %}
-                <a 
+                {% comment %} <a 
                     type="button" 
                     class="x-flex x-bg-black x-text-white x-border-white hover:x-border-black x-border-[1px] x-justify-center x-items-center x-w-full x-py-[10px] x-transition-colors x-duration-150"
                     href="/pages/checkout"
                     {% if cart==empty %} disabled {% endif %}
                 >
                     View Cart
-                </a>
+                </a> {% endcomment %}
             </div>
         </div>
       </div>

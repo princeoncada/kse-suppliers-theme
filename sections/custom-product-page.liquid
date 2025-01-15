@@ -114,7 +114,11 @@
                         {% assign soaker = variant_details.soaker.value %}
                     {% endif %}
                     {% assign variant_type = variant_details.type.value %}
-                    {% assign variant_desc = variant_details.description.value %}
+
+                    {% if product.metafields.custom.show_description %}
+                        {% assign variant_desc = variant_details.description.value %}
+                    {% endif %}
+                    
                     {% assign variant_cut_size = variant_details.cut_size.value %}
                     {% assign variant_packing = variant_details.packing.value %}
                     {% if variant_type == product_type %}
@@ -124,10 +128,12 @@
                                 <div class="x-font-semibold x-text-[#ac1200]">Item Code</div>
                                 <div>{{ variant.title }}</div>
                             </div>
-                            <div>
-                                <div class="x-font-semibold x-text-[#ac1200]">Description</div>
-                                <div>{{ variant_desc }}</div>
-                            </div>
+                            {% if product.metafields.custom.show_description %}
+                                <div>
+                                    <div class="x-font-semibold x-text-[#ac1200]">Description</div>
+                                    <div>{{ variant_desc }}</div>
+                                </div>
+                            {% endif %}
                             {% if product.metafields.custom.show_color %}
                                 <div>
                                     <div class="x-font-semibold x-text-[#ac1200]">Color</div>
@@ -200,7 +206,9 @@
                 <table class="x-w-full x-text-start">
                     <tr class="x-h-[32px] x-text-white x-bg-[#ac1200]">
                         <th class="x-text-start x-p-[8px]">Item Code</th>
-                        <th class="x-text-start x-p-[8px]">Description</th>
+                        {% if product.metafields.custom.show_description %}
+                            <th class="x-text-start x-p-[8px]">Description</th>
+                        {% endif %}
                         {% if product.metafields.custom.show_color %}
                             <th class="x-text-start x-p-[8px]">Color</th>
                         {% endif %}
@@ -232,13 +240,17 @@
                         {% assign soaker = variant_details.soaker.value %}
                     {% endif %}
                     {% assign variant_type = variant_details.type.value %}
-                    {% assign variant_desc = variant_details.description.value %}
+                    {% if product.metafields.custom.show_description %}
+                        {% assign variant_desc = variant_details.description.value %}
+                    {% endif %}
                     {% assign variant_cut_size = variant_details.cut_size.value %}
                     {% assign variant_packing = variant_details.packing.value %}
                     {% if variant_type == product_type %}
                     <tr class="x-text-[20px]">
                         <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant.title }}</td>
-                        <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_desc }}</td>
+                        {% if product.metafields.custom.show_description %}
+                            <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_desc }}</td>
+                        {% endif %}
                         {% if product.metafields.custom.show_color %}
                             <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_color }}</td>
                         {% endif %}

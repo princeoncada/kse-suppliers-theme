@@ -65,6 +65,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const draftOrderId = params.get('draftOrderId');
     const requestedShipping = params.get('requestedShipping') === 'true';
     const userId = {{customer.id}};
+    console.log({{ customer.current_company | json }});
+    window.customer = {
+        first_name: "{{ customer.first_name }}",
+        last_name: "{{ customer.last_name }}",
+        email: "{{ customer.email }}",
+        company: "{{ customer.current_company.name }}",
+    };
+    const customer = window.customer || {};
+    console.log("Customer:", customer);
     const selectedAddress = {
         address1: params.get('address1') || '',
         city: params.get('city') || '',
@@ -74,6 +83,37 @@ document.addEventListener('DOMContentLoaded', function () {
         zip: params.get('zip') || ''
     };
 
+    const shipTags = `
+        FirstName:${customer.first_name}, 
+        LastName:${customer.last_name}, 
+        email: ${customer.email},
+        company: ${customer.company},
+        Address1:${selectedAddress.address1}, 
+        City:${selectedAddress.city}, 
+        Province:${selectedAddress.province}, 
+        Company:${selectedAddress.company}, 
+        Country:${selectedAddress.country}, 
+        Zip:${selectedAddress.zip}, 
+        ShipRequested
+    `.replace(/\s+/g, ' ').trim();
+
+    const placedTags = `
+        FirstName:${customer.first_name}, 
+        LastName:${customer.last_name}, 
+        email: ${customer.email},
+        company: ${customer.company},
+        Address1:${selectedAddress.address1}, 
+        City:${selectedAddress.city}, 
+        Province:${selectedAddress.province}, 
+        Company:${selectedAddress.company}, 
+        Country:${selectedAddress.country}, 
+        Zip:${selectedAddress.zip}, 
+        Placed
+    `.replace(/\s+/g, ' ').trim();
+
+    const selectedTags = requestedShipping ? shipTags : placedTags;
+
+
     if (draftOrderId) {
         console.log("Processing Draft Order:", draftOrderId);
 
@@ -81,9 +121,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const confirmationContent = document.getElementById('confirmation-content');
         const actionButton = document.getElementById('action-button');
 
+
         const tagMutation = `
             mutation {
-                createDraftOrderTag(draftOrderId: "${draftOrderId}", tag: "${requestedShipping ? 'ShipRequested' : 'Placed'}", userId: "${userId}")
+                createDraftOrderTag(draftOrderId: "${draftOrderId}", tag: "${selectedTags}", userId: "${userId}")
+
             }
         `;
 

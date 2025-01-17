@@ -1090,16 +1090,6 @@
                         name
                         invoiceUrl
                         createdAt
-                        customer {
-                            firstName
-                            lastName
-                            email
-                            companyContactProfiles{
-                                company{
-                                    name
-                                }
-                            }
-                        }
                         shippingAddress {
                             address1
                             city
@@ -1148,6 +1138,25 @@
             const tags = tagData.data?.getDraftOrderTags || [];
             const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
             const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
+            const firstNameTag = tags.find(tag => tag.tag.startsWith("FirstName:"));
+            const lastNameTag = tags.find(tag => tag.tag.startsWith("LastName:"));
+            const emailTag = tags.find(tag => tag.tag.startsWith("email:"));
+            const address1Tag = tags.find(tag => tag.tag.startsWith("Address1:"));
+            const cityTag = tags.find(tag => tag.tag.startsWith("City:"));
+            const provinceTag = tags.find(tag => tag.tag.startsWith("Province:"));
+            const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
+            const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
+            const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+
+            const firstName = firstNameTag ? firstNameTag.tag.replace("FirstName:", "").trim() : "N/A";
+            const lastName = lastNameTag ? lastNameTag.tag.replace("LastName:", "").trim() : "N/A";
+            const email = emailTag ? emailTag.tag.replace("email:", "").trim() : "N/A";
+            const address1 = address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "N/A";
+            const city = cityTag ? cityTag.tag.replace("City:", "").trim() : "N/A";
+            const province = provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "N/A";
+            const company = companyTag ? companyTag.tag.replace("company:", "").trim() : "N/A";
+            const country = countryTag ? countryTag.tag.replace("Country:", "").trim() : "N/A";
+            const zip = zipTag ? zipTag.tag.replace("Zip:", "").trim() : "N/A";
             const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
             const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "No Notes Provided";
 
@@ -1162,8 +1171,8 @@
                     month: 'long',
                     day: 'numeric',
                 }),
-                customerName: `${order.customer?.firstName || 'N/A'} ${order.customer?.lastName || 'N/A'}`,
-                company: order.customer?.companyContactProfiles?.map(profile => profile.company?.name).join(', ') || 'N/A',
+                customerName:  firstName + ' ' + lastName,
+                company: company,
                 items: order.lineItems.map(item => {
                     const metafields = item.variant?.metafields.reduce((fields, mf) => {
                         fields[mf.key] = mf.value;
@@ -1192,12 +1201,12 @@
                     return acc + price * item.quantity;
                 }, 0) + parseFloat(shippingFee.replace('$', ''))}`,
                 contact: {
-                    firstName: order.customer?.firstName || 'N/A',
-                    lastName: order.customer?.lastName || 'N/A',
-                    email: order.customer?.email || 'N/A',
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
                 },
                 shippingAddress: {
-                    name: `${order.customer?.firstName || ''} ${order.customer?.lastName || ''}`.trim(),
+                    name:  firstName + ' ' + lastName,
                     street: order.shippingAddress?.address1 || 'N/A',
                     city: order.shippingAddress?.city || 'N/A',
                     state: order.shippingAddress?.province || 'N/A',
@@ -1231,12 +1240,12 @@
 
             // Map the shipping address to Shopify's required format
             const shippingAddress = {
-                address1: orderDetails.shippingAddress?.street || '', // Map 'street' to 'address1'
-                city: orderDetails.shippingAddress?.city || '',
-                province: orderDetails.shippingAddress?.state || '', // Map 'state' to 'province'
-                country: orderDetails.shippingAddress?.country || '',
-                zip: orderDetails.shippingAddress?.zip || '',
-                name: orderDetails.shippingAddress?.name || '',
+                address1: orderDetails.shippingAddress?.street || 'N/A', // Map 'street' to 'address1'
+                city: orderDetails.shippingAddress?.city || 'N/A',
+                province: orderDetails.shippingAddress?.state || 'N/A', // Map 'state' to 'province'
+                country: orderDetails.shippingAddress?.country || 'N/A',
+                zip: orderDetails.shippingAddress?.zip || 'N/A',
+                name: orderDetails.shippingAddress?.name || 'N/A',
             };
 
             const newDraftOrderId = await createDraftOrder(
@@ -1403,7 +1412,7 @@
                     collapsableDiv.innerHTML = `
                         <input type="checkbox" class="x-hidden">
                         <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                            <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${shippingStatus}</div>
+                            <div class="x-text-white">Order Name: ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${shippingStatus}</div>
                             <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
                                 <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
                                 &nbsp;
@@ -2230,6 +2239,75 @@
         });
     }
 
+    async function getTagData(orderID) {
+        const tagQuery = `
+            query {
+                getDraftOrderTags(draftOrderId: "${orderID}") {
+                    tag
+                }
+            }
+        `;
+
+        try {
+            const tagData = await fetchData(tagQuery);
+            const tags = tagData.data?.getDraftOrderTags || [];
+
+            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
+            const firstNameTag = tags.find(tag => tag.tag.startsWith("FirstName:"));
+            const lastNameTag = tags.find(tag => tag.tag.startsWith("LastName:"));
+            const emailTag = tags.find(tag => tag.tag.startsWith("email:"));
+            const address1Tag = tags.find(tag => tag.tag.startsWith("Address1:"));
+            const cityTag = tags.find(tag => tag.tag.startsWith("City:"));
+            const provinceTag = tags.find(tag => tag.tag.startsWith("Province:"));
+            const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
+            const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
+            const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+
+            const firstName = firstNameTag ? firstNameTag.tag.replace("FirstName:", "").trim() : "N/A";
+            const lastName = lastNameTag ? lastNameTag.tag.replace("LastName:", "").trim() : "N/A";
+            const email = emailTag ? emailTag.tag.replace("email:", "").trim() : "N/A";
+            const address1 = address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "N/A";
+            const city = cityTag ? cityTag.tag.replace("City:", "").trim() : "N/A";
+            const province = provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "N/A";
+            const company = companyTag ? companyTag.tag.replace("company:", "").trim() : "N/A";
+            const country = countryTag ? countryTag.tag.replace("Country:", "").trim() : "N/A";
+            const zip = zipTag ? zipTag.tag.replace("Zip:", "").trim() : "N/A";
+            const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
+            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "No Notes Provided";
+
+            return {
+                firstName,
+                lastName,
+                email,
+                address1,
+                city,
+                province,
+                company,
+                country,
+                zip,
+                purchaseOrder,
+                notes
+            };
+        } catch (error) {
+            console.error("Error fetching tag data:", error);
+            return {
+                firstName: "N/A",
+                lastName: "N/A",
+                email: "N/A",
+                address1: "N/A",
+                city: "N/A",
+                province: "N/A",
+                company: "N/A",
+                country: "N/A",
+                zip: "N/A",
+                purchaseOrder: "Not Available",
+                notes: "No Notes Provided"
+            };
+        }
+    }
+
+
     async function populateDraftOrderTab() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
@@ -2240,13 +2318,6 @@
                     createdAt
                     customer {
                         id
-                        firstName
-                        lastName
-                        companyContactProfiles {
-                            company {
-                                name
-                            }
-                        }
                     }
                     shippingAddress {
                         address1
@@ -2272,7 +2343,7 @@
         const variables = {
             customerId: currentUserId,
             includeTags: ["Placed"], 
-        };
+        }; 
 
         const companyOrdersTableBody = document.querySelector(".company-orders .x-w-full tbody");
         const myOrdersTableBody = document.querySelector(".my-orders .x-w-full tbody");
@@ -2308,17 +2379,18 @@
         try {
             const data = await fetchData2(query, variables);
 
+
             if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
                 const orders = data.data.getDraftOrdersByCustomerId.reverse();
-
+            
                 const companyOrders = [];
                 const myOrders = [];
-                const currentCompanyName = orders
-                    .find((order) => order.customer?.id === currentUserId)
-                    ?.customer?.companyContactProfiles?.[0]?.company?.name;
+
 
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();
+                    const tagData = await getTagData(orderId);
+                    const currentCompanyName = `${tagData.company}`;
                     const purchaseOrder = order.tags?.find(tag => tag.startsWith("PO:"))?.replace("PO:", "").trim() || "Not Available";
 
                     // Check for the shipping fee
@@ -2336,9 +2408,9 @@
                             <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
                                 <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">${order.name || `Order #${orderId}`}</div>
                             </td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${order.customer.firstName} ${order.customer.lastName}</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.firstName} ${tagData.lastName}</td>
                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Placed</td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${purchaseOrder}</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.purchaseOrder}</td>
                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$${totalPrice.toFixed(2)}</td>
                             <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
                                 <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
@@ -2354,7 +2426,7 @@
                     }
 
                     // Add to Company Orders if it matches the current company
-                    if (order.customer?.companyContactProfiles?.[0]?.company?.name === currentCompanyName) {
+                    if (`${tagData.company}` === currentCompanyName) {
                         companyOrders.push(orderRow);
                     }
                 }

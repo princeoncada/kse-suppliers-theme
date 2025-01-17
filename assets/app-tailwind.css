@@ -2072,6 +2072,10 @@ video {
   padding-left: 8px !important;
 }
 
+.x-pr-\[20px\] {
+  padding-right: 20px !important;
+}
+
 .x-pr-\[32px\] {
   padding-right: 32px !important;
 }

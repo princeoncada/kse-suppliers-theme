@@ -1757,24 +1757,25 @@
                 console.log(orders);
 
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
-                const total = order.lineItems.reduce((sum, item) => {
-                const originalPrice = parseFloat(item.variant?.price || 0);
 
-                // Check if appliedDiscount exists
-                const finalPrice = item.appliedDiscount
-                    ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
-                        ? originalPrice - item.appliedDiscount.value
-                        : originalPrice * ((100 - item.appliedDiscount.value) / 100)
-                    : originalPrice; // Use original price if no discount is applied
-
-                return sum + finalPrice * item.quantity;
-            }, 0).toFixed(2);
 
 
                 orders.forEach((order) => {
                     const orderId = order.id.split('/').pop();
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderName = order.name || `Order #${orderId}`;
+                    const total = order.lineItems.reduce((sum, item) => {
+                        const originalPrice = parseFloat(item.variant?.price || 0);
+
+                        // Check if appliedDiscount exists
+                        const finalPrice = item.appliedDiscount
+                            ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                                ? originalPrice - item.appliedDiscount.value
+                                : originalPrice * ((100 - item.appliedDiscount.value) / 100)
+                            : originalPrice; // Use original price if no discount is applied
+
+                        return sum + finalPrice * item.quantity;
+                    }, 0).toFixed(2);
                     const discountText = item.appliedDiscount
                         ? `${item.appliedDiscount.valueType === "FIXED_AMOUNT" ? "-" : ""}$${item.appliedDiscount.value}`
                         : "No Discount";

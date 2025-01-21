@@ -157,10 +157,13 @@ function saveToDraft() {
 
         const cartItems = state.items.map((item, index) => {
             const priceElement = document.querySelectorAll('.price.price--end')[index];
-            let displayedPrice = item.price; // Default to Shopify cart price if Bold CSP price isn't found
+            let displayedPrice = item.price; 
 
             if (priceElement) {
-                displayedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
+                const parsedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
+                if (!isNaN(parsedPrice)) {
+                    displayedPrice = parsedPrice;
+                }
             }
 
             return {

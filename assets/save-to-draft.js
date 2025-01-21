@@ -171,7 +171,7 @@ function saveToDraft() {
             return {
                 variantId: item.variant_id,
                 quantity: item.quantity,
-                 ...(originalUnitPrice !== null && { originalUnitPrice }), // Use Bold CSP price or fallback
+                ...(originalUnitPrice !== null && { originalUnitPrice }), 
             };
         });
 

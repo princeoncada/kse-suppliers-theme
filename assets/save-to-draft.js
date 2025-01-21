@@ -161,15 +161,17 @@ function saveToDraft() {
 
             if (priceElement) {
                 const parsedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
-                if (!isNaN(parsedPrice)) {
+                if (!isNaN(parsedPrice) && parsedPrice !== 0) {
                     displayedPrice = parsedPrice;
                 }
             }
 
+            const originalUnitPrice = displayedPrice > 0 ? displayedPrice * 100 : null;
+
             return {
                 variantId: item.variant_id,
                 quantity: item.quantity,
-                originalUnitPrice: displayedPrice * 100 || item.price, // Use Bold CSP price or fallback
+                 ...(originalUnitPrice !== null && { originalUnitPrice }), // Use Bold CSP price or fallback
             };
         });
 
@@ -180,7 +182,11 @@ function saveToDraft() {
                 createDraftOrder(
                     customerId: "${currentUserId}",
                     lineItems: [${cartItems.map(item => `
-                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity}, originalUnitPrice: ${item.originalUnitPrice} }
+                        { 
+                            variantId: "gid://shopify/ProductVariant/${item.variantId}", 
+                            quantity: ${item.quantity}
+                            ${item.originalUnitPrice ? `, originalUnitPrice: ${item.originalUnitPrice}` : ''}
+                        }
                     `).join(',')}],
                     shippingAddress: {
                         address1: "${customerAddress.address1}",

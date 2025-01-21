@@ -1716,6 +1716,12 @@
                     lineItems {
                         title
                         quantity
+                        originalUnitPriceSet {
+                            shopMoney {
+                                amount
+                                currencyCode
+                            }
+                        }
                         variant {
                             title
                             price
@@ -1759,9 +1765,11 @@
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderName = order.name || `Order #${orderId}`;
                     const total = order.lineItems.reduce(
-                        (sum, item) => sum + (item.variant?.price || 0) * item.quantity,
-                        0
-                    ).toFixed(2);
+                    (sum, item) =>
+                        sum +
+                        parseFloat(item.originalUnitPriceSet?.shopMoney?.amount || 0) * item.quantity,
+                    0
+                ).toFixed(2);
 
                     const collapsableDiv = document.createElement("div");
                     collapsableDiv.classList.add("collapsable");
@@ -1802,7 +1810,7 @@
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "cut_size")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "packing")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.quantity}</td>
-                                                        <td class="x-p-[8px]">$${(item.variant.price * item.quantity).toFixed(2)}</td>
+                                                        <td class="x-p-[8px]">$${(parseFloat(item.originalUnitPriceSet?.shopMoney?.amount || 0) * item.quantity).toFixed(2)}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

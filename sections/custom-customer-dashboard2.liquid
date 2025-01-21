@@ -1759,20 +1759,35 @@
                 console.log(orders);
 
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
+                const total = order.lineItems.reduce((sum, item) => {
+                const originalPrice = parseFloat(item.variant?.price || 0);
+                const discountValue = item.appliedDiscount?.value || 0;
+
+                // Adjust price based on discount type
+                const finalPrice = item.appliedDiscount?.valueType === "FIXED_AMOUNT"
+                    ? originalPrice - discountValue
+                    : originalPrice * ((100 - discountValue) / 100);
+
+                return sum + finalPrice * item.quantity;
+                }, 0).toFixed(2);
 
                 orders.forEach((order) => {
                     const orderId = order.id.split('/').pop();
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderName = order.name || `Order #${orderId}`;
-                    const total = order.lineItems.reduce(
-                    (sum, item) =>
-                        sum +
-                        parseFloat(item.originalUnitPriceSet?.shopMoney?.amount || 0) * item.quantity,
-                    0
-                ).toFixed(2);
+                    const discountText = item.appliedDiscount
+                        ? `${item.appliedDiscount.valueType === "FIXED_AMOUNT" ? "-" : ""}$${item.appliedDiscount.value}`
+                        : "No Discount";
 
                     const collapsableDiv = document.createElement("div");
                     collapsableDiv.classList.add("collapsable");
+                    console.log(`
+                        Title: ${item.title}
+                        Quantity: ${item.quantity}
+                        Original Price: $${originalPrice.toFixed(2)}
+                        Discount: ${discountText}
+                        Final Price: $${finalPrice.toFixed(2)}
+                    `);
 
                     collapsableDiv.innerHTML = `
                         <input type="checkbox" class="x-hidden">
@@ -1810,7 +1825,7 @@
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "cut_size")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "packing")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.quantity}</td>
-                                                        <td class="x-p-[8px]">$${(parseFloat(item.originalUnitPriceSet?.shopMoney?.amount || 0) * item.quantity).toFixed(2)}</td>
+                                                        <td class="x-p-[8px]">$${finalPrice.toFixed(2)}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

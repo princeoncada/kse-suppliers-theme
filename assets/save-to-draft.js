@@ -161,6 +161,7 @@ function saveToDraft() {
         const cartItems = state.items.map(item => ({
             variantId: item.variant_id,
             quantity: item.quantity,
+            price: item.price
         }));
 
         console.log("Mapped Cart Items:", cartItems);
@@ -171,7 +172,7 @@ function saveToDraft() {
                 createDraftOrder(
                     customerId: "${currentUserId}",
                     lineItems: [${cartItems.map(item => `
-                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }
+                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity}, price: "${item.price}" }
                     `).join(',')}],
                     shippingAddress: {
                         address1: "${customerAddress.address1}",

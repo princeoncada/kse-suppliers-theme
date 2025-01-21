@@ -161,7 +161,7 @@ function saveToDraft() {
         const cartItems = state.items.map(item => ({
             variantId: item.variant_id,
             quantity: item.quantity,
-            price: item.price
+            originalUnitPrice: (item.final_line_price / item.quantity / 100).toFixed(2),
         }));
 
         console.log("Mapped Cart Items:", cartItems);

@@ -142,7 +142,6 @@ function saveToDraft() {
     const currentUserId = `gid://shopify/Customer/${customerId}`;
     const customerAddress = window.ShopifyData.defaultAddress;
 
-    // Fetch the current cart items
     $.ajax({
         url: '/cart.js',
         method: 'GET',
@@ -156,13 +155,12 @@ function saveToDraft() {
             return;
         }
 
-        // Fetch displayed prices using the Bold CSP selector
         const cartItems = state.items.map((item, index) => {
-            const priceElement = document.querySelectorAll('.price.price--end')[index]; // Use the selector from Bold CSP
+            const priceElement = document.querySelectorAll('.price.price--end')[index];
             let displayedPrice = item.price; // Default to Shopify cart price if Bold CSP price isn't found
 
             if (priceElement) {
-                displayedPrice = parseFloat(priceElement.textContent.replace('$', '').trim()) * 100; // Convert to cents if necessary
+                displayedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
             }
 
             return {
@@ -174,7 +172,6 @@ function saveToDraft() {
 
         console.log("Mapped Cart Items with Displayed Prices:", cartItems);
 
-        // Create the GraphQL mutation
         const mutation = `
             mutation {
                 createDraftOrder(
@@ -197,7 +194,6 @@ function saveToDraft() {
 
         console.log("Mutation Payload:", mutation);
 
-        // Send the mutation to create the draft order
         $.ajax({
             url: 'https://kseshopify-production.up.railway.app/graphql',
             method: 'POST',
@@ -219,6 +215,7 @@ function saveToDraft() {
         console.error('Error fetching cart items:', error);
     });
 }
+
 
 
 

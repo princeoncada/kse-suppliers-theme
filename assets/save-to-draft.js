@@ -148,23 +148,39 @@ function saveToDraft() {
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-    }).done(function (state) {
+    }).done(async function (state) {
         console.log("State from /cart.js:", state);
 
-        // Ensure 'items' exists and is an array
         if (!state.items || !Array.isArray(state.items)) {
             console.error("Error: 'items' property is missing or invalid.");
             return;
         }
 
-        // Map cart items
-        const cartItems = state.items.map(item => ({
-            variantId: item.variant_id,
-            quantity: item.quantity,
-            originalUnitPrice: (item.final_line_price / item.quantity / 100).toFixed(2),
-        }));
+        // Fetch displayed prices using Bold CSP or DOM selectors
+        const cartItems = await Promise.all(
+            state.items.map(async (item) => {
+                const variantId = item.variant_id;
+                const displayedPriceSelector = `#prod-price[data-variant-id="${variantId}"]`;
+                let displayedPrice = item.price; // Fallback to the default cart price
 
-        console.log("Mapped Cart Items:", cartItems);
+                try {
+                    const priceElement = document.querySelector(displayedPriceSelector);
+                    if (priceElement) {
+                        displayedPrice = parseFloat(priceElement.textContent.replace("$", "").trim());
+                    }
+                } catch (error) {
+                    console.error(`Error fetching displayed price for variant ${variantId}:`, error);
+                }
+
+                return {
+                    variantId: item.variant_id,
+                    quantity: item.quantity,
+                    originalUnitPrice: displayedPrice,
+                };
+            })
+        );
+
+        console.log("Mapped Cart Items with Displayed Prices:", cartItems);
 
         // Create the GraphQL mutation
         const mutation = `
@@ -172,7 +188,7 @@ function saveToDraft() {
                 createDraftOrder(
                     customerId: "${currentUserId}",
                     lineItems: [${cartItems.map(item => `
-                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity}, price: "${item.price}" }
+                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity}, originalUnitPrice: ${item.originalUnitPrice} }
                     `).join(',')}],
                     shippingAddress: {
                         address1: "${customerAddress.address1}",
@@ -198,7 +214,6 @@ function saveToDraft() {
         }).done(function (response) {
             console.log('Draft Order Response:', response);
 
-            // Validate the returned draft order ID
             const draftOrderId = response?.data?.createDraftOrder?.id;
             if (draftOrderId) {
                 clearCart();
@@ -212,6 +227,7 @@ function saveToDraft() {
         console.error('Error fetching cart items:', error);
     });
 }
+
 
 
 

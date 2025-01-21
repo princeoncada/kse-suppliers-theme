@@ -1763,14 +1763,14 @@
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderName = order.name || `Order #${orderId}`;
                     const total = order.lineItems.reduce((sum, item) => {
-                        const originalPrice = parseFloat(item.originalUnitPriceSet?.shopMoney?.amount || 0);
+                        const originalPrice = parseFloat(item.variant?.price || 0);
                         const discountValue = item.appliedDiscount?.value || 0;
 
                         const finalPrice = item.appliedDiscount
                             ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
                                 ? originalPrice - discountValue
                                 : originalPrice * ((100 - discountValue) / 100)
-                            : originalPrice; // Default to original price if no discount is applied
+                            : originalPrice; 
 
                         return sum + finalPrice * item.quantity;
                     }, 0).toFixed(2);

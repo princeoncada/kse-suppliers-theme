@@ -1759,15 +1759,17 @@
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
                 const total = order.lineItems.reduce((sum, item) => {
                 const originalPrice = parseFloat(item.variant?.price || 0);
-                const discountValue = item.appliedDiscount?.value || 0;
 
-                // Adjust price based on discount type
-                const finalPrice = item.appliedDiscount?.valueType === "FIXED_AMOUNT"
-                    ? originalPrice - discountValue
-                    : originalPrice * ((100 - discountValue) / 100);
+                // Check if appliedDiscount exists
+                const finalPrice = item.appliedDiscount
+                    ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                        ? originalPrice - item.appliedDiscount.value
+                        : originalPrice * ((100 - item.appliedDiscount.value) / 100)
+                    : originalPrice; // Use original price if no discount is applied
 
                 return sum + finalPrice * item.quantity;
-                }, 0).toFixed(2);
+            }, 0).toFixed(2);
+
 
                 orders.forEach((order) => {
                     const orderId = order.id.split('/').pop();

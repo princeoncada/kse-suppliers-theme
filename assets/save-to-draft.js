@@ -148,7 +148,7 @@ function saveToDraft() {
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-    }).done(async function (state) {
+    }).done(function (state) {
         console.log("State from /cart.js:", state);
 
         if (!state.items || !Array.isArray(state.items)) {
@@ -156,29 +156,21 @@ function saveToDraft() {
             return;
         }
 
-        // Fetch displayed prices using Bold CSP or DOM selectors
-        const cartItems = await Promise.all(
-            state.items.map(async (item) => {
-                const variantId = item.variant_id;
-                const displayedPriceSelector = `#prod-price[data-variant-id="${variantId}"]`;
-                let displayedPrice = item.price; // Fallback to the default cart price
+        // Fetch displayed prices using the Bold CSP selector
+        const cartItems = state.items.map((item, index) => {
+            const priceElement = document.querySelectorAll('.price.price--end')[index]; // Use the selector from Bold CSP
+            let displayedPrice = item.price; // Default to Shopify cart price if Bold CSP price isn't found
 
-                try {
-                    const priceElement = document.querySelector(displayedPriceSelector);
-                    if (priceElement) {
-                        displayedPrice = parseFloat(priceElement.textContent.replace("$", "").trim());
-                    }
-                } catch (error) {
-                    console.error(`Error fetching displayed price for variant ${variantId}:`, error);
-                }
+            if (priceElement) {
+                displayedPrice = parseFloat(priceElement.textContent.replace('$', '').trim()) * 100; // Convert to cents if necessary
+            }
 
-                return {
-                    variantId: item.variant_id,
-                    quantity: item.quantity,
-                    originalUnitPrice: displayedPrice,
-                };
-            })
-        );
+            return {
+                variantId: item.variant_id,
+                quantity: item.quantity,
+                originalUnitPrice: displayedPrice || item.price, // Use Bold CSP price or fallback
+            };
+        });
 
         console.log("Mapped Cart Items with Displayed Prices:", cartItems);
 
@@ -227,6 +219,7 @@ function saveToDraft() {
         console.error('Error fetching cart items:', error);
     });
 }
+
 
 
 

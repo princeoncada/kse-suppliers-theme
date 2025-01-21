@@ -166,7 +166,7 @@ function saveToDraft() {
             return {
                 variantId: item.variant_id,
                 quantity: item.quantity,
-                originalUnitPrice: displayedPrice || item.price, // Use Bold CSP price or fallback
+                originalUnitPrice: displayedPrice * 100 || item.price, // Use Bold CSP price or fallback
             };
         });
 

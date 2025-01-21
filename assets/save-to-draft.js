@@ -157,21 +157,21 @@ function saveToDraft() {
 
         const cartItems = state.items.map((item, index) => {
             const priceElement = document.querySelectorAll('.price.price--end')[index];
-            let displayedPrice = item.price; 
+            let displayedPrice = item.price;
 
             if (priceElement) {
                 const parsedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
-                if (!isNaN(parsedPrice) && parsedPrice !== 0) {
+                if (!isNaN(parsedPrice)) {
                     displayedPrice = parsedPrice;
                 }
             }
 
-            const originalUnitPrice = displayedPrice > 0 ? displayedPrice * 100 : null;
+            const hasDiscount = displayedPrice * 100 < item.price;
 
             return {
                 variantId: item.variant_id,
                 quantity: item.quantity,
-                ...(originalUnitPrice !== null && { originalUnitPrice }), 
+                originalUnitPrice: hasDiscount && displayedPrice * 100 > 0 ? displayedPrice * 100 : null, // Include only if valid
             };
         });
 

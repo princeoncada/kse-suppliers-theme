@@ -1814,7 +1814,14 @@
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "cut_size")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "packing")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.quantity}</td>
-                                                        <td class="x-p-[8px]">$${(parseFloat(item.originalUnitPriceSet?.shopMoney?.amount || 0) * item.quantity).toFixed(2)}</td>
+                                                        <td class="x-p-[8px]">$${(
+                                                            (item.appliedDiscount
+                                                                    ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                                                                        ? parseFloat(item.variant?.price || 0) - item.appliedDiscount.value
+                                                                        : parseFloat(item.variant?.price || 0) * ((100 - item.appliedDiscount.value) / 100)
+                                                                    : parseFloat(item.variant?.price || 0)) * item.quantity
+                                                            ).toFixed(2)}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

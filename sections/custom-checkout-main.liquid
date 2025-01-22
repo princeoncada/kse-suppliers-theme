@@ -443,6 +443,10 @@
                                     lineItems {
                                         title
                                         quantity
+                                        appliedDiscount {
+                                            valueType
+                                            value
+                                        }
                                         variant {
                                             title
                                             price
@@ -480,6 +484,7 @@
                     lineItems: draftOrder.lineItems.map((item) => ({
                         title: item.title,
                         quantity: item.quantity,
+                        appliedDiscount: item.appliedDiscount || null,
                         variant: {
                             title: item.variant?.title,
                             price: item.variant?.price,
@@ -537,12 +542,25 @@
                 draftOrder.lineItems.forEach((item) => {
                     const { title, quantity, variant, variantTitle } = item;
                     const price = parseFloat(variant?.price) || 0; // Ensure price is parsed as a float
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                     // Calculate final price per item based on discount
+                    const finalPrice =
+                        discountType === 'FIXED_AMOUNT'
+                            ? discountValue // Fixed amount discount directly gives the final price
+                            : discountType === 'PERCENTAGE'
+                            ? price * ((100 - discountValue) / 100) // Percentage-based discount
+                            : price; // No discount applied
+
+                    const itemTotal = finalPrice * quantity;
+
+                    total += price * quantity;
+                    
                     const metafields = variant?.metafields.reduce((fields, mf) => {
                         fields[mf.key] = mf.value;
                         return fields;
                     }, {}) || {};
-
-                    total += price * quantity;
 
                     const itemHtml = `
                         <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">${item.title} </div>
@@ -553,7 +571,7 @@
                                 <div>Qty: ${quantity}</div>
                                 <div>Color: ${metafields.color || 'N/A'}</div>
                                 <div>Packing: ${metafields.packing || 'N/A'}</div>
-                                <div class="x-text-red-800 x-font-semibold">$${(price * quantity).toFixed(2)}</div>
+                                <div class="x-text-red-800 x-font-semibold">$${itemTotal.toFixed(2)}</div>
                             </div>
                         </div>
                     `;

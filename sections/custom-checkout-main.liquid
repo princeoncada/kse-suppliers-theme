@@ -548,14 +548,14 @@
                      // Calculate final price per item based on discount
                     const finalPrice =
                         discountType === 'FIXED_AMOUNT'
-                            ? discountValue // Fixed amount discount directly gives the final price
+                            ? discountValue 
                             : discountType === 'PERCENTAGE'
-                            ? price * ((100 - discountValue) / 100) // Percentage-based discount
-                            : price; // No discount applied
+                            ? price * ((100 - discountValue) / 100) 
+                            : price; 
 
                     const itemTotal = finalPrice * quantity;
 
-                    total += price * quantity;
+                    total += itemTotal;
                     
                     const metafields = variant?.metafields.reduce((fields, mf) => {
                         fields[mf.key] = mf.value;

@@ -1768,9 +1768,10 @@
 
                         const finalPrice = item.appliedDiscount
                             ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
-                                ? originalPrice - discountValue
-                                : originalPrice * ((100 - discountValue) / 100)
-                            : originalPrice; 
+                                ? discountValue // If it's a fixed amount, the discountValue is the adjusted price
+                                : originalPrice * ((100 - discountValue) / 100) // If it's a percentage, calculate accordingly
+                            : originalPrice; // If no discount, use original price
+
 
                         return sum + finalPrice * item.quantity;
                     }, 0).toFixed(2);
@@ -1817,8 +1818,8 @@
                                                         <td class="x-p-[8px]">$${(
                                                             (item.appliedDiscount
                                                                     ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
-                                                                        ? parseFloat(item.variant?.price || 0) - item.appliedDiscount.value
-                                                                        : parseFloat(item.variant?.price || 0) * ((100 - item.appliedDiscount.value) / 100)
+                                                                    ? item.appliedDiscount.value * item.quantity
+                                                                    : parseFloat(item.variant?.price || 0) * ((100 - item.appliedDiscount.value) / 100) * item.quantity
                                                                     : parseFloat(item.variant?.price || 0)) * item.quantity
                                                             ).toFixed(2)}
                                                         </td>

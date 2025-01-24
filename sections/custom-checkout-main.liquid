@@ -316,9 +316,7 @@
         const provinceWrapper = document.getElementById('province-wrapper');
         const countryInput = document.getElementById('country');
         const addresses = {{ customer.addresses | json }};
-
-        
-
+        console.log('Customer Addresses:', addresses);
 
         // Populate default address if available
         if (addresses.length > 0) {
@@ -378,8 +376,8 @@
 
             document.querySelectorAll('.select-address-option').forEach(option => {
                 option.addEventListener('click', function () {
-//                    document.getElementById('company_name').value = this.dataset.company || '';
-                    document.getElementById('street_address').value = this.dataset.company || '';
+                    document.getElementById('company_name').value = this.dataset.company || '';
+                    document.getElementById('street_address').value = this.dataset.address1 || '';
                     document.getElementById('town_city').value = this.dataset.city || '';
                     document.getElementById('state').value = this.dataset.province || '';
                     document.getElementById('zip').value = this.dataset.zip || '';

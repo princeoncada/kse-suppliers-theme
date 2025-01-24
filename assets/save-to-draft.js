@@ -183,6 +183,7 @@ function saveToDraft() {
             mutation {
                 createDraftOrder(
                     customerId: "${currentUserId}",
+                    email:"${customer.email}",
                     lineItems: [${cartItems.map(item => `
                         { 
                             variantId: "gid://shopify/ProductVariant/${item.variantId}", 
@@ -190,15 +191,14 @@ function saveToDraft() {
                             originalPrice: ${item.originalPrice},
                             ${item.originalUnitPrice ? `, originalUnitPrice: ${item.originalUnitPrice}` : ''}
                         }
-                    `).join(',')}],
-                    email:"${customer.email}",
+                    `).join(',')}],                 
                     shippingAddress: {
                         address1: "${customerAddress.address1}",
                         city: "${customerAddress.city}",
                         province: "${customerAddress.province}",
                         country: "${customerAddress.country}",
                         zip: "${customerAddress.zip}"
-                    }
+                    }                     
                 ) {
                     id
                 }

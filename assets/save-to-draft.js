@@ -141,6 +141,7 @@ function saveToDraft() {
     const customerId = window.ShopifyData.customerId;
     const currentUserId = `gid://shopify/Customer/${customerId}`;
     const customerAddress = window.ShopifyData.defaultAddress;
+    const customer = window.customer || {};
 
     $.ajax({
         url: '/cart.js',
@@ -190,6 +191,7 @@ function saveToDraft() {
                             ${item.originalUnitPrice ? `, originalUnitPrice: ${item.originalUnitPrice}` : ''}
                         }
                     `).join(',')}],
+                    email:"${customer.email}",
                     shippingAddress: {
                         address1: "${customerAddress.address1}",
                         city: "${customerAddress.city}",

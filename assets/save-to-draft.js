@@ -141,6 +141,8 @@ function saveToDraft() {
     const customerId = window.ShopifyData.customerId;
     const currentUserId = `gid://shopify/Customer/${customerId}`;
     const customerAddress = window.ShopifyData.defaultAddress;
+    const customerEmail = window.ShopifyData.customerEmail;
+    console.log("Customer Email:", customerEmail);
 
     $.ajax({
         url: '/cart.js',

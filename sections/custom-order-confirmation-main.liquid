@@ -187,6 +187,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             `;
 
+            console.log("Mutation:", mutation);
+
             try {
                 const response = await $.ajax({
                     url: "https://kseshopify-production.up.railway.app/graphql",

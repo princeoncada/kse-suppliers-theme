@@ -1389,7 +1389,6 @@
             // Validate response data
             if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
                 const orders = data.data.getDraftOrdersByCustomerId;
-                console.log(orders);
 
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
 
@@ -1889,7 +1888,6 @@
 
         async function populateOrderView(orderId) {
             const orderDetails = await fetchOrderDetails(orderId); // Fetch details dynamically
-            console.log(orderDetails);
 
             // Populate the order view dynamically
             orderView.innerHTML = `

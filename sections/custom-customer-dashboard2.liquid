@@ -1473,7 +1473,14 @@
                                                             <td class="x-p-[8px]">${metafields.packing}</td>
                                                             <td class="x-p-[8px]">${item.quantity}</td>
                                                             <td class="x-p-[8px]">
-                                                                $${(item.finalPrice * item.quantity).toFixed(2)}</td>
+                                                                $${(
+                                                                    (item.appliedDiscount
+                                                                        ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                                                                            ? item.appliedDiscount.value // Fixed discount gives the discounted price
+                                                                            : parseFloat(item.variant?.price || 0) * ((100 - item.appliedDiscount.value) / 100) // Percentage discount
+                                                                        : parseFloat(item.variant?.price || 0) // No discount
+                                                                    ) * item.quantity
+                                                                ).toFixed(2)}
                                                             </td>
                                                         </tr>
                                                     </tbody>

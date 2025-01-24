@@ -171,6 +171,7 @@ function saveToDraft() {
             return {
                 variantId: item.variant_id,
                 quantity: item.quantity,
+                originalPrice: item.price,
                 originalUnitPrice: hasDiscount && displayedPrice * 100 > 0 ? displayedPrice * 100 : null, // Include only if valid
             };
         });
@@ -184,7 +185,8 @@ function saveToDraft() {
                     lineItems: [${cartItems.map(item => `
                         { 
                             variantId: "gid://shopify/ProductVariant/${item.variantId}", 
-                            quantity: ${item.quantity}
+                            quantity: ${item.quantity},
+                            originalPrice: ${item.originalPrice},
                             ${item.originalUnitPrice ? `, originalUnitPrice: ${item.originalUnitPrice}` : ''}
                         }
                     `).join(',')}],

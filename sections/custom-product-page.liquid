@@ -112,10 +112,10 @@
                                 </div>
 
                                 {% if product.metafields.custom.show_weight %}
-                                    {% assign variant_weight = variant_details.weight.value %}
+                                    {% assign variant_weight = variant.weight %}
                                     <div>
                                         <div class="x-font-semibold x-text-[#ac1200]">Weight</div>
-                                        <div>{{ variant_weight }}</div>
+                                        <div>{{ variant_weight |  weight_with_unit }}</div>
                                     </div>
                                 {% endif %}
 
@@ -267,8 +267,8 @@
                                 <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant.title }}</td>
 
                                 {% if product.metafields.custom.show_weight %}
-                                    {% assign variant_weight = variant_details.weight.value %}
-                                    <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_weight }}</td>
+                                    {% assign variant_weight = variant.weight %}
+                                    <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_weight |  weight_with_unit }}</td>
                                 {% endif %}
 
                                 {% if product.metafields.custom.show_description %}

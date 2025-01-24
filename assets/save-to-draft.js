@@ -227,12 +227,6 @@ function saveToDraft() {
     });
 }
 
-
-
-
-
-
-
 function clearCart() {
     let cart = $('cart-notification').length ? $('cart-notification') : $('cart-drawer');
 

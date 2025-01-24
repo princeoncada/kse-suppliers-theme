@@ -940,6 +940,7 @@
                 getDraftOrdersByCustomerId(customerId: $customerId, includeTags: $includeTags) {
                     id
                     name
+                    tags
                     createdAt
                     customer {
                         id
@@ -1008,6 +1009,7 @@
 
                     // Determine the shipping status based on the numeric value
                     const shippingStatus = numericShippingFee > 0 ? "Shipping Quote Applied" : "Shipping Quote Requested";
+                    
 
                     // Fetch follow-up tag status
                     const { buttonClass, buttonText, buttonState } = await tagQuery(orderId);
@@ -1034,6 +1036,7 @@
 
                     const collapsableDiv = document.createElement("div");
                     collapsableDiv.classList.add("collapsable");
+                    const placeOrderLink = await generatePlaceOrderLink(orderId);
 
                     collapsableDiv.innerHTML = `
                         <input type="checkbox" class="x-hidden">
@@ -1107,6 +1110,9 @@
                                             <div class="x-text-[16px]">Total + Shipping:</div>
                                             <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
                                         </div>
+                                        <div class="x-w-full x-flex x-justify-end">
+                                            <a href="${placeOrderLink}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">Place Order</a>
+                                        </div>
                                         `
                                         : `
                                         <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
@@ -1139,6 +1145,55 @@
         } catch (error) {
             console.error("Error fetching requested shipping orders:", error);
             draftOrdersList.innerHTML = "<p>An error occurred while fetching requested shipping orders.</p>";
+        }
+    }
+
+    async function generatePlaceOrderLink(draftOrderId) {
+        const tagQuery = `
+            query {
+                getDraftOrderTags(draftOrderId: "${draftOrderId}") {
+                    tag
+                }
+            }
+        `;
+
+        try {
+            // Fetch tag data
+            const tagData = await fetchData2(tagQuery);
+            const tags = tagData.data?.getDraftOrderTags || [];
+
+            // Extract address details from tags
+            const address1Tag = tags.find(tag => tag.tag.startsWith("Address1:"));
+            const cityTag = tags.find(tag => tag.tag.startsWith("City:"));
+            const provinceTag = tags.find(tag => tag.tag.startsWith("Province:"));
+            const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
+            const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
+            const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+
+            const shippingAddress = {
+                address1: address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "",
+                city: cityTag ? cityTag.tag.replace("City:", "").trim() : "",
+                province: provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "",
+                company: companyTag ? companyTag.tag.replace("company:", "").trim() : "",
+                country: countryTag ? countryTag.tag.replace("Country:", "").trim() : "",
+                zip: zipTag ? zipTag.tag.replace("Zip:", "").trim() : "",
+            };
+
+            // Build the base URL with the draft order ID
+            let href = `/pages/place-order?draftOrderId=${draftOrderId}&shipAddress`;
+
+            // Add shipping address details as query parameters
+            href += `&address1=${encodeURIComponent(shippingAddress.address1)}`;
+            href += `&city=${encodeURIComponent(shippingAddress.city)}`;
+            href += `&province=${encodeURIComponent(shippingAddress.province)}`;
+            href += `&company=${encodeURIComponent(shippingAddress.company)}`;
+            href += `&country=${encodeURIComponent(shippingAddress.country)}`;
+            href += `&zip=${encodeURIComponent(shippingAddress.zip)}`;
+
+            return href;
+        } catch (error) {
+            console.error("Error generating place order link:", error);
+            return `/pages/place-order?draftOrderId=${draftOrderId}`; // Return fallback link if an error occurs
         }
     }
 

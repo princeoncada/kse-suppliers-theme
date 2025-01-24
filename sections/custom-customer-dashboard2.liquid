@@ -1473,7 +1473,7 @@
                                                             <td class="x-p-[8px]">${metafields.packing}</td>
                                                             <td class="x-p-[8px]">${item.quantity}</td>
                                                             <td class="x-p-[8px]">
-                                                                $${totalPrice.toFixed(2)}
+                                                                $${(item.finalPrice * item.quantity).toFixed(2)}</td>
                                                             </td>
                                                         </tr>
                                                     </tbody>

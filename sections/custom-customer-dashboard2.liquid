@@ -1889,6 +1889,7 @@
 
         async function populateOrderView(orderId) {
             const orderDetails = await fetchOrderDetails(orderId); // Fetch details dynamically
+            console.log(orderDetails);
 
             // Populate the order view dynamically
             orderView.innerHTML = `

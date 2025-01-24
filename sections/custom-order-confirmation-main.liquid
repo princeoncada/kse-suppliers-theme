@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (requestedShipping) {
                         console.log("Shipping fee requested. Triggering requestShipping...");
 
-                        const success = await requestShipping(draftOrderId, userId, selectedAddress);
+                        const success = await requestShipping(draftOrderId, userId, selectedAddress, customer);
                         if (success) {
                             spinnerContainer.style.display = 'none';
                             confirmationContent.innerHTML = `
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `;
                         }
                     } else {
-                        const orderCompleted = await completeOrder(draftOrderId, userId, selectedAddress);
+                        const orderCompleted = await completeOrder(draftOrderId, userId, selectedAddress, customer);
                         if (orderCompleted) {
                             spinnerContainer.style.display = 'none';
                             confirmationContent.innerHTML = `

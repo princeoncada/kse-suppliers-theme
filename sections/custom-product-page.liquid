@@ -167,7 +167,10 @@
                                     </div>
                                 {% endif %}
 
-                                {% assign variant_cut_size = variant_details.cut_size.value %}
+                                {% if product.metafields.custom.show_cut_size %}
+                                    {% assign variant_cut_size = variant_details.cut_size.value %}
+                                {% endif %}
+
                                 <div>
                                     <div class="x-font-semibold x-text-[#ac1200]">Cut Size</div>
                                     <div>{{ variant_cut_size }}</div>
@@ -252,8 +255,11 @@
                         {% if product.metafields.custom.show_soaker %}
                             <th class="x-text-start x-p-[8px]">Soaker</th>
                         {% endif %}
+
+                        {% if product.metafields.custom.show_cut_size %}
+                            <th class="x-text-start x-p-[8px]">Cut Size</th>
+                        {% endif %}
                         
-                        <th class="x-text-start x-p-[8px]">Cut Size</th>
                         <th class="x-text-start x-p-[8px]">Packing</th>
                         <th class="x-text-start x-p-[8px]">Price</th>
                     </tr>
@@ -301,8 +307,11 @@
                                     <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ soaker }}</td>
                                 {% endif %}
 
-                                {% assign variant_cut_size = variant_details.cut_size.value %}
-                                <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_cut_size }}</td>
+                                {% if product.metafields.custom.show_cut_size %}
+                                    {% assign variant_cut_size = variant_details.cut_size.value %}
+                                    <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_cut_size }}</td>
+                                {% endif %}
+
 
                                 {% assign variant_packing = variant_details.packing.value %}
                                 <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_packing }}</td>

@@ -1169,6 +1169,8 @@
             const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
             const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
             const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
 
             const shippingAddress = {
                 address1: address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "",
@@ -1178,6 +1180,9 @@
                 country: countryTag ? countryTag.tag.replace("Country:", "").trim() : "",
                 zip: zipTag ? zipTag.tag.replace("Zip:", "").trim() : "",
             };
+
+            const po = poTag ? poTag.tag.replace("PO:", "").trim() : "";
+            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "";
 
             // Build the base URL with the draft order ID
             let href = `/pages/place-order?draftOrderId=${draftOrderId}&shipAddress`;
@@ -1189,6 +1194,8 @@
             href += `&company=${encodeURIComponent(shippingAddress.company)}`;
             href += `&country=${encodeURIComponent(shippingAddress.country)}`;
             href += `&zip=${encodeURIComponent(shippingAddress.zip)}`;
+            href += `&po=${encodeURIComponent(po)}`;
+            href += `&notes=${encodeURIComponent(notes)}`;
 
             return href;
         } catch (error) {

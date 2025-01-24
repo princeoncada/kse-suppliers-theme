@@ -396,9 +396,7 @@
                 });
             });
         });
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
+        
         const placeOrderButton = document.getElementById('place-order');
 
         document.querySelectorAll('input[name="shipping_quote"]').forEach(radio => {
@@ -406,12 +404,14 @@
                 placeOrderButton.textContent = this.value === 'false' ? 'Request Shipping' : 'Place Order';
             });
         });
+
     });
 
     document.addEventListener('DOMContentLoaded', async function () {
         const params = new URLSearchParams(window.location.search);
         const draftOrderId = params.get('draftOrderId');
         const shippingCostParam = params.get('shippingCost');
+        const hasShipAddress = params.has('shipAddress');
 
         if (!draftOrderId) {
             console.error('No draftOrderId found in URL parameters.');
@@ -495,9 +495,6 @@
                 throw new Error('Failed to fetch draft order.');
             }
         }
-
-
-
 
         async function checkForShippingFee(draftOrderId) {
             const query = `
@@ -615,17 +612,39 @@
             }
         }
 
-
-
         /**
          * Populate Shipping Address
          */
-        const customerAddress = window.CustomerData?.defaultAddress || {};
-        document.getElementById('company_name').value = customerAddress.company_name || '';
-        document.getElementById('street_address').value = customerAddress.address2 || '';
-        document.getElementById('town_city').value = customerAddress.city || '';
-        document.getElementById('state').value = customerAddress.province || '';
-        document.getElementById('zip').value = customerAddress.zip || '';
+         if (hasShipAddress) {
+            // Get the address from URL parameters
+            const shippingAddress = {
+                company_name: params.get('company') || '',
+                address1: params.get('address1') || '',
+                city: params.get('city') || '',
+                province: params.get('province') || '',
+                zip: params.get('zip') || '',
+                country: params.get('country') || '',
+            };
+            document.getElementById('job_code').value = po;
+            document.getElementById('message').value = notes;
+
+            document.getElementById('job_code').value
+            document.getElementById('message').value
+            document.getElementById('company_name').value = shippingAddress.company_name;
+            document.getElementById('street_address').value = shippingAddress.address1;
+            document.getElementById('town_city').value = shippingAddress.city;
+            document.getElementById('state').value = shippingAddress.province;
+            document.getElementById('zip').value = shippingAddress.zip;
+        } else {
+            // Fallback to CustomerData if no &shipAddress in the URL
+            const customerAddress = window.CustomerData?.defaultAddress || {};
+
+            document.getElementById('company_name').value = customerAddress.company_name || '';
+            document.getElementById('street_address').value = customerAddress.address2 || '';
+            document.getElementById('town_city').value = customerAddress.city || '';
+            document.getElementById('state').value = customerAddress.province || '';
+            document.getElementById('zip').value = customerAddress.zip || '';
+        }
 
         // Fetch and render draft order
         await renderDraftOrder();

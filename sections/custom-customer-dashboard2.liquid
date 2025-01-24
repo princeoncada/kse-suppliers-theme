@@ -996,6 +996,11 @@
                 draftOrdersList.innerHTML = ""; // Clear loading spinner
 
                 for (const order of orders) {
+                    
+                    if (order.tags.includes("Placed")) {
+                        continue;
+                    }
+                    
                     const orderId = order.id.split('/').pop();
 
                     // Check for the shipping fee

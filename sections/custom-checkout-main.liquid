@@ -317,6 +317,9 @@
         const countryInput = document.getElementById('country');
         const addresses = {{ customer.addresses | json }};
 
+        
+
+
         // Populate default address if available
         if (addresses.length > 0) {
             const defaultAddress = addresses[0];
@@ -395,47 +398,20 @@
         });
     });
 
-
-
     document.addEventListener('DOMContentLoaded', function () {
-    const placeOrderButton = document.getElementById('place-order');
+        const placeOrderButton = document.getElementById('place-order');
 
-    document.querySelectorAll('input[name="shipping_quote"]').forEach(radio => {
-        radio.addEventListener('change', function () {
-            placeOrderButton.textContent = this.value === 'false' ? 'Request Shipping' : 'Place Order';
+        document.querySelectorAll('input[name="shipping_quote"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                placeOrderButton.textContent = this.value === 'false' ? 'Request Shipping' : 'Place Order';
+            });
         });
     });
-});
 
     document.addEventListener('DOMContentLoaded', async function () {
         const params = new URLSearchParams(window.location.search);
         const draftOrderId = params.get('draftOrderId');
-        const shippingAddress = {
-            address1: params.get('address1') || '',
-            city: params.get('city') || '',
-            province: params.get('province') || '',
-            company: params.get('company') || '',
-            country: params.get('country') || '',
-            zip: params.get('zip') || ''
-        };
         const shippingCostParam = params.get('shippingCost');
-        document.getElementById('company_name').value = shippingAddress.company || '';
-        document.getElementById('company_name').disabled = true;
-
-        document.getElementById('street_address').value = shippingAddress.address1 || '';
-        document.getElementById('street_address').disabled = true;
-
-        document.getElementById('town_city').value = shippingAddress.city || '';
-        document.getElementById('town_city').disabled = true;
-
-        document.getElementById('state').value = shippingAddress.province || '';
-        document.getElementById('state').disabled = true;
-
-        document.getElementById('country').value = shippingAddress.country || '';
-        document.getElementById('country').disabled = true;
-
-        document.getElementById('zip').value = shippingAddress.zip || '';
-        document.getElementById('zip').disabled = true;
 
         if (!draftOrderId) {
             console.error('No draftOrderId found in URL parameters.');
@@ -555,6 +531,7 @@
             const checkoutCartItems = document.getElementById('checkout-cart-items');
             const checkoutTotal = document.getElementById('checkout-total');
             const shippingOptions = document.getElementById('shipping-options');
+            const submitAddress = document.getElementById('select-address-btn')
 
             if (draftOrder && draftOrder.lineItems) {
                 console.log('Draft Order Details:', draftOrder);
@@ -629,6 +606,7 @@
                 // Hide radio buttons if shipping cost exists
                 if (shippingCost > 0) {
                     shippingOptions.classList.add('x-hidden');
+                    submitAddress.classList.add('x-hidden');
                 }
             } else {
                 console.warn('No line items found in the draft order.');

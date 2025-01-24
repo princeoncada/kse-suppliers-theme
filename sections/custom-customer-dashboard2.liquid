@@ -2156,12 +2156,32 @@
                 }),
                 subtotal: `$${order.lineItems.reduce((acc, item) => {
                     const price = parseFloat(item.variant?.price || 0);
-                    return acc + price * item.quantity;
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                    const finalPrice =
+                        discountType === "FIXED_AMOUNT"
+                            ? discountValue
+                            : discountType === "PERCENTAGE"
+                            ? price * ((100 - discountValue) / 100)
+                            : price;
+
+                    return acc + finalPrice * item.quantity;
                 }, 0).toFixed(2)}`,
                 shipping: shippingFee,
                 total: `$${order.lineItems.reduce((acc, item) => {
                     const price = parseFloat(item.variant?.price || 0);
-                    return acc + price * item.quantity;
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                    const finalPrice =
+                        discountType === "FIXED_AMOUNT"
+                            ? discountValue
+                            : discountType === "PERCENTAGE"
+                            ? price * ((100 - discountValue) / 100)
+                            : price;
+
+                    return acc + finalPrice * item.quantity;
                 }, 0) + parseFloat(shippingFee.replace('$', ''))}`,
                 contact: {
                     firstName: firstName,

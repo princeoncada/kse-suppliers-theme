@@ -111,6 +111,14 @@
                                     <div>{{ variant.title }}</div>
                                 </div>
 
+                                {% if product.metafields.custom.show_weight %}
+                                    {% assign variant_weight = variant_details.weight.value %}
+                                    <div>
+                                        <div class="x-font-semibold x-text-[#ac1200]">Weight</div>
+                                        <div>{{ variant_weight }}</div>
+                                    </div>
+                                {% endif %}
+
                                 {% if product.metafields.custom.show_description %}
                                     {% assign variant_desc = variant_details.description.value %}
                                     <div>
@@ -216,6 +224,10 @@
                 <table class="x-w-full x-text-start">
                     <tr class="x-h-[32px] x-text-white x-bg-[#ac1200]">
                         <th class="x-text-start x-p-[8px]">Item Code</th>
+                        
+                        {% if product.metafields.custom.show_weight %}
+                            <th class="x-text-start x-p-[8px]">Weight</th>
+                        {% endif %}
 
                         {% if product.metafields.custom.show_description %}
                             <th class="x-text-start x-p-[8px]">Description</th>
@@ -253,6 +265,11 @@
                         {% if variant_type == product_type %}
                             <tr class="x-text-[20px]">
                                 <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant.title }}</td>
+
+                                {% if product.metafields.custom.show_weight %}
+                                    {% assign variant_weight = variant_details.weight.value %}
+                                    <td class="x-p-[0px] x-pl-[8px] x-pt-[8px]">{{ variant_weight }}</td>
+                                {% endif %}
 
                                 {% if product.metafields.custom.show_description %}
                                     {% assign variant_desc = variant_details.description.value %}

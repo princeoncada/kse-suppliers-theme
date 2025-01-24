@@ -128,11 +128,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         `;
 
-        async function requestShipping(draftOrderId, userId, selectedAddress) {
+        async function requestShipping(draftOrderId, userId, selectedAddress,customer) {
             const mutation = `
                 mutation {
                     requestShippingFee(
                         userId: "${userId}",
+                        email: "${customer.email}",
                         draftOrderId: "${draftOrderId}",
                         shippingAddress: {
                             address1: "${selectedAddress.address1}",
@@ -167,12 +168,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        async function completeOrder(draftOrderId, userId, selectedAddress) {
+        async function completeOrder(draftOrderId, userId, selectedAddress, customer) {
             const mutation = `
                 mutation {
                     requestShippingFee(
                         userId: "${userId}",
                         draftOrderId: "${draftOrderId}",
+                        email: "${customer.email}",
                         shippingAddress: {
                             address1: "${selectedAddress.address1}",
                             city: "${selectedAddress.city}",

@@ -141,15 +141,6 @@ function saveToDraft() {
     const customerId = window.ShopifyData.customerId;
     const currentUserId = `gid://shopify/Customer/${customerId}`;
     const customerAddress = window.ShopifyData.defaultAddress;
-    window.customer = {
-        first_name: "{{ customer.first_name }}",
-        last_name: "{{ customer.last_name }}",
-        email: "{{ customer.email }}",
-        company: "{{ customer.current_company.name }}",
-    };
-
-    const customer = window.customer || {};
-
 
     $.ajax({
         url: '/cart.js',
@@ -191,7 +182,6 @@ function saveToDraft() {
             mutation {
                 createDraftOrder(
                     customerId: "${currentUserId}",
-                    email:" ${customer.email}",
                     lineItems: [${cartItems.map(item => `
                         { 
                             variantId: "gid://shopify/ProductVariant/${item.variantId}", 

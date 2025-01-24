@@ -185,7 +185,12 @@
                                     <button
                                         class="add-to-cart x-w-full x-h-full x-bg-[#ac1200] hover:x-bg-[#721a10] x-text-white x-transition-colors x-duration-300 x-ease-in-out"
                                         data-item="{{ product_type | append: " : " | append: variant.title }}"
-                                        data-variant-id="{{ variant.id }}">Add to Cart</button>
+                                        data-variant-id="{{ variant.id }}"
+                                        data-customer-id="{{ customer.id }}"
+                                        data-customer-email="{{ customer.email }}"
+                                        data-customer-first-name="{{ customer.first_name }}"
+                                        data-customer-last-name="{{ customer.last_name }}"
+                                        data-customer-company="{{ customer.default_address.company }}">Add to Cart</button>
                                     {% endif %}
                                 </div>
                             </div>
@@ -292,7 +297,12 @@
                                         <button
                                             class="add-to-cart x-bg-[#ac1200] hover:x-bg-[#721a10] x-text-white x-px-[12px] x-py-[6px] x-text-[16px] x-transition-colors x-duration-300 x-ease-in-out"
                                             data-item="{{ product_type | append: " : " | append: variant.title }}"
-                                            data-variant-id="{{ variant.id }}">Add
+                                            data-variant-id="{{ variant.id }}"
+                                            data-customer-id="{{ customer.id }}"
+                                            data-customer-email="{{ customer.email }}"
+                                            data-customer-first-name="{{ customer.first_name }}"
+                                            data-customer-last-name="{{ customer.last_name }}"
+                                            data-customer-company="{{ customer.default_address.company }}">Add
                                             to Cart </button>
                                     </div>
                                     {% else %}

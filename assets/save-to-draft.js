@@ -137,40 +137,17 @@ function draftSavedFeedback(success) {
     }
 }
 
-async function fetchVariantDetails(productId) {
-    const query = `
-        query {
-            getVariantDetails(productId: "${productId}") {
-                id
-                title
-                price
-            }
-        }
-    `;
-
-    const response = await $.ajax({
-        url: 'https://kseshopify-production.up.railway.app/graphql',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ query }),
-    });
-
-    return response?.data?.getVariantDetails || {};
-}
-
-async function saveToDraft() {
+function saveToDraft() {
     const customerId = window.ShopifyData.customerId;
     const currentUserId = `gid://shopify/Customer/${customerId}`;
     const customerAddress = window.ShopifyData.defaultAddress;
 
-    try {
-        const state = await $.ajax({
-            url: '/cart.js',
-            method: 'GET',
-            dataType: 'json',
-            contentType: 'application/json',
-        });
-
+    $.ajax({
+        url: '/cart.js',
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+    }).done(function (state) {
         console.log("State from /cart.js:", state);
 
         if (!state.items || !Array.isArray(state.items)) {
@@ -178,34 +155,27 @@ async function saveToDraft() {
             return;
         }
 
-        const cartItems = await Promise.all(
-            state.items.map(async (item, index) => {
-                const priceElement = document.querySelectorAll('.price.price--end')[index];
-                let displayedPrice = item.price;
+        const cartItems = state.items.map((item, index) => {
+            const priceElement = document.querySelectorAll('.price.price--end')[index];
+            let displayedPrice = item.price;
 
-                // Get displayed (discounted) price from the DOM
-                if (priceElement) {
-                    const parsedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
-                    if (!isNaN(parsedPrice)) {
-                        displayedPrice = parsedPrice;
-                    }
+            if (priceElement) {
+                const parsedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
+                if (!isNaN(parsedPrice)) {
+                    displayedPrice = parsedPrice;
                 }
+            }
 
-                // Fetch the variant's original price from your backend
-                const variantDetails = await fetchVariantDetails(item.product_id);
+            const hasDiscount = displayedPrice * 100 < item.price;
 
-                const hasDiscount = displayedPrice * 100 < item.price;
+            return {
+                variantId: item.variant_id,
+                quantity: item.quantity,
+                originalUnitPrice: hasDiscount && displayedPrice * 100 > 0 ? displayedPrice * 100 : null, // Include only if valid
+            };
+        });
 
-                return {
-                    variantId: item.variant_id,
-                    quantity: item.quantity,
-                    originalUnitPrice: hasDiscount ? displayedPrice * 100 : null, // Discounted price in cents
-                    variantPrice: variantDetails.price * 100, // Original price in cents
-                };
-            })
-        );
-
-        console.log("Mapped Cart Items with Prices:", cartItems);
+        console.log("Mapped Cart Items with Displayed Prices:", cartItems);
 
         const mutation = `
             mutation {
@@ -214,9 +184,8 @@ async function saveToDraft() {
                     lineItems: [${cartItems.map(item => `
                         { 
                             variantId: "gid://shopify/ProductVariant/${item.variantId}", 
-                            quantity: ${item.quantity},
-                            ${item.originalUnitPrice ? `originalUnitPrice: ${item.originalUnitPrice},` : ''}
-                            variantPrice: ${item.variantPrice}
+                            quantity: ${item.quantity}
+                            ${item.originalUnitPrice ? `, originalUnitPrice: ${item.originalUnitPrice}` : ''}
                         }
                     `).join(',')}],
                     shippingAddress: {
@@ -234,24 +203,26 @@ async function saveToDraft() {
 
         console.log("Mutation Payload:", mutation);
 
-        const response = await $.ajax({
-            url: 'https://kseshopify-production.up.railway.app/graphql', // Your backend GraphQL endpoint
+        $.ajax({
+            url: 'https://kseshopify-production.up.railway.app/graphql',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ query: mutation }),
+        }).done(function (response) {
+            console.log('Draft Order Response:', response);
+
+            const draftOrderId = response?.data?.createDraftOrder?.id;
+            if (draftOrderId) {
+                clearCart();
+            } else {
+                console.error("Failed to get Draft Order ID:", response.errors || response);
+            }
+        }).fail(function (error) {
+            console.error('Error creating draft order:', error);
         });
-
-        console.log('Draft Order Response:', response);
-
-        const draftOrderId = response?.data?.createDraftOrder?.id;
-        if (draftOrderId) {
-            clearCart();
-        } else {
-            console.error("Failed to get Draft Order ID:", response.errors || response);
-        }
-    } catch (error) {
-        console.error('Error creating draft order:', error);
-    }
+    }).fail(function (error) {
+        console.error('Error fetching cart items:', error);
+    });
 }
 
 

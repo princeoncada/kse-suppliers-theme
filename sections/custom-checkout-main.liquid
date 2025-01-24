@@ -625,11 +625,12 @@
                 zip: params.get('zip') || '',
                 country: params.get('country') || '',
             };
+            
+            const po = params.get('po') || ''; 
+            const notes = params.get('notes') || '';
             document.getElementById('job_code').value = po;
             document.getElementById('message').value = notes;
 
-            document.getElementById('job_code').value
-            document.getElementById('message').value
             document.getElementById('company_name').value = shippingAddress.company_name;
             document.getElementById('street_address').value = shippingAddress.address1;
             document.getElementById('town_city').value = shippingAddress.city;

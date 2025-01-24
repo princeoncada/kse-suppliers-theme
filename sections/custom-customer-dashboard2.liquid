@@ -2377,6 +2377,10 @@
                     }
                     lineItems {
                         quantity
+                        appliedDiscount {
+                            value
+                            valueType
+                        }
                         variant {
                             price
                             metafields {
@@ -2445,10 +2449,21 @@
                     const shippingFee = await checkForShippingFee(orderId);
                     const shippingFeeValue = parseFloat(shippingFee.replace('$', '')) || 0;
 
-                    const totalPrice = order.lineItems.reduce(
-                        (sum, item) => sum + (item.variant?.price || 0) * item.quantity,
-                        0
-                    ) + shippingFeeValue;
+                    const totalPrice = order.lineItems.reduce((sum, item) => {
+                        const price = parseFloat(item.variant?.price) || 0; // Base price
+                        const discountValue = item.appliedDiscount?.value || 0;
+                        const discountType = item.appliedDiscount?.valueType;
+
+                        const finalPrice =
+                            discountType === "FIXED_AMOUNT"
+                                ? discountValue // Fixed discount gives the discounted price
+                                : discountType === "PERCENTAGE"
+                                ? price * ((100 - discountValue) / 100) // Percentage discount
+                                : price; // No discount applied
+
+                        return sum + finalPrice * item.quantity; // Add to total
+                    }, 0) + shippingFeeValue;
+
 
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderRow = `

@@ -203,7 +203,7 @@
         "disabled": false,
         "settings": {
           "product-price-locator": "#prod-price",
-          "collection-item-locator": "tr",
+          "collection-item-locator": "<tr></tr>",
           "collection-item-price-locator": "#prod-price",
           "delay-after-page-load": 50,
           "delay-after-content-change": 50,

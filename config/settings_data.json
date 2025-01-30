@@ -166,23 +166,6 @@
           "applied-discount-code-remove-icon-style": "margin: 0 0px 0 5px;font-size: 15px;cursor: pointer;padding: 10px 11px 10px 10px;"
         }
       },
-      "13741738273725063537": {
-        "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_price/27ce59c5-d805-4118-89c7-4a7fe286ddce",
-        "disabled": false,
-        "settings": {
-          "product-price-locator": "#prod-price",
-          "collection-item-locator": ".card-wrapper",
-          "collection-item-price-locator": ".price-item.price-item--regular",
-          "delay-after-page-load": 50,
-          "delay-after-content-change": 50,
-          "check-variant-change-interval": 100,
-          "delay-in-each-network-call": 40,
-          "dump_all_collections": false,
-          "enable-product-drawer": false,
-          "listen-product-fetch": "/products/",
-          "drawer-locator": ".quick-add-modal__content.global-settings-popup"
-        }
-      },
       "6040731631751496524": {
         "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_qb_grid/27ce59c5-d805-4118-89c7-4a7fe286ddce",
         "disabled": false,
@@ -213,6 +196,23 @@
           "check_cart_change_interval": 1000,
           "enable_product_options_integration": false,
           "delay_after_cart_change": 500
+        }
+      },
+      "13741738273725063537": {
+        "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_price/27ce59c5-d805-4118-89c7-4a7fe286ddce",
+        "disabled": false,
+        "settings": {
+          "product-price-locator": "#prod-price",
+          "collection-item-locator": "tr",
+          "collection-item-price-locator": "#prod-price",
+          "delay-after-page-load": 50,
+          "delay-after-content-change": 50,
+          "check-variant-change-interval": 100,
+          "delay-in-each-network-call": 40,
+          "dump_all_collections": false,
+          "enable-product-drawer": false,
+          "listen-product-fetch": "/products/",
+          "drawer-locator": ".quick-add-modal__content.global-settings-popup"
         }
       }
     },

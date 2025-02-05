@@ -157,21 +157,6 @@
           "drawer-locator": ".quick-add-modal__content.global-settings-popup"
         }
       },
-      "14894130144892270760": {
-        "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_cart-prices/27ce59c5-d805-4118-89c7-4a7fe286ddce",
-        "disabled": true,
-        "settings": {
-          "cart_item_list_locator": "table.cart-items",
-          "cart_total_value_locator": ".totals__total-value",
-          "cart_item_locator": ".cart-item",
-          "cart_item_price_locator": ".product-option",
-          "cart_line_item_price_locator": ".price.price--end",
-          "cart_checkout_button_id": "checkout",
-          "check_cart_change_interval": 1000,
-          "enable_product_options_integration": false,
-          "delay_after_cart_change": 500
-        }
-      },
       "6040731631751496524": {
         "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_qb_grid/27ce59c5-d805-4118-89c7-4a7fe286ddce",
         "disabled": true,
@@ -213,6 +198,21 @@
           "applied-discount-code-container-css": "width: 100%; height: 50px;float: right;padding: 10px 5px 10px 20px;border-radius: 0px 10px;background: #F0F0F0;border: 1px solid #E7E7E7;margin: 5px;",
           "applied-discount-code-icon-style": "font-size: 15px;margin-right: 10px;",
           "applied-discount-code-remove-icon-style": "margin: 0 0px 0 5px;font-size: 15px;cursor: pointer;padding: 10px 11px 10px 10px;"
+        }
+      },
+      "14894130144892270760": {
+        "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_cart-prices/27ce59c5-d805-4118-89c7-4a7fe286ddce",
+        "disabled": false,
+        "settings": {
+          "cart_item_list_locator": "table.cart-items",
+          "cart_total_value_locator": ".totals__total-value",
+          "cart_item_locator": ".cart-item",
+          "cart_item_price_locator": ".product-option",
+          "cart_line_item_price_locator": ".price.price--end",
+          "cart_checkout_button_id": "checkout",
+          "check_cart_change_interval": 1000,
+          "enable_product_options_integration": false,
+          "delay_after_cart_change": 500
         }
       }
     },

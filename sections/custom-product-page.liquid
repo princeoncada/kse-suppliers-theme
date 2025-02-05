@@ -337,6 +337,9 @@
                                             data-customer-company="{{ customer.default_address.company }}">Add
                                             to Cart </button>
                                     </div>
+                                    <script type="application/json" class="bold-product-json">
+                                        {{ variant | json }}
+                                    </script>
                                     {% else %}
                                     <a href="/account/login?return_to={{ product.url | url_escape }}"
                                         class="x-text-[#ac1200] hover:x-underline">Login to view price</a>

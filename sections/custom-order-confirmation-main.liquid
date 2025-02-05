@@ -125,15 +125,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const tagMutation = `
             mutation {
                 createDraftOrderTag(draftOrderId: "${draftOrderId}", tag: "${selectedTags}", userId: "${userId}")
-
             }
         `;
 
-        async function requestShipping(draftOrderId, userId, selectedAddress) {
+        async function requestShipping(draftOrderId, userId, selectedAddress,customer) {
             const mutation = `
                 mutation {
                     requestShippingFee(
                         userId: "${userId}",
+                        email: "${customer.email}",
                         draftOrderId: "${draftOrderId}",
                         shippingAddress: {
                             address1: "${selectedAddress.address1}",
@@ -168,12 +168,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        async function completeOrder(draftOrderId, userId, selectedAddress) {
+        async function completeOrder(draftOrderId, userId, selectedAddress, customer) {
             const mutation = `
                 mutation {
                     requestShippingFee(
                         userId: "${userId}",
                         draftOrderId: "${draftOrderId}",
+                        email: "${customer.email}",
                         shippingAddress: {
                             address1: "${selectedAddress.address1}",
                             city: "${selectedAddress.city}",
@@ -185,6 +186,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     )
                 }
             `;
+
+            console.log("Mutation:", mutation);
 
             try {
                 const response = await $.ajax({
@@ -226,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (requestedShipping) {
                         console.log("Shipping fee requested. Triggering requestShipping...");
 
-                        const success = await requestShipping(draftOrderId, userId, selectedAddress);
+                        const success = await requestShipping(draftOrderId, userId, selectedAddress, customer);
                         if (success) {
                             spinnerContainer.style.display = 'none';
                             confirmationContent.innerHTML = `
@@ -243,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `;
                         }
                     } else {
-                        const orderCompleted = await completeOrder(draftOrderId, userId, selectedAddress);
+                        const orderCompleted = await completeOrder(draftOrderId, userId, selectedAddress, customer);
                         if (orderCompleted) {
                             spinnerContainer.style.display = 'none';
                             confirmationContent.innerHTML = `

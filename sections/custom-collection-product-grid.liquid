@@ -13,6 +13,7 @@
                     {% render 'custom-product-card', product: current_product %}
                     {% render 'custom-product-card', product: current_product %} {% endcomment %}
                     {% for product in collection.products %}
+                        <script type="application/json" class="bold-product-json">{{ product | json }}</script>
                         {% render 'custom-product-card', product: product %}
                     {% endfor %}
                 </div>

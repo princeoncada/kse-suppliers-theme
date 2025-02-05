@@ -142,7 +142,6 @@ function saveToDraft() {
     const currentUserId = `gid://shopify/Customer/${customerId}`;
     const customerAddress = window.ShopifyData.defaultAddress;
 
-    // Fetch the current cart items
     $.ajax({
         url: '/cart.js',
         method: 'GET',
@@ -151,35 +150,53 @@ function saveToDraft() {
     }).done(function (state) {
         console.log("State from /cart.js:", state);
 
-        // Ensure 'items' exists and is an array
         if (!state.items || !Array.isArray(state.items)) {
             console.error("Error: 'items' property is missing or invalid.");
             return;
         }
 
-        // Map cart items
-        const cartItems = state.items.map(item => ({
-            variantId: item.variant_id,
-            quantity: item.quantity,
-        }));
+        const cartItems = state.items.map((item, index) => {
+            const priceElement = document.querySelectorAll('.price.price--end')[index];
+            let displayedPrice = item.price;
 
-        console.log("Mapped Cart Items:", cartItems);
+            if (priceElement) {
+                const parsedPrice = parseFloat(priceElement.textContent.replace('$', '').trim());
+                if (!isNaN(parsedPrice)) {
+                    displayedPrice = parsedPrice;
+                }
+            }
 
-        // Create the GraphQL mutation
+            const hasDiscount = displayedPrice * 100 < item.price;
+
+            return {
+                variantId: item.variant_id,
+                quantity: item.quantity,
+                originalPrice: item.price,
+                originalUnitPrice: hasDiscount && displayedPrice * 100 > 0 ? displayedPrice * 100 : null, // Include only if valid
+            };
+        });
+
+        console.log("Mapped Cart Items with Displayed Prices:", cartItems);
+
         const mutation = `
             mutation {
                 createDraftOrder(
                     customerId: "${currentUserId}",
                     lineItems: [${cartItems.map(item => `
-                        { variantId: "gid://shopify/ProductVariant/${item.variantId}", quantity: ${item.quantity} }
-                    `).join(',')}],
+                        { 
+                            variantId: "gid://shopify/ProductVariant/${item.variantId}", 
+                            quantity: ${item.quantity},
+                            originalPrice: ${item.originalPrice},
+                            ${item.originalUnitPrice ? `, originalUnitPrice: ${item.originalUnitPrice}` : ''}
+                        }
+                    `).join(',')}],                 
                     shippingAddress: {
                         address1: "${customerAddress.address1}",
                         city: "${customerAddress.city}",
                         province: "${customerAddress.province}",
                         country: "${customerAddress.country}",
                         zip: "${customerAddress.zip}"
-                    }
+                    }                     
                 ) {
                     id
                 }
@@ -188,7 +205,6 @@ function saveToDraft() {
 
         console.log("Mutation Payload:", mutation);
 
-        // Send the mutation to create the draft order
         $.ajax({
             url: 'https://kseshopify-production.up.railway.app/graphql',
             method: 'POST',
@@ -197,7 +213,6 @@ function saveToDraft() {
         }).done(function (response) {
             console.log('Draft Order Response:', response);
 
-            // Validate the returned draft order ID
             const draftOrderId = response?.data?.createDraftOrder?.id;
             if (draftOrderId) {
                 clearCart();
@@ -211,9 +226,6 @@ function saveToDraft() {
         console.error('Error fetching cart items:', error);
     });
 }
-
-
-
 
 function clearCart() {
     let cart = $('cart-notification').length ? $('cart-notification') : $('cart-drawer');

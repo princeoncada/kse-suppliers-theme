@@ -316,9 +316,7 @@
         const provinceWrapper = document.getElementById('province-wrapper');
         const countryInput = document.getElementById('country');
         const addresses = {{ customer.addresses | json }};
-
-        
-
+        console.log('Customer Addresses:', addresses);
 
         // Populate default address if available
         if (addresses.length > 0) {
@@ -396,24 +394,22 @@
                 });
             });
         });
-    });
+        
+        const placeOrderButton = document.getElementById('place-order');
 
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-    const placeOrderButton = document.getElementById('place-order');
-
-    document.querySelectorAll('input[name="shipping_quote"]').forEach(radio => {
-        radio.addEventListener('change', function () {
-            placeOrderButton.textContent = this.value === 'false' ? 'Request Shipping' : 'Place Order';
+        document.querySelectorAll('input[name="shipping_quote"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                placeOrderButton.textContent = this.value === 'false' ? 'Request Shipping' : 'Place Order';
+            });
         });
+
     });
-});
 
     document.addEventListener('DOMContentLoaded', async function () {
         const params = new URLSearchParams(window.location.search);
         const draftOrderId = params.get('draftOrderId');
         const shippingCostParam = params.get('shippingCost');
+        const hasShipAddress = params.has('shipAddress');
 
         if (!draftOrderId) {
             console.error('No draftOrderId found in URL parameters.');
@@ -443,6 +439,10 @@
                                     lineItems {
                                         title
                                         quantity
+                                        appliedDiscount {
+                                            valueType
+                                            value
+                                        }
                                         variant {
                                             title
                                             price
@@ -480,6 +480,7 @@
                     lineItems: draftOrder.lineItems.map((item) => ({
                         title: item.title,
                         quantity: item.quantity,
+                        appliedDiscount: item.appliedDiscount || null,
                         variant: {
                             title: item.variant?.title,
                             price: item.variant?.price,
@@ -492,9 +493,6 @@
                 throw new Error('Failed to fetch draft order.');
             }
         }
-
-
-
 
         async function checkForShippingFee(draftOrderId) {
             const query = `
@@ -528,6 +526,7 @@
             const checkoutCartItems = document.getElementById('checkout-cart-items');
             const checkoutTotal = document.getElementById('checkout-total');
             const shippingOptions = document.getElementById('shipping-options');
+            const submitAddress = document.getElementById('select-address-btn')
 
             if (draftOrder && draftOrder.lineItems) {
                 console.log('Draft Order Details:', draftOrder);
@@ -537,12 +536,25 @@
                 draftOrder.lineItems.forEach((item) => {
                     const { title, quantity, variant, variantTitle } = item;
                     const price = parseFloat(variant?.price) || 0; // Ensure price is parsed as a float
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                     // Calculate final price per item based on discount
+                    const finalPrice =
+                        discountType === 'FIXED_AMOUNT'
+                            ? discountValue 
+                            : discountType === 'PERCENTAGE'
+                            ? price * ((100 - discountValue) / 100) 
+                            : price; 
+
+                    const itemTotal = finalPrice * quantity;
+
+                    total += itemTotal;
+                    
                     const metafields = variant?.metafields.reduce((fields, mf) => {
                         fields[mf.key] = mf.value;
                         return fields;
                     }, {}) || {};
-
-                    total += price * quantity;
 
                     const itemHtml = `
                         <div class="x-text-red-800 x-text-[18px] x-pb-[10px]">${item.title} </div>
@@ -553,7 +565,7 @@
                                 <div>Qty: ${quantity}</div>
                                 <div>Color: ${metafields.color || 'N/A'}</div>
                                 <div>Packing: ${metafields.packing || 'N/A'}</div>
-                                <div class="x-text-red-800 x-font-semibold">$${(price * quantity).toFixed(2)}</div>
+                                <div class="x-text-red-800 x-font-semibold">$${itemTotal.toFixed(2)}</div>
                             </div>
                         </div>
                     `;
@@ -589,6 +601,7 @@
                 // Hide radio buttons if shipping cost exists
                 if (shippingCost > 0) {
                     shippingOptions.classList.add('x-hidden');
+                    submitAddress.classList.add('x-hidden');
                 }
             } else {
                 console.warn('No line items found in the draft order.');
@@ -597,17 +610,40 @@
             }
         }
 
-
-
         /**
          * Populate Shipping Address
          */
-        const customerAddress = window.CustomerData?.defaultAddress || {};
-        document.getElementById('company_name').value = customerAddress.company_name || '';
-        document.getElementById('street_address').value = customerAddress.address2 || '';
-        document.getElementById('town_city').value = customerAddress.city || '';
-        document.getElementById('state').value = customerAddress.province || '';
-        document.getElementById('zip').value = customerAddress.zip || '';
+         if (hasShipAddress) {
+            // Get the address from URL parameters
+            const shippingAddress = {
+                company_name: params.get('company') || '',
+                address1: params.get('address1') || '',
+                city: params.get('city') || '',
+                province: params.get('province') || '',
+                zip: params.get('zip') || '',
+                country: params.get('country') || '',
+            };
+            
+            const po = params.get('po') || ''; 
+            const notes = params.get('notes') || '';
+            document.getElementById('job_code').value = po;
+            document.getElementById('message').value = notes;
+
+            document.getElementById('company_name').value = shippingAddress.company_name;
+            document.getElementById('street_address').value = shippingAddress.address1;
+            document.getElementById('town_city').value = shippingAddress.city;
+            document.getElementById('state').value = shippingAddress.province;
+            document.getElementById('zip').value = shippingAddress.zip;
+        } else {
+            // Fallback to CustomerData if no &shipAddress in the URL
+            const customerAddress = window.CustomerData?.defaultAddress || {};
+
+            document.getElementById('company_name').value = customerAddress.company_name || '';
+            document.getElementById('street_address').value = customerAddress.address2 || '';
+            document.getElementById('town_city').value = customerAddress.city || '';
+            document.getElementById('state').value = customerAddress.province || '';
+            document.getElementById('zip').value = customerAddress.zip || '';
+        }
 
         // Fetch and render draft order
         await renderDraftOrder();

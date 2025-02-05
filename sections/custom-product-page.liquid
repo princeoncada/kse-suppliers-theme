@@ -327,9 +327,9 @@
                                             <span class="money" 
                                                 data-product-id="{{ variant.id }}" 
                                                 data-variant-id="{{ variant.id }}" 
-                                                data-line-index="{{ forloop.index0 }}">
-                                                {{ variant.price | money }}
-                                            </span>
+                                                id="price-variant-{{ variant.id }}">
+                                            {{ variant.price | money }}
+                                        </span>
                                         </div>
                                         <button
                                             class="add-to-cart x-bg-[#ac1200] hover:x-bg-[#721a10] x-text-white x-px-[12px] x-py-[6px] x-text-[16px] x-transition-colors x-duration-300 x-ease-in-out"

@@ -200,7 +200,7 @@
       },
       "13741738273725063537": {
         "type": "shopify://apps/bold-custom-pricing-wholesale/blocks/v3_price/27ce59c5-d805-4118-89c7-4a7fe286ddce",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "product-price-locator": "#prod-price",
           "collection-item-locator": "tr",

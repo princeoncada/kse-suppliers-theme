@@ -19,6 +19,11 @@
         {{ form.errors | default_errors }}
         <div class="x-w-full x-space-y-8 md:x-space-y-4 md:x-flex md:x-flex-wrap md:x-gap-6">
             <div class="md:x-flex md:x-items-center md:x-w-full">
+                <label for="vendor-or-buyer" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Are you a Vendor or a Buyer?</label>
+                <input type="radio" name="contact[vendor_or_buyer]" value="vendor" id="vendor"><label for ="vendor" class="x-mx-2">Vendor</label>
+                <input type="radio" name="contact[vendor_or_buyer]" value="buyer" id="buyer"><label for ="buyer" class="x-mx-2">Buyer</label>
+            </div>
+            <div class="md:x-flex md:x-items-center md:x-w-full">
             <label for="first-name" class="x-block x-font-bold x-text-[14px] x-text-center md:x-text-left md:x-w-[20%]">Business Name:*</label>
             <input type="text" required name="contact[first_name]" id="first-name" class="x-w-full x-border x-border-[#555] x-p-2  x-outline-none md:x-w-[80%]" />
             </div>

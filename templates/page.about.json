@@ -12,9 +12,13 @@
     "main": {
       "type": "about-us-main",
   },
+  "who-we-serve":{
+    "type": "who-we-serve-main",
+  },
 },
   "order": [
-"main"
+"main",
+"who-we-serve"
   ]
 }
 

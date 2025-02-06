@@ -678,6 +678,11 @@ video {
   margin-bottom: 8px !important;
 }
 
+.x-mx-2 {
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+}
+
 .x-mb-0 {
   margin-bottom: 0px !important;
 }

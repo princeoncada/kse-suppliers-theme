@@ -2706,9 +2706,6 @@ details[open] .modal-overlay::after {
 }
 
 @media screen and (min-width: 990px) {
-  .search-modal__form {
-    max-width: 74.2rem;
-  }
 
   .search-modal__close-button {
     position: initial;
@@ -3605,7 +3602,7 @@ details-disclosure > details {
 @media screen and (min-width: 990px) {
     .header--middle-left {
         grid-template-areas: 'heading navigation icons';
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: 1fr 3fr 0.5fr;
         column-gap: 2rem;
     }    
 }

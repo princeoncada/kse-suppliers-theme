@@ -1,0 +1,186 @@
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<section class="x-bg-[#951828]">
+    <div class="x-py-[24px] md:x-py-[48px] lg:x-py-[64px] md:x-px-[32px] x-text-[white] x-max-w-[1440px] x-mx-auto">
+        <div class="x-grid x-grid-cols-1 md:x-grid-cols-2">
+            <div class="x-flex x-flex-col x-gap-[16px] x-p-[16px] x-py-[32px] x-justify-center">
+                <div>
+                    <div class="x-text-[28px] md:x-text-[32px]">{{ section.settings.header }}</div>
+                    <div class="x-text-[36px] md:x-text-[48px]">{{ section.settings.sub_header }}</div>
+                </div>
+                <div class="x-space-y-[28px]">
+                    <div class="lg:x-w-3/4">{{ section.settings.content }}</div>
+                    <div class="x-text-black x-bg-white x-p-[0.9375rem_1.75rem] x-font-medium x-inline-flex md:x-text-[18px]">
+                        <a href="{{ section.settings.button_link }}">
+                            {{ section.settings.button_text }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="benefits-swiper x-w-full x-overflow-hidden">
+                    <div class="swiper-wrapper">
+
+                        {% for block in section.blocks %}
+                            {% case block.type %}
+                                {% when 'slide' %}
+                                    {% render 'benefits-swiper-slide', img_url: block.settings.img_url %}
+                                {% else %}
+                            {% endcase %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <div class="x-grid x-grid-cols-[0.5fr_2fr_0.5fr] x-gap-[16px] x-items-center x-mt-[16px]">
+                    <div class="x-flex x-items-center x-justify-center">
+                        <div class="slide-prev x-w-[32px] x-aspect-square x-bg-[#951828] x-rounded-full x-flex x-items-center x-justify-center x-border-white x-border-[1px]">
+                            <i class='bx bx-left-arrow-alt x-leading-[0px]'></i>
+                        </div>
+                    </div>
+                    <div class="x-text-center" style="height: {{ section.settings.content_height }}px;">
+                        <div class="swiper-contents x-relative x-h-full x-flex x-items-center x-justify-center">
+
+                            {% for block in section.blocks %}
+                                {% case block.type %}
+                                    {% when 'slide' %}
+                                        {% render 'benefits-swiper-content', header_text: block.settings.header_text, content_text: block.settings.content_text %}
+                                    {% else %}
+                                {% endcase %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="x-flex x-items-center x-justify-center">
+                        <div class="slide-next x-w-[32px] x-aspect-square x-bg-[#951828] x-rounded-full x-flex x-items-center x-justify-center x-border-white x-border-[1px]">
+                            <i class='bx bx-right-arrow-alt x-leading-[0px]'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .swiper-slide {
+        height: 300px;
+    }
+</style>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+
+    function viewSwiperContent(index) {
+        var contents = document.querySelectorAll('.swiper-content');
+
+        contents.forEach(function (content) {
+            content.style.opacity = 0;
+        });
+
+        contents[index].style.opacity = 1;
+    }
+
+    var swiper = new Swiper(".benefits-swiper", {
+        loop: true,
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        coverflowEffect: {
+            rotate: 35,
+            stretch: 0,
+            depth: 200,
+            modifier: 1,
+            slideShadows: true,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+        },
+        navigation: {
+            nextEl: ".slide-next",
+            prevEl: ".slide-prev",
+        },
+        on: {
+            init: function (e) {
+                viewSwiperContent(e.realIndex);
+            },
+            realIndexChange: function (e) {
+                viewSwiperContent(e.realIndex);
+            }
+        }
+    });
+
+</script>
+
+{% schema %}
+{
+    "name": "Benefits & Advantages Section (KSE)",
+    "settings": [
+        {
+            "id": "header",
+            "type": "text",
+            "label": "Header",
+            "default": "Benefits & Advantages"
+        },
+        {
+            "id": "sub_header",
+            "type": "text",
+            "label": "Sub Header",
+            "default": "Your Online Portal"
+        },
+        {
+            "id": "content",
+            "type": "text",
+            "label": "Content",
+            "default": "KSE Suppliers now offers online ordering for authorized dealers. Sign up today to place your orders online."
+        },
+        {
+            "id": "button_text",
+            "type": "text",
+            "label": "Button Text",
+            "default": "Sign Up Today"
+        },
+        {
+            "id": "button_link",
+            "type":"url",
+            "label": "Button Link"
+        },
+        {
+            "id": "content_height",
+            "type": "text",
+            "label": "Content Container Height (Pixels)",
+            "default": "180"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Slide",
+            "type": "slide",
+            "settings": [
+                {
+                    "id": "img_url",
+                    "type": "image_picker",
+                    "label": "Image"
+                },
+                {
+                    "id": "header_text",
+                    "type": "text",
+                    "label": "Header Text",
+                    "default": "Header Text"
+                },
+                {
+                    "id": "content_text",
+                    "type": "text",
+                    "label": "Content Text",
+                    "default": "Content Text"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

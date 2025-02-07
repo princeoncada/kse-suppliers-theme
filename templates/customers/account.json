@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "custom-customer-dashboard2",
+      "type": "custom-customer-dashboard",
       "settings": {}
     },
     "support": {

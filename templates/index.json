@@ -1,23 +1,26 @@
 {
     "sections": {
         "image-banner": {
-            "type": "a-image-banner",
+            "type": "a-image-banner"
         },
         "categories": {
-            "type": "a-categories",
+            "type": "a-categories"
         },
         "content-1": {
-            "type": "a-content-1",
+            "type": "a-content-1"
         },
         "parallax-1": {
-            "type": "a-parallax-1",
+            "type": "a-parallax-1"
         },
         "stats": {
-            "type": "a-stats",
+            "type": "a-stats"
+        },
+        "benefits": {
+            "type": "custom-benefits"
         },
         "image-banner-2": {
-            "type": "a-image-banner-2",
-        },
+            "type": "a-image-banner-2"
+        }
     },
     "order": [
         "image-banner",
@@ -25,6 +28,7 @@
         "content-1",
         "parallax-1",
         "stats",
+        "benefits",
         "image-banner-2"
     ]
 }

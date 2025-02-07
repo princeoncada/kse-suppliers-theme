@@ -1,34 +1,106 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "sections": {
-        "image-banner": {
-            "type": "a-image-banner"
-        },
-        "categories": {
-            "type": "a-categories"
-        },
-        "content-1": {
-            "type": "a-content-1"
-        },
-        "parallax-1": {
-            "type": "a-parallax-1"
-        },
-        "stats": {
-            "type": "a-stats"
-        },
-        "benefits": {
-            "type": "custom-benefits"
-        },
-        "image-banner-2": {
-            "type": "a-image-banner-2"
-        }
+  "sections": {
+    "image-banner": {
+      "type": "a-image-banner",
+      "settings": {}
     },
-    "order": [
-        "image-banner",
-        "categories",
-        "content-1",
-        "parallax-1",
-        "stats",
-        "benefits",
-        "image-banner-2"
-    ]
+    "categories": {
+      "type": "a-categories",
+      "settings": {}
+    },
+    "content-1": {
+      "type": "a-content-1",
+      "settings": {}
+    },
+    "parallax-1": {
+      "type": "a-parallax-1",
+      "settings": {}
+    },
+    "stats": {
+      "type": "a-stats",
+      "settings": {}
+    },
+    "benefits": {
+      "type": "custom-benefits",
+      "blocks": {
+        "slide_6K8BHT": {
+          "type": "slide",
+          "settings": {
+            "img_url": "shopify://shop_images/Sheets-1-300x300_e2b25b30-62ca-459c-925c-0974175ddcc4.jpg",
+            "header_text": "Header Text #1",
+            "content_text": "Content Text #1"
+          }
+        },
+        "slide_RkhCH6": {
+          "type": "slide",
+          "settings": {
+            "img_url": "shopify://shop_images/IGIVT10XLN.jpg",
+            "header_text": "Header Text #2",
+            "content_text": "Content Text #2"
+          }
+        },
+        "slide_HRPdJa": {
+          "type": "slide",
+          "settings": {
+            "img_url": "shopify://shop_images/Jade-Geen.jpg",
+            "header_text": "Header Text #3",
+            "content_text": "Content Text #3"
+          }
+        },
+        "slide_pWRGx9": {
+          "type": "slide",
+          "settings": {
+            "img_url": "shopify://shop_images/Poplin-Burgundy-1.jpg",
+            "header_text": "Header Text #4",
+            "content_text": "Content Text #4"
+          }
+        },
+        "slide_Lia4WH": {
+          "type": "slide",
+          "settings": {
+            "img_url": "shopify://shop_images/IV-gown-Pic.png",
+            "header_text": "Header Text #5",
+            "content_text": "Content Text #5"
+          }
+        }
+      },
+      "block_order": [
+        "slide_6K8BHT",
+        "slide_RkhCH6",
+        "slide_HRPdJa",
+        "slide_pWRGx9",
+        "slide_Lia4WH"
+      ],
+      "settings": {
+        "header": "Benefits & Advantages",
+        "sub_header": "Your Online Portal",
+        "content": "KSE Suppliers now offers online ordering for authorized dealers. Sign up today to place your orders online.",
+        "button_text": "Sign Up Today",
+        "button_link": "",
+        "content_height": "180"
+      }
+    },
+    "image-banner-2": {
+      "type": "a-image-banner-2",
+      "settings": {}
+    }
+  },
+  "order": [
+    "image-banner",
+    "categories",
+    "content-1",
+    "parallax-1",
+    "stats",
+    "benefits",
+    "image-banner-2"
+  ]
 }

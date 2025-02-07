@@ -2,8 +2,10 @@
     <div class="x-flex x-flex-col x-gap-[24px] md:x-gap-[32px] lg:x-gap-[40px] lg:x-max-w-[1440px] lg:x-mx-auto">
         <div class="upper x-flex x-flex-col lg:x-flex-row x-gap-[24px] md:x-w-1/2 lg:x-w-full lg:x-justify-between">
             <div class="x-flex x-flex-col lg:x-flex-row x-gap-[24px] lg:x-w-full">
-                <div class="x-space-y-[16px]">
-                    <div class="x-text-[32px] x-text-nowrap">KSE SUPPLIERS</div>
+                <div class="x-space-y-[24px]">
+                    <div class="x-flex x-flex-row x-gap-[8px] x-items-start x-justify-start x-w-full x-mt-[24px] md:x-mt-0">
+                        <img src="{{ 'kse-white-logo.png' | asset_url }}" alt="" class="x-w-[200px] x-h-auto">
+                    </div>
                     <div class="x-flex x-flex-col x-gap-[10px]">
                         <div class="x-grid x-grid-cols-[auto_1fr] x-gap-[2px] x-gap-x-[8px]">
                             <div class="x-flex x-items-center"><i class='x-text-[16px] x-text-[#9E0B0F] bx bxs-phone'></i></div>
@@ -28,20 +30,18 @@
             </div>
             <div class="x-flex x-flex-col lg:x-flex-row x-gap-[24px] md:x-grid x-grid-cols-2 md:x-gap-[12px] lg:x-justify-between lg:x-w-[60%]">
                 <div class="x-space-y-[16px] md:x-flex-1">
-                    <div class="x-text-[20px] x-text-[#59595b]">My Account</div>
+                    <div class="x-text-[20px] x-text-[#eaeaec]">My Account</div>
                     <div class="x-flex x-flex-col x-gap-[10px] x-text-[14px]">
-                        <a href="#" class="x-leading-[20px]">Create / Login</a>
-                        <a href="#" class="x-leading-[20px]">Account Summary</a>
-                        <a href="#" class="x-leading-[20px]">My Orders</a>
-                        <a href="#" class="x-leading-[20px]">Reorder</a>
+                        <a href="/account/login" class="x-leading-[20px]">Create / Login</a>
+                        <a href="/account?view=orders" class="x-leading-[20px]">My Orders</a>
                     </div>
                 </div>
                 <div class="x-space-y-[16px] md:x-flex-1">
-                    <div class="x-text-[20px] x-text-[#59595b]">Company Info</div>
+                    <div class="x-text-[20px] x-text-[#eaeaec]">Company Info</div>
                     <div class="x-flex x-flex-col x-gap-[10px] x-text-[14px]">
-                        <a href="#" class="x-leading-[20px]">Who We Serve</a>
-                        <a href="#" class="x-leading-[20px]">About</a>
-                        <a href="#" class="x-leading-[20px]">Contant</a>
+                        <a href="/pages/about-us" class="x-leading-[20px]">About</a>
+                        <a href="/pages/contact" class="x-leading-[20px]">Contact</a>
+                        <a href="/pages/news" class="x-leading-[20px]">News</a>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
         <div class="middle x-flex x-flex-col md:x-flex-row md:x-justify-between x-gap-[24px]">
             <div class="x-flex x-flex-col md:x-flex-row x-gap-[24px] md:x-gap-[48px] lg:x-gap-[96px]">
                 <div class="x-flex x-flex-col md:x-flex-row x-gap-[8px] md:x-gap-[32px]">
-                    <div class="x-text-[16px]">Subscribe to our <br class="x-hidden md:x-block"/>newsletter</div>
+                    <div class="x-text-[16px]">Subscribe for our <br class="x-hidden md:x-block"/>catalogs</div>
                     <div class="x-bg-white x-p-[4px] x-flex x-justify-between x-gap-[8px] x-rounded-md lg:x-w-[480px]">
                         <input type="email" placeholder="Email" class="x-p-[4px] x-rounded-sm x-border-none x-outline-none x-shadow-none x-text-black x-flex-1 lg:x-p-[8px]">
                         <button class="x-p-[4px] x-px-[16px] x-text-[16] x-bg-[#9E0B0F] x-rounded-md">
@@ -63,10 +63,18 @@
                     </div>
                 </div>
                 <div class="x-flex x-gap-[16px] lg:x-gap-[28px] x-items-center">
-                    <i class='x-text-[24px] lg:x-text-[32px] bx bxl-instagram' ></i>
-                    <i class='x-text-[24px] lg:x-text-[32px] bx bxl-facebook' ></i>
-                    <i class='x-text-[24px] lg:x-text-[32px] bx bxl-linkedin' ></i>
-                    <i class='x-text-[24px] lg:x-text-[32px] bx bxl-youtube' ></i>
+                    <a href="" class="x-flex x-items-center">
+                        <i class='x-text-[24px] lg:x-text-[32px] bx bxl-instagram' ></i>
+                    </a>
+                    <a href="" class="x-flex x-items-center">
+                        <i class='x-text-[24px] lg:x-text-[32px] bx bxl-facebook' ></i>
+                    </a>
+                    <a href="http://linkedin.com/company/kse-suppliers" class="x-flex x-items-center">
+                        <i class='x-text-[24px] lg:x-text-[32px] bx bxl-linkedin' ></i>
+                    </a>
+                    <a href="https://www.youtube.com/@KSESuppliers" class="x-flex x-items-center">
+                        <i class='x-text-[24px] lg:x-text-[32px] bx bxl-youtube' ></i>
+                    </a>
                 </div>
             </div>
             <div class="x-flex x-flex-row x-gap-[8px] x-items-end">
@@ -79,11 +87,11 @@
             &nbsp;
         </div>
 
-        <div class="lower x-text-[14px] x-flex x-flex-col md:x-flex-row md:x-justify-between x-gap-[24px]">
-            <div class="x-flex x-gap-[16px]">
+        <div class="lower x-text-[14px] x-flex x-flex-col md:x-flex-row md:x-justify-center x-gap-[24px]">
+            {% comment %} <div class="x-flex x-gap-[16px]">
                 <a href="#">Terms & Conditions</a>
                 <a href="#">Privacy Policy</a>
-            </div>
+            </div> {% endcomment %}
             <div class="x-text-[#59595b]">@ 2024 KSE Suppliers. All Rights Reserved.</div>
         </div>
     </div>

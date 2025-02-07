@@ -152,7 +152,6 @@
                                 </table>
                             </div>  
                         </div>
-
                         {% comment %} <div class="recurring-orders sub-view x-hidden">
                             <div class="x-overflow-x-auto x-max-w-full">
                                 <table class="x-w-full">
@@ -933,406 +932,18 @@
             });
     });
 
-    function initializeOrderView() {
-        const mainView = document.querySelector('.orders .main');
-        const orderView = document.querySelector('.order-view');
-
-        async function populateOrderView(orderId) {
-            const orderDetails = await fetchOrderDetails(orderId); // Fetch details dynamically
-
-            // Populate the order view dynamically
-            orderView.innerHTML = `
-                <button class="order-back-btn x-underline x-text-[20px] x-underline-offset-4 x-mb-[16px]">Back</button>
-                <div class="x-flex x-justify-between x-items-center">
-                    <div class="x-text-[32px] md:x-text-[40px]">Order ${orderDetails.orderNumber}</div>
-                    <div class="x-text-[16px] md:x-text-[20px]">PO: ${orderDetails.purchaseOrder}</div>
-                </div>
-                <div class="x-flex x-flex-col md:x-flex-row x-justify-between x-gap-[16px] md:x-gap-[0px] md:x-items-center x-py-[12px] x-pb-[32px]">
-                    <div class="x-text-[14px] md:x-text-[18px]">This order was placed on <span class="x-font-bold">${orderDetails.orderDate}</span> by <span class="x-font-bold">${orderDetails.customerName}</span></div>
-                    <div class="x-flex x-gap-[8px] x-items-end">
-                        <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] reorder-btn" data-order="${orderId}">
-                            Reorder
-                        </button>
-                        <button class="x-bg-[#404042] x-text-white x-px-[12px] x-py-[6px] x-rounded-[4px] x-text-[14px] md:x-text-[18px]">Track</button>
-                    </div>
-                </div>
-                <div class="items-container x-space-y-[16px] md:x-space-y-[40px]">
-                    ${orderDetails.items.map(item => `
-                        <div class="item">
-                            <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
-                                <div class="x-text-[18px] md:x-text-[24px] md:x-leading-[32px]">${item.name}</div>
-                            </div>
-                            <div class="x-flex x-flex-col md:x-hidden">
-                                <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
-                                    <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
-                                        <div><span>Item Code: </span><span>${item.code}</span></div>
-                                        <div><span>Desc: </span><span>${item.description}</span></div>
-                                        <div><span>Cut Size: </span><span>${item.cutSize}</span></div>
-                                        <div><span>Packing: </span><span>${item.packing}</span></div>
-                                        <div><span>Color: </span><span>${item.color}</span></div>
-                                        <div>&nbsp;</div>
-                                        <div class="x-flex x-gap-[4px] x-items-center x-w-full"><span>Qty:</span><span>${item.quantity}</span></div>
-                                        <div class="x-flex x-items-center"><span>Subtotal:&nbsp;</span><span class="x-font-semibold">${item.subtotal}</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="x-hidden x-flex-col md:x-flex">
-                                <table class="x-border-none table-alternating-rows">
-                                    <thead>
-                                        <tr class="x-text-white x-bg-[#404042]">
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Item Code</th>
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Description</th>
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Cut Size</th>
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Packing</th>
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Color</th>
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Qty</th>
-                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
-                                            <td class="x-p-[8px] x-py-[16px]">${item.code}</td>
-                                            <td class="x-p-[8px] x-py-[16px]">${item.description}</td>
-                                            <td class="x-p-[8px] x-py-[16px]">${item.cutSize}</td>
-                                            <td class="x-p-[8px] x-py-[16px]">${item.packing}</td>
-                                            <td class="x-p-[8px] x-py-[16px]">${item.color}</td>
-                                            <td class="x-p-[8px] x-py-[16px]">${item.quantity}</td>
-                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
-                                                <div class="x-flex x-justify-between">
-                                                    <div>${item.subtotal}</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="x-flex x-w-full x-my-[32px] x-p-[16px] x-bg-[#F0EFEF]">
-                    <div class="x-w-1/2">&nbsp;</div>
-                    <div class="x-w-1/2 x-flex x-flex-col x-gap-[8px]">
-                        <div class="x-flex x-justify-between">
-                            <div class="x-text-[16px] md:x-text-[20px]">Subtotal:</div>
-                            <div class="x-text-[16px] md:x-text-[20px]">${orderDetails.subtotal}</div>
-                        </div>
-                        <div class="x-flex x-justify-between">
-                            <div class="x-text-[16px] md:x-text-[20px]">Shipping:</div>
-                            <div class="x-text-[16px] md:x-text-[20px]">${orderDetails.shipping}</div>
-                        </div>
-                        <div class="x-flex x-justify-between">
-                            <div class="x-text-[16px] md:x-text-[20px]">Total:</div>
-                            <div class="x-text-[16px] md:x-text-[20px] x-text-[#951728]">${orderDetails.total}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="x-flex">
-                    <div class="x-w-1/2">
-                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Contact Info</h1>
-                        <div class="x-flex x-flex-col x-gap-[16px]">
-                            <div class="x-text-[14px] md:x-text-[16px]">
-                                <div class="x-text-[#BBBBBC]">First Name</div>
-                                <div>${orderDetails.contact.firstName}</div>
-                            </div>
-                            <div class="x-text-[14px] md:x-text-[16px]">
-                                <div class="x-text-[#BBBBBC]">Last Name</div>
-                                <div>${orderDetails.contact.lastName}</div>
-                            </div>
-                            <div class="x-text-[14px] md:x-text-[16px]">
-                                <div class="x-text-[#BBBBBC]">Email</div>
-                                <div>${orderDetails.contact.email}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="x-w-1/2">
-                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Shipping Address</h1>
-                        <div class="x-text-[14px] md:x-text-[16px]">
-                            <div>${orderDetails.shippingAddress.name}</div>
-                            <div>${orderDetails.shippingAddress.street}</div>
-                            <div>${orderDetails.shippingAddress.city}, ${orderDetails.shippingAddress.state} ${orderDetails.shippingAddress.zip}</div>
-                            <div>${orderDetails.shippingAddress.country}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="x-pt-[32px]">
-                    <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Notes</h1>
-                    <div class="x-text-[14px] md:x-text-[16px]">${orderDetails.notes}</div>
-                </div>
-            `;
-
-            mainView.classList.add('x-hidden');
-            orderView.classList.remove('x-hidden');
-        }
-
-        document.addEventListener('click', function (event) {
-            if (event.target.classList.contains('view-order-btn')) {
-                const orderId = event.target.dataset.order;
-                const url = new URL(window.location.href);
-                url.searchParams.set('order', orderId);
-                window.history.pushState({}, '', url);
-                populateOrderView(orderId);
-            }
-
-            if (event.target.classList.contains('order-back-btn')) {
-                const url = new URL(window.location.href);
-                url.searchParams.delete('order');
-                window.history.pushState({}, '', url);
-                mainView.classList.remove('x-hidden');
-                orderView.classList.add('x-hidden');
-            }
-        });
-    }
-
-    async function fetchOrderDetails(orderId) {
-        const query = `
-                {
-                    draftOrders {
-                        id
-                        name
-                        invoiceUrl
-                        createdAt
-                        customer {
-                            firstName
-                            lastName
-                            email
-                            companyContactProfiles{
-                                company{
-                                    name
-                                }
-                            }
-                        }
-                        shippingAddress {
-                            address1
-                            city
-                            province
-                            country
-                            zip
-                        }
-                        lineItems {
-                            title
-                            quantity
-                            variant {
-                                id
-                                title
-                                price
-                                metafields {
-                                    key
-                                    value
-                                }
-                            }
-                        }
-                    }
-                }
-            `;
-
-        try {
-            const response = await fetchData(query);
-            if (!response || !response.data || !response.data.draftOrders) {
-                throw new Error("Failed to fetch draft orders.");
-            }
-
-            const orders = response.data.draftOrders;
-            const order = orders.find(order => order.id.split('/').pop() === orderId);
-
-            if (!order) {
-                throw new Error(`Order with ID ${orderId} not found`);
-            }
-
-            const tagQuery = `
-                query {
-                    getDraftOrderTags(draftOrderId: "${order.id}") {
-                        tag
-                    }
-                }
-            `;
-            const tagData = await fetchData(tagQuery);
-            const tags = tagData.data?.getDraftOrderTags || [];
-            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
-            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
-            const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
-            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "No Notes Provided";
-
-            const orderName = order.name || `Order ${orderId}`;
-            const shippingFee = await checkForShippingFee(orderId);
-
-            return {
-                orderNumber: orderName,
-                purchaseOrder: purchaseOrder, // Placeholder
-                orderDate: new Date(order.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                }),
-                customerName: `${order.customer?.firstName || 'N/A'} ${order.customer?.lastName || 'N/A'}`,
-                company: order.customer?.companyContactProfiles?.map(profile => profile.company?.name).join(', ') || 'N/A',
-                items: order.lineItems.map(item => {
-                    const metafields = item.variant?.metafields.reduce((fields, mf) => {
-                        fields[mf.key] = mf.value;
-                        return fields;
-                    }, {}) || {};
-
-                    return {
-                        id: item.variant?.id,
-                        name: item.title || 'N/A',
-                        code: item.variant.title || 'N/A',
-                        description: metafields.description || 'N/A',
-                        cutSize: metafields.cut_size || 'N/A',
-                        packing: metafields.packing || 'N/A',
-                        color: metafields.color || 'N/A',
-                        quantity: item.quantity,
-                        subtotal: `$${(parseFloat(item.variant?.price || 0) * item.quantity).toFixed(2)}`,
-                    };
-                }),
-                subtotal: `$${order.lineItems.reduce((acc, item) => {
-                    const price = parseFloat(item.variant?.price || 0);
-                    return acc + price * item.quantity;
-                }, 0).toFixed(2)}`,
-                shipping: shippingFee,
-                total: `$${order.lineItems.reduce((acc, item) => {
-                    const price = parseFloat(item.variant?.price || 0);
-                    return acc + price * item.quantity;
-                }, 0) + parseFloat(shippingFee.replace('$', ''))}`,
-                contact: {
-                    firstName: order.customer?.firstName || 'N/A',
-                    lastName: order.customer?.lastName || 'N/A',
-                    email: order.customer?.email || 'N/A',
-                },
-                shippingAddress: {
-                    name: `${order.customer?.firstName || ''} ${order.customer?.lastName || ''}`.trim(),
-                    street: order.shippingAddress?.address1 || 'N/A',
-                    city: order.shippingAddress?.city || 'N/A',
-                    state: order.shippingAddress?.province || 'N/A',
-                    zip: order.shippingAddress?.zip || 'N/A',
-                    country: order.shippingAddress?.country || 'N/A',
-                },
-                notes: notes, // Placeholder for notes
-            };
-        } catch (error) {
-            console.error('Error fetching order details:', error.message);
-            return null;
-        }
-    }
-
-    async function reorderDraftOrder(orderId) {
-        try {
-            // Fetch the existing draft order details
-            const orderDetails = await fetchOrderDetails(orderId);
-
-            if (!orderDetails || !orderDetails.items || orderDetails.items.length === 0) {
-                console.error('No items found in the draft order.');
-                return;
-            }
-
-            // Prepare line items for the new draft order
-            const lineItems = orderDetails.items.map(item => ({
-                variantId: item.id,
-                quantity: item.quantity,
-                originalUnitPrice: parseFloat(item.subtotal.replace('$', '')) / item.quantity,
-            }));
-
-            // Map the shipping address to Shopify's required format
-            const shippingAddress = {
-                address1: orderDetails.shippingAddress?.street || '', // Map 'street' to 'address1'
-                city: orderDetails.shippingAddress?.city || '',
-                province: orderDetails.shippingAddress?.state || '', // Map 'state' to 'province'
-                country: orderDetails.shippingAddress?.country || '',
-                zip: orderDetails.shippingAddress?.zip || '',
-                name: orderDetails.shippingAddress?.name || '',
-            };
-
-            const newDraftOrderId = await createDraftOrder(
-                `gid://shopify/Customer/${window.ShopifyData.customerId}`, // Customer ID
-                lineItems,
-                shippingAddress,
-            );
-
-            if (newDraftOrderId) {
-                window.location.href = `account?view=drafts`;
-            } else {
-                console.error('Failed to create a new draft order.');
-            }
-        } catch (error) {
-            console.error('Error during reorder:', error);
-        }
-    }
-
-    async function createDraftOrder(customerId, lineItems, shippingAddress) {
-        const formattedCustomerId = customerId.startsWith('gid://shopify/Customer/')
-            ? customerId
-            : `gid://shopify/Customer/${customerId}`;
-
-        // Filter out invalid line items
-        const validLineItems = lineItems.filter(item => item.variantId && item.variantId !== 'N/A');
-
-        if (validLineItems.length === 0) {
-            console.error('No valid line items found. Draft order cannot be created.');
-            return null;
-        }
-
-        if (!shippingAddress.address1 || shippingAddress.address1 === 'undefined') {
-            console.error('Invalid shipping address. Address1 is required.');
-            return null;
-        }
-
-        try {
-            const mutation = `
-                mutation {
-                    createDraftOrder(
-                        customerId: "${formattedCustomerId}",
-                        lineItems: [
-                            ${validLineItems
-                                .map(
-                                    item => `{
-                                        variantId: "${item.variantId}",
-                                        quantity: ${item.quantity}
-                                    }`
-                                )
-                                .join(',')}
-                        ],
-                        shippingAddress: {
-                            address1: "${shippingAddress.address1}",
-                            city: "${shippingAddress.city}",
-                            province: "${shippingAddress.province}",
-                            country: "${shippingAddress.country}",
-                            zip: "${shippingAddress.zip}"
-                        }
-                    ){
-                        id
-                    }
-                }
-            `;
-
-            const response = await fetchData(mutation);
-
-            if (response?.data?.createDraftOrder?.id) {
-                const draftOrderId = response.data.createDraftOrder.id;
-                return draftOrderId; 
-            } else {
-                console.error('Failed to create draft order:', response?.errors || 'Unknown error');
-                return null;
-            }
-        } catch (error) {
-            console.error('Error creating draft order:', error);
-            return null;
-        }
-    }
-
     //REQUESTED SHIPPING TAB
     async function populateRequestShippingOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
-        const today = new Date().toISOString().split('T')[0];
         const query = `
-            {
-                draftOrders {
+            query getDraftOrdersByCustomerId($customerId: String!, $includeTags: [String!]) {
+                getDraftOrdersByCustomerId(customerId: $customerId, includeTags: $includeTags) {
                     id
                     name
-                    invoiceUrl
+                    tags
                     createdAt
                     customer {
                         id
-                        firstName
-                        lastName
-                        email
                     }
                     shippingAddress {
                         address1
@@ -1344,6 +955,10 @@
                     lineItems {
                         title
                         quantity
+                        appliedDiscount {
+                            value
+                            valueType
+                        }
                         variant {
                             title
                             price
@@ -1356,175 +971,241 @@
                 }
             }
         `;
+
         const draftOrdersList = document.querySelector(".saved-orders-list");
 
         // Add loading animation
-        const loadingSpinner = document.createElement("div");
-        loadingSpinner.className = "loading-spinner";
-        loadingSpinner.innerHTML = `
-            <div class="spinner">
+        draftOrdersList.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
             </div>
         `;
-        draftOrdersList.innerHTML = ""; // Clear content
-        draftOrdersList.appendChild(loadingSpinner);
+
+        const variables = {
+            customerId: currentUserId,
+            includeTags: ["ShipRequested"], // Include only ShipRequested tag orders
+        };
 
         try {
-            const data = await fetchData(query);
+            const data = await fetchData2(query, variables);
             let hasOrders = false;
 
-            if (data && data.data && data.data.draftOrders) {
-                const orders = data.data.draftOrders.filter(order => currentUserId).reverse();
+            if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
+                const orders = data.data.getDraftOrdersByCustomerId;
 
-                const filteredOrders = [];
+                draftOrdersList.innerHTML = ""; // Clear loading spinner
+
                 for (const order of orders) {
-                    const orderId = order.id.split('/').pop();
-
-                    // Check if the order has the "ShipRequested" tag
-                    const tagQuery = `
-                        query {
-                            getDraftOrderTags(draftOrderId: "${orderId}") {
-                                tag
-                            }
-                        }
-                    `;
-                    const tagData = await fetchData(tagQuery);
-                    const hasShipRequestedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "ShipRequested");
-
-
-                    if (!hasShipRequestedTag) {
+                    
+                    if (order.tags.includes("Placed")) {
                         continue;
                     }
+                    
+                    const orderId = order.id.split('/').pop();
 
                     // Check for the shipping fee
                     const shippingFee = await checkForShippingFee(orderId);
 
-
                     // Ensure shippingFee is a string and handle cases where it's null or undefined
                     const feeString = typeof shippingFee === "string" ? shippingFee : "$0";
-
 
                     // Remove the "$" and parse as a float
                     const numericShippingFee = parseFloat(feeString.replace("$", ""));
 
-
                     // Determine the shipping status based on the numeric value
                     const shippingStatus = numericShippingFee > 0 ? "Shipping Quote Applied" : "Shipping Quote Requested";
+                    
+
+                    // Fetch follow-up tag status
+                    const { buttonClass, buttonText, buttonState } = await tagQuery(orderId);
+
+                    const formattedDate = new Date(order.createdAt).toLocaleDateString();
+                    const orderName = order.name || `Order #${orderId}`;
+                    const totalPrice = order.lineItems.reduce((sum, item) => {
+                        const price = parseFloat(item.variant?.price) || 0; // Base price
+                        const discountValue = item.appliedDiscount?.value || 0;
+                        const discountType = item.appliedDiscount?.valueType;
+
+                        const finalPrice =
+                            discountType === "FIXED_AMOUNT"
+                                ? discountValue 
+                                : discountType === "PERCENTAGE"
+                                ? price * ((100 - discountValue) / 100) 
+                                : price; 
+
+                        return sum + finalPrice * item.quantity; 
+                    }, 0);
+
+                    const totalWithShipping = totalPrice + numericShippingFee; 
 
 
-                    filteredOrders.push({ ...order, shippingStatus, numericShippingFee });
-                }
+                    const collapsableDiv = document.createElement("div");
+                    collapsableDiv.classList.add("collapsable");
+                    const placeOrderLink = await generatePlaceOrderLink(orderId);
 
-                draftOrdersList.innerHTML = ""; // Clear loading spinner
-                if (filteredOrders.length > 0) {
-                    for (const order of filteredOrders) {
-                        const orderId = order.id.split('/').pop();
-                        const formattedDate = new Date(order.createdAt).toLocaleDateString();
-                        const orderName = order.name || `Order #${orderId}`;
-                        const totalPrice = order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0);                        
-                        const totalWithShipping = totalPrice + order.numericShippingFee;
-                        const { buttonClass, buttonText, buttonState } = await tagQuery(orderId);
-                        const collapsableDiv = document.createElement("div");
-                        collapsableDiv.classList.add("collapsable");
-
-                        collapsableDiv.innerHTML = `
-                            <input type="checkbox" class="x-hidden">
-                            <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-                                <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${order.shippingStatus}</div>
-                                <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                    <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
-                                    &nbsp;
-                                    </div>
-                                    <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
-                                    </div>
+                    collapsableDiv.innerHTML = `
+                        <input type="checkbox" class="x-hidden">
+                        <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
+                            <div class="x-text-white">Order Name: ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate} | ${shippingStatus}</div>
+                            <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
+                                &nbsp;
                                 </div>
-                            </button>
-                            <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-                                <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-                                    <div class="x-flex x-justify-end x-gap-[12px]">
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
+                                </div>
+                            </div>
+                        </button>
+                        <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
+                            <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
+                                <div class="x-flex x-justify-end x-gap-[12px]">
                                     <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] delete-draft-order" data-id="${order.id}">Delete Order</button>
-                                    </div>
-                                    <div class="x-flex x-flex-col x-gap-[16px]">
-                                        ${order.lineItems.map(item => {
-                                            const metafields = item.variant?.metafields.reduce((fields, mf) => {
-                                                fields[mf.key] = mf.value;
-                                                return fields;
-                                            }, {}) || {};
-                                            return  `
+                                </div>
+                                <div class="x-flex x-flex-col x-gap-[16px]">
+                                    ${order.lineItems.map(item => {
+                                        const metafields = item.variant?.metafields.reduce((fields, mf) => {
+                                            fields[mf.key] = mf.value;
+                                            return fields;
+                                        }, {}) || {};
+                                        return `
                                             <div class="x-space-y-[14px]">
                                                 <div class="x-text-[#951828] x-text-[24px]">${item.title}</div>
                                                 <table class="x-w-full table-alternating-rows">
                                                     <thead>
                                                         <tr class="x-text-white x-bg-[#404042]">
-                                                                <th class="x-text-start x-p-[8px] x-font-normal x-w-[15%]">Item Code</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Description</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Cut Size</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Packing</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Qty</th>
-                                                                <th class="x-p-[8px] x-font-normal x-w-[15%]">Price</th>
+                                                            <th class="x-text-start x-p-[8px] x-font-normal x-w-[15%]">Item Code</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Description</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Cut Size</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Packing</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Qty</th>
+                                                            <th class="x-p-[8px] x-font-normal x-w-[15%]">Price</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="x-text-center">
                                                         <tr class="x-border-b-[1px] x-border-gray-400">
-                                                                <td class="x-text-start x-p-[8px]">${item.variant?.title|| "N/A"}</td>
-                                                                <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
-                                                                <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
-                                                                <td class="x-p-[8px]">${metafields.packing}</td>
-                                                                <td class="x-p-[8px]">${item.quantity}</td>
-                                                                <td class="x-p-[8px]">$${(item.variant?.price * item.quantity).toFixed(2) || "0.00"}</td>
+                                                            <td class="x-text-start x-p-[8px]">${item.variant?.title || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
+                                                            <td class="x-p-[8px]">${metafields.packing}</td>
+                                                            <td class="x-p-[8px]">${item.quantity}</td>
+                                                            <td class="x-p-[8px]">
+                                                                $${(
+                                                                    (item.appliedDiscount
+                                                                        ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                                                                            ? item.appliedDiscount.value // Fixed discount gives the discounted price
+                                                                            : parseFloat(item.variant?.price || 0) * ((100 - item.appliedDiscount.value) / 100) // Percentage discount
+                                                                        : parseFloat(item.variant?.price || 0) // No discount
+                                                                    ) * item.quantity
+                                                                ).toFixed(2)}
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        `;}).join("")}
-                                    </div>
-                                    ${
-                                        order.numericShippingFee > 0
-                                            ? `
-                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                                <div class="x-text-[16px]">Shipping:</div>
-                                                <div class="x-text-[16px]">$${order.numericShippingFee.toFixed(2)}</div>
-                                            </div>
-                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                                <div class="x-text-[16px]">Total + Shipping:</div>
-                                                <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
-                                            </div>
-                                            <div class="x-w-full x-flex x-justify-end">
-                                                <a href="/pages/place-order?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">
-                                                    Place Order
-                                                </a>
-                                            </div>
-                                            `
-                                            : `
-                                            <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-                                                <div class="x-text-[16px]">Total:</div>
-                                                <div class="x-text-[16px]">$${totalPrice.toFixed(2)}</div>
-                                            </div> 
-                                            <div class="x-w-full x-flex x-justify-end">
-                                                <button class="${buttonClass}" ${buttonState} data-id="${order.id}">
-                                                    ${buttonText}
-                                                </button>
-                                            </div>                                          
-                                            `
-                                    }
+                                        `;
+                                    }).join("")}
                                 </div>
+                                ${
+                                    numericShippingFee > 0
+                                        ? `
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Shipping:</div>
+                                            <div class="x-text-[16px]">$${numericShippingFee.toFixed(2)}</div>
+                                        </div>
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Total + Shipping:</div>
+                                            <div class="x-text-[16px]">$${totalWithShipping.toFixed(2)}</div>
+                                        </div>
+                                        <div class="x-w-full x-flex x-justify-end">
+                                            <a href="${placeOrderLink}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">Place Order</a>
+                                        </div>
+                                        `
+                                        : `
+                                        <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
+                                            <div class="x-text-[16px]">Total:</div>
+                                            <div class="x-text-[16px]">$${totalPrice.toFixed(2)}</div>
+                                        </div>
+                                        <div class="x-w-full x-flex x-justify-end">
+                                            <button class="${buttonClass}" ${buttonState} data-id="${order.id}">
+                                                ${buttonText}
+                                            </button>
+                                        </div>   
+                                        `
+                                }
                             </div>
-                        `;
-                        if (order.customer?.id === currentUserId) {
-                            draftOrdersList.appendChild(collapsableDiv);
-                            hasOrders = true;
-                        } 
-                        if (!hasOrders) {
-                            draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
-                        }
-                    }
+                        </div>
+                    `;
+
+                    draftOrdersList.appendChild(collapsableDiv);
+                    hasOrders = true;
                     initializeCollapses(draftOrdersList);
+
+                }
+
+                if (!hasOrders) {
+                    draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
                 }
             } else {
-                draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";
+                draftOrdersList.innerHTML = "<p>No Requested Shipping orders available.</p>";
             }
         } catch (error) {
-            console.error("Error fetching draft orders:", error);
-            draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
+            console.error("Error fetching requested shipping orders:", error);
+            draftOrdersList.innerHTML = "<p>An error occurred while fetching requested shipping orders.</p>";
+        }
+    }
+
+    async function generatePlaceOrderLink(draftOrderId) {
+        const tagQuery = `
+            query {
+                getDraftOrderTags(draftOrderId: "${draftOrderId}") {
+                    tag
+                }
+            }
+        `;
+
+        try {
+            // Fetch tag data
+            const tagData = await fetchData2(tagQuery);
+            const tags = tagData.data?.getDraftOrderTags || [];
+
+            // Extract address details from tags
+            const address1Tag = tags.find(tag => tag.tag.startsWith("Address1:"));
+            const cityTag = tags.find(tag => tag.tag.startsWith("City:"));
+            const provinceTag = tags.find(tag => tag.tag.startsWith("Province:"));
+            const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
+            const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
+            const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
+
+            const shippingAddress = {
+                address1: address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "",
+                city: cityTag ? cityTag.tag.replace("City:", "").trim() : "",
+                province: provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "",
+                company: companyTag ? companyTag.tag.replace("company:", "").trim() : "",
+                country: countryTag ? countryTag.tag.replace("Country:", "").trim() : "",
+                zip: zipTag ? zipTag.tag.replace("Zip:", "").trim() : "",
+            };
+
+            const po = poTag ? poTag.tag.replace("PO:", "").trim() : "";
+            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "";
+
+            // Build the base URL with the draft order ID
+            let href = `/pages/place-order?draftOrderId=${draftOrderId}&shipAddress`;
+
+            // Add shipping address details as query parameters
+            href += `&address1=${encodeURIComponent(shippingAddress.address1)}`;
+            href += `&city=${encodeURIComponent(shippingAddress.city)}`;
+            href += `&province=${encodeURIComponent(shippingAddress.province)}`;
+            href += `&company=${encodeURIComponent(shippingAddress.company)}`;
+            href += `&country=${encodeURIComponent(shippingAddress.country)}`;
+            href += `&zip=${encodeURIComponent(shippingAddress.zip)}`;
+            href += `&po=${encodeURIComponent(po)}`;
+            href += `&notes=${encodeURIComponent(notes)}`;
+
+            return href;
+        } catch (error) {
+            console.error("Error generating place order link:", error);
+            return `/pages/place-order?draftOrderId=${draftOrderId}`; // Return fallback link if an error occurs
         }
     }
 
@@ -1718,8 +1399,8 @@
     async function populateDraftOrders() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
-            query getDraftOrdersByCustomerId($customerId: String!) {
-                getDraftOrdersByCustomerId(customerId: $customerId) {
+            query getDraftOrdersByCustomerId($customerId: String!, $excludeTags: [String!]) {
+                getDraftOrdersByCustomerId(customerId: $customerId, excludeTags: $excludeTags) {
                     id
                     name
                     createdAt
@@ -1736,6 +1417,10 @@
                     lineItems {
                         title
                         quantity
+                        appliedDiscount {
+                            valueType
+                            value
+                        }
                         variant {
                             title
                             price
@@ -1758,7 +1443,11 @@
             </div>
         `;
 
-        const variables = { customerId: currentUserId };
+        // Query variables to exclude "Placed" and "ShipRequested" tags
+        const variables = {
+            customerId: currentUserId,
+            excludeTags: ["Placed", "ShipRequested"],
+        };
 
         try {
             const data = await fetchData2(query, variables);
@@ -1773,10 +1462,19 @@
                     const orderId = order.id.split('/').pop();
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderName = order.name || `Order #${orderId}`;
-                    const total = order.lineItems.reduce(
-                        (sum, item) => sum + (item.variant?.price || 0) * item.quantity,
-                        0
-                    ).toFixed(2);
+                    const total = order.lineItems.reduce((sum, item) => {
+                        const originalPrice = parseFloat(item.variant?.price || 0);
+                        const discountValue = item.appliedDiscount?.value || 0;
+
+                        const finalPrice = item.appliedDiscount
+                            ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                                ? discountValue // If it's a fixed amount, the discountValue is the adjusted price
+                                : originalPrice * ((100 - discountValue) / 100) // If it's a percentage, calculate accordingly
+                            : originalPrice; // If no discount, use original price
+
+
+                        return sum + finalPrice * item.quantity;
+                    }, 0).toFixed(2);
 
                     const collapsableDiv = document.createElement("div");
                     collapsableDiv.classList.add("collapsable");
@@ -1786,10 +1484,8 @@
                         <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
                             <div class="x-text-white">Order Name: ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
                             <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500">
-                                </div>
-                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute">
-                                </div>
+                                <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500"></div>
+                                <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute"></div>
                             </div>
                         </button>
                         <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
@@ -1819,7 +1515,14 @@
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "cut_size")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.variant.metafields?.find(mf => mf.key === "packing")?.value || "N/A"}</td>
                                                         <td class="x-p-[8px]">${item.quantity}</td>
-                                                        <td class="x-p-[8px]">$${(item.variant.price * item.quantity).toFixed(2)}</td>
+                                                        <td class="x-p-[8px]">$${(
+                                                            (item.appliedDiscount
+                                                                    ? item.appliedDiscount.valueType === "FIXED_AMOUNT"
+                                                                    ? item.appliedDiscount.value * item.quantity
+                                                                    : parseFloat(item.variant?.price || 0) * ((100 - item.appliedDiscount.value) / 100) * item.quantity
+                                                                    : parseFloat(item.variant?.price || 0)) * item.quantity
+                                                            ).toFixed(2)}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1848,167 +1551,6 @@
             draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
         }
     }
-
-    // async function populateDraftOrders() {
-    //     const currentUserId = `gid://shopify/Customer/${customerId}`;
-    //     const query = `
-    //         query getDraftOrdersByCustomerId($customerId: String!) {
-    //             getDraftOrdersByCustomerId(customerId: $customerId) {
-    //                 id
-    //                 name
-    //                 createdAt
-    //                 customer {
-    //                     id
-    //                 }
-    //                 shippingAddress {
-    //                     address1
-    //                     city
-    //                     province
-    //                     country
-    //                     zip
-    //                 }
-    //                 lineItems {
-    //                     title
-    //                     quantity
-    //                     variant {
-    //                         title
-    //                         price
-    //                         metafields {
-    //                             key
-    //                             value
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     `;
-
-    //     const draftOrdersList = document.querySelector(".draft-orders-list");
-
-    //     // Add loading animation
-    //     const loadingSpinner = document.createElement("div");
-    //     loadingSpinner.className = "loading-spinner";
-    //     loadingSpinner.innerHTML = `<div class="spinner">
-    //     </div>`;
-    //     draftOrdersList.innerHTML = ""; // Clear content
-    //     draftOrdersList.appendChild(loadingSpinner);
-    //     const variables = { customerId: currentUserId };
-
-    //     try {
-    //         const data = await fetchData2(query, variables);
-    //         let hasOrders = false;
-
-
-    //         if (data && data.data && data.data.draftOrders) {
-    //             const orders = data.data.draftOrders.reverse();
-
-    //             const filteredOrders = [];
-    //             for (const order of orders) {
-    //                 const orderId = order.id.split('/').pop();
-
-    //                 // Check if the order has the "Placed" or "ShipRequested" tag
-    //                 const tagQuery = `{
-    //                     getDraftOrderTags(draftOrderId: "${orderId}") {
-    //                         tag
-    //                     }
-    //                 }`;
-    //                 const tagData = await fetchData(tagQuery);
-    //                 const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed" || tag.tag === "ShipRequested");
-
-    //                 if (hasPlacedTag) {
-    //                     continue;
-    //                 }
-
-    //                 filteredOrders.push(order);
-    //             }
-
-    //             draftOrdersList.innerHTML = ""; // Clear loading spinner
-    //             if (filteredOrders.length > 0) {
-    //                 for (const order of filteredOrders) {
-    //                     const orderId = order.id.split('/').pop();
-    //                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
-    //                     const orderName = order.name || `Order #${orderId}`;
-
-    //                     const collapsableDiv = document.createElement("div");
-    //                     collapsableDiv.classList.add("collapsable");
-
-    //                     collapsableDiv.innerHTML = `
-    //                         <input type="checkbox" class="x-hidden">
-    //                         <button class="collapse-trigger x-flex x-flex-row x-justify-between x-p-[16px] x-w-full x-bg-[#404042]">
-    //                             <div class="x-text-white">Order Name ${orderName} Order #${orderId} (${order.lineItems.length} items) - ${formattedDate}</div>
-    //                             <div class="x-flex x-items-center x-justify-center x-w-[20px] x-h-[20px]">
-    //                                 <div class="collapse-feedback x-h-[16px] x-w-[2px] x-bg-white x-absolute x-transition-all x-duration-500"></div>
-    //                                 <div class="x-h-[2px] x-w-[16px] x-bg-white x-absolute"></div>
-    //                             </div>
-    //                         </button>
-    //                         <div class="collapse-content x-transition-all x-duration-500 x-bg-white" style="height: 0px; overflow: hidden;">
-    //                             <div class="x-p-[16px] x-flex x-flex-col x-gap-[24px]">
-    //                                 <div class="x-flex x-justify-end x-gap-[12px]">
-    //                                     <button class="x-p-[8px] x-px-[24px] x-text-white x-bg-[#951828] delete-draft-order" data-id="${order.id}">Delete Order</button>
-    //                                 </div>
-    //                                 <div class="x-flex x-flex-col x-gap-[16px]">
-    //                                     ${order.lineItems.map(item => {
-    //                                         const metafields = item.variant?.metafields.reduce((fields, mf) => {
-    //                                             fields[mf.key] = mf.value;
-    //                                             return fields;
-    //                                         }, {}) || {};
-    //                                         return `
-    //                                             <div class="x-space-y-[14px]">
-    //                                                 <div class="x-text-[#951828] x-text-[24px]">${item.title}</div>
-    //                                                 <table class="x-w-full table-alternating-rows">
-    //                                                     <thead>
-    //                                                         <tr class="x-text-white x-bg-[#404042]">
-    //                                                             <th class="x-text-start x-p-[8px] x-font-normal x-w-[15%]">Item Code</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Description</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Cut Size</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Packing</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Qty</th>
-    //                                                             <th class="x-p-[8px] x-font-normal x-w-[15%]">Price</th>
-    //                                                         </tr>
-    //                                                     </thead>
-    //                                                     <tbody class="x-text-center">
-    //                                                         <tr class="x-border-b-[1px] x-border-gray-400">
-    //                                                             <td class="x-text-start x-p-[8px]">${item.variant.title|| "N/A"}</td>
-    //                                                             <td class="x-p-[8px]">${metafields.description || "N/A"}</td>
-    //                                                             <td class="x-p-[8px]">${metafields.cut_size || "N/A"}</td>
-    //                                                             <td class="x-p-[8px]">${metafields.packing}</td>
-    //                                                             <td class="x-p-[8px]">${item.quantity}</td>
-    //                                                             <td class="x-p-[8px]">$${(item.variant?.price * item.quantity).toFixed(2) || "0.00"}</td>
-    //                                                         </tr>
-    //                                                     </tbody>
-    //                                                 </table>
-    //                                             </div>
-    //                                         `;
-    //                                     }).join("")}
-    //                                 </div>
-    //                                 <div class="x-w-full x-flex x-justify-between x-p-[8px] x-text-[#951828] x-border-[#951828] x-border-[2px] x-bg-[#F5DFE2]">
-    //                                     <div class="x-text-[16px]">Total: </div>
-    //                                     <div class="x-text-[16px]">$${order.lineItems.reduce((sum, item) => sum + (item.variant?.price || 0) * item.quantity, 0).toFixed(2)}</div>
-    //                                 </div>
-    //                                 <div class="x-w-full x-flex x-justify-end">
-    //                                     <a href="/pages/place-order?draftOrderId=${orderId}" class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] checkout-draft-order" data-id="${order.id}">Place Order</a>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     `;
-    //                     if (order.customer?.id === currentUserId) {
-    //                         draftOrdersList.appendChild(collapsableDiv);
-    //                         hasOrders = true;
-    //                     } 
-    //                     if (!hasOrders) {
-    //                         draftOrdersList.innerHTML = "<p>No Draft orders available.</p>";
-    //                     }
-    //                 }
-    //                 initializeCollapses(draftOrdersList);
-    //             }
-    //         } else {
-    //             draftOrdersList.innerHTML = "<p>Failed to fetch draft orders.</p>";
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching draft orders:", error);
-    //         draftOrdersList.innerHTML = "<p>An error occurred while fetching draft orders.</p>";
-    //     }
-    // }
 
     function initializeCollapses(targetContainer) {
         $(targetContainer).find('.collapse-trigger').off('click').on('click', function () {
@@ -2357,7 +1899,7 @@
 
         addresses.forEach((address) => {
             const addressHTML = `
-                <div class="x-space-y-[8px]">
+                <div class="x-flex x-flex-col x-justify-between">
                     <div class="x-border x-p-[16px]">
                         <div>${address.first_name || ''} ${address.last_name || ''}</div>
                         <div>${address.company || ''}</div>
@@ -2405,7 +1947,436 @@
         }
     }
 
-    // ORDERS TAB                
+    // ORDERS TAB     
+    function initializeOrderView() {
+        const mainView = document.querySelector('.orders .main');
+        const orderView = document.querySelector('.order-view');
+
+        async function populateOrderView(orderId) {
+            const orderDetails = await fetchOrderDetails(orderId); // Fetch details dynamically
+
+            // Populate the order view dynamically
+            orderView.innerHTML = `
+                <button class="order-back-btn x-underline x-text-[20px] x-underline-offset-4 x-mb-[16px]">Back</button>
+                <div class="x-flex x-justify-between x-items-center">
+                    <div class="x-text-[32px] md:x-text-[40px]">Order ${orderDetails.orderNumber}</div>
+                    <div class="x-text-[16px] md:x-text-[20px]">PO: ${orderDetails.purchaseOrder}</div>
+                </div>
+                <div class="x-flex x-flex-col md:x-flex-row x-justify-between x-gap-[16px] md:x-gap-[0px] md:x-items-center x-py-[12px] x-pb-[32px]">
+                    <div class="x-text-[14px] md:x-text-[18px]">This order was placed on <span class="x-font-bold">${orderDetails.orderDate}</span> by <span class="x-font-bold">${orderDetails.customerName}</span></div>
+                    <div class="x-flex x-gap-[8px] x-items-end">
+                        <button class="x-bg-[#951828] x-text-white x-p-[8px] x-px-[24px] x-text-[16px] reorder-btn" data-order="${orderId}">
+                            Reorder
+                        </button>
+                        <button class="x-bg-[#404042] x-text-white x-px-[12px] x-py-[6px] x-rounded-[4px] x-text-[14px] md:x-text-[18px]">Track</button>
+                    </div>
+                </div>
+                <div class="items-container x-space-y-[16px] md:x-space-y-[40px]">
+                    ${orderDetails.items.map(item => `
+                        <div class="item">
+                            <div class="x-text-[#9E0B0F] x-pb-[4px] md:x-pb-[12px] x-border-b-[1px] md:x-border-none x-border-gray-300 x-flex x-items-end x-justify-between x-py-[4px] x-pr-[4px]">
+                                <div class="x-text-[18px] md:x-text-[24px] md:x-leading-[32px]">${item.name}</div>
+                            </div>
+                            <div class="x-flex x-flex-col md:x-hidden">
+                                <div class="x-border-b-[1px] x-border-gray-300 x-py-[8px] x-space-y-[16px]">
+                                    <div class="x-grid x-grid-cols-2 x-gap-[8px] x-gap-x-[12px]">
+                                        <div><span>Item Code: </span><span>${item.code}</span></div>
+                                        <div><span>Desc: </span><span>${item.description}</span></div>
+                                        <div><span>Cut Size: </span><span>${item.cutSize}</span></div>
+                                        <div><span>Packing: </span><span>${item.packing}</span></div>
+                                        <div><span>Color: </span><span>${item.color}</span></div>
+                                        <div>&nbsp;</div>
+                                        <div class="x-flex x-gap-[4px] x-items-center x-w-full"><span>Qty:</span><span>${item.quantity}</span></div>
+                                        <div class="x-flex x-items-center"><span>Subtotal:&nbsp;</span><span class="x-font-semibold">${item.subtotal}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="x-hidden x-flex-col md:x-flex">
+                                <table class="x-border-none table-alternating-rows">
+                                    <thead>
+                                        <tr class="x-text-white x-bg-[#404042]">
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Item Code</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Description</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Cut Size</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Packing</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Color</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Qty</th>
+                                            <th class="x-text-start x-p-[8px] x-py-[12px] x-font-normal x-w-[14.28%]">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="x-border-b-[2.5px] x-border-[#e0e0e0]">
+                                            <td class="x-p-[8px] x-py-[16px]">${item.code}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.description}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.cutSize}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.packing}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.color}</td>
+                                            <td class="x-p-[8px] x-py-[16px]">${item.quantity}</td>
+                                            <td class="x-p-[8px] x-py-[12px] x-pr-[4px]">
+                                                <div class="x-flex x-justify-between">
+                                                    <div>${item.subtotal}</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="x-flex x-w-full x-my-[32px] x-p-[16px] x-bg-[#F0EFEF]">
+                    <div class="x-w-1/2">&nbsp;</div>
+                    <div class="x-w-1/2 x-flex x-flex-col x-gap-[8px]">
+                        <div class="x-flex x-justify-between">
+                            <div class="x-text-[16px] md:x-text-[20px]">Subtotal:</div>
+                            <div class="x-text-[16px] md:x-text-[20px]">${orderDetails.subtotal}</div>
+                        </div>
+                        <div class="x-flex x-justify-between">
+                            <div class="x-text-[16px] md:x-text-[20px]">Shipping:</div>
+                            <div class="x-text-[16px] md:x-text-[20px]">${orderDetails.shipping}</div>
+                        </div>
+                        <div class="x-flex x-justify-between">
+                            <div class="x-text-[16px] md:x-text-[20px]">Total:</div>
+                            <div class="x-text-[16px] md:x-text-[20px] x-text-[#951728]">${orderDetails.total}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-flex">
+                    <div class="x-w-1/2">
+                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Contact Info</h1>
+                        <div class="x-flex x-flex-col x-gap-[16px]">
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div class="x-text-[#BBBBBC]">First Name</div>
+                                <div>${orderDetails.contact.firstName}</div>
+                            </div>
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div class="x-text-[#BBBBBC]">Last Name</div>
+                                <div>${orderDetails.contact.lastName}</div>
+                            </div>
+                            <div class="x-text-[14px] md:x-text-[16px]">
+                                <div class="x-text-[#BBBBBC]">Email</div>
+                                <div>${orderDetails.contact.email}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-w-1/2">
+                        <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Shipping Address</h1>
+                        <div class="x-text-[14px] md:x-text-[16px]">
+                            <div>${orderDetails.shippingAddress.name}</div>
+                            <div>${orderDetails.shippingAddress.street}</div>
+                            <div>${orderDetails.shippingAddress.city}, ${orderDetails.shippingAddress.state} ${orderDetails.shippingAddress.zip}</div>
+                            <div>${orderDetails.shippingAddress.country}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="x-pt-[32px]">
+                    <h1 class="x-text-[#951728] x-text-[18px] md:x-text-[24px] x-mb-[16px]">Notes</h1>
+                    <div class="x-text-[14px] md:x-text-[16px]">${orderDetails.notes}</div>
+                </div>
+            `;
+
+            mainView.classList.add('x-hidden');
+            orderView.classList.remove('x-hidden');
+        }
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('view-order-btn')) {
+                const orderId = event.target.dataset.order;
+                const url = new URL(window.location.href);
+                url.searchParams.set('order', orderId);
+                window.history.pushState({}, '', url);
+                populateOrderView(orderId);
+            }
+
+            if (event.target.classList.contains('order-back-btn')) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('order');
+                window.history.pushState({}, '', url);
+                mainView.classList.remove('x-hidden');
+                orderView.classList.add('x-hidden');
+            }
+        });
+    }
+
+    async function fetchOrderDetails(orderId) {
+        const query = `
+                {
+                    draftOrders {
+                        id
+                        name
+                        invoiceUrl
+                        createdAt
+                        shippingAddress {
+                            address1
+                            city
+                            province
+                            country
+                            zip
+                        }
+                        lineItems {
+                            title
+                            quantity
+                            appliedDiscount { 
+                                value
+                                valueType
+                            }
+                            variant {
+                                id
+                                title
+                                price
+                                metafields {
+                                    key
+                                    value
+                                }
+                            }
+                        }
+                    }
+                }
+            `;
+
+        try {
+            const response = await fetchData(query);
+            if (!response || !response.data || !response.data.draftOrders) {
+                throw new Error("Failed to fetch draft orders.");
+            }
+
+            const orders = response.data.draftOrders;
+            const order = orders.find(order => order.id.split('/').pop() === orderId);
+
+            if (!order) {
+                throw new Error(`Order with ID ${orderId} not found`);
+            }
+
+            const tagQuery = `
+                query {
+                    getDraftOrderTags(draftOrderId: "${order.id}") {
+                        tag
+                    }
+                }
+            `;
+            const tagData = await fetchData(tagQuery);
+            const tags = tagData.data?.getDraftOrderTags || [];
+            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
+            const firstNameTag = tags.find(tag => tag.tag.startsWith("FirstName:"));
+            const lastNameTag = tags.find(tag => tag.tag.startsWith("LastName:"));
+            const emailTag = tags.find(tag => tag.tag.startsWith("email:"));
+            const address1Tag = tags.find(tag => tag.tag.startsWith("Address1:"));
+            const cityTag = tags.find(tag => tag.tag.startsWith("City:"));
+            const provinceTag = tags.find(tag => tag.tag.startsWith("Province:"));
+            const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
+            const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
+            const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+
+            const firstName = firstNameTag ? firstNameTag.tag.replace("FirstName:", "").trim() : "N/A";
+            const lastName = lastNameTag ? lastNameTag.tag.replace("LastName:", "").trim() : "N/A";
+            const email = emailTag ? emailTag.tag.replace("email:", "").trim() : "N/A";
+            const address1 = address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "N/A";
+            const city = cityTag ? cityTag.tag.replace("City:", "").trim() : "N/A";
+            const province = provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "N/A";
+            const company = companyTag ? companyTag.tag.replace("company:", "").trim() : "N/A";
+            const country = countryTag ? countryTag.tag.replace("Country:", "").trim() : "N/A";
+            const zip = zipTag ? zipTag.tag.replace("Zip:", "").trim() : "N/A";
+            const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
+            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "No Notes Provided";
+
+            const orderName = order.name || `Order ${orderId}`;
+            const shippingFee = await checkForShippingFee(orderId);
+
+            return {
+                orderNumber: orderName,
+                purchaseOrder: purchaseOrder, // Placeholder
+                orderDate: new Date(order.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
+                customerName:  firstName + ' ' + lastName,
+                company: company,
+                items: order.lineItems.map(item => {
+                    const price = parseFloat(item.variant?.price || 0);
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                    // Calculate final price after discount
+                    const finalPrice =
+                        discountType === "FIXED_AMOUNT"
+                            ? discountValue // Fixed discount directly gives the discounted price
+                            : discountType === "PERCENTAGE"
+                            ? price * ((100 - discountValue) / 100) // Percentage discount
+                            : price; // No discount applied
+
+                    const metafields = item.variant?.metafields.reduce((fields, mf) => {
+                        fields[mf.key] = mf.value;
+                        return fields;
+                    }, {}) || {};
+
+                    return {
+                        id: item.variant?.id,
+                        name: item.title || 'N/A',
+                        code: item.variant.title || 'N/A',
+                        description: metafields.description || 'N/A',
+                        cutSize: metafields.cut_size || 'N/A',
+                        packing: metafields.packing || 'N/A',
+                        color: metafields.color || 'N/A',
+                        quantity: item.quantity,
+                        subtotal: `$${(finalPrice * item.quantity).toFixed(2)}`,
+                    };
+                }),
+                subtotal: `$${order.lineItems.reduce((acc, item) => {
+                    const price = parseFloat(item.variant?.price || 0);
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                    const finalPrice =
+                        discountType === "FIXED_AMOUNT"
+                            ? discountValue
+                            : discountType === "PERCENTAGE"
+                            ? price * ((100 - discountValue) / 100)
+                            : price;
+
+                    return acc + finalPrice * item.quantity;
+                }, 0).toFixed(2)}`,
+                shipping: shippingFee,
+                total: `$${order.lineItems.reduce((acc, item) => {
+                    const price = parseFloat(item.variant?.price || 0);
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                    const finalPrice =
+                        discountType === "FIXED_AMOUNT"
+                            ? discountValue
+                            : discountType === "PERCENTAGE"
+                            ? price * ((100 - discountValue) / 100)
+                            : price;
+
+                    return acc + finalPrice * item.quantity;
+                }, 0) + parseFloat(shippingFee.replace('$', ''))}`,
+                contact: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                },
+                shippingAddress: {
+                    name:  firstName + ' ' + lastName,
+                    street: order.shippingAddress?.address1 || 'N/A',
+                    city: order.shippingAddress?.city || 'N/A',
+                    state: order.shippingAddress?.province || 'N/A',
+                    zip: order.shippingAddress?.zip || 'N/A',
+                    country: order.shippingAddress?.country || 'N/A',
+                },
+                notes: notes, // Placeholder for notes
+            };
+        } catch (error) {
+            console.error('Error fetching order details:', error.message);
+            return null;
+        }
+    }
+
+    async function reorderDraftOrder(orderId) {
+        try {
+            // Fetch the existing draft order details
+            const orderDetails = await fetchOrderDetails(orderId);
+
+            if (!orderDetails || !orderDetails.items || orderDetails.items.length === 0) {
+                console.error('No items found in the draft order.');
+                return;
+            }
+
+            // Prepare line items for the new draft order
+            const lineItems = orderDetails.items.map(item => ({
+                variantId: item.id,
+                quantity: item.quantity,
+                originalUnitPrice: parseFloat(item.subtotal.replace('$', '')) / item.quantity,
+            }));
+
+            // Map the shipping address to Shopify's required format
+            const shippingAddress = {
+                address1: orderDetails.shippingAddress?.street || 'N/A', // Map 'street' to 'address1'
+                city: orderDetails.shippingAddress?.city || 'N/A',
+                province: orderDetails.shippingAddress?.state || 'N/A', // Map 'state' to 'province'
+                country: orderDetails.shippingAddress?.country || 'N/A',
+                zip: orderDetails.shippingAddress?.zip || 'N/A',
+                name: orderDetails.shippingAddress?.name || 'N/A',
+            };
+
+            const newDraftOrderId = await createDraftOrder(
+                `gid://shopify/Customer/${window.ShopifyData.customerId}`, // Customer ID
+                lineItems,
+                shippingAddress,
+            );
+
+            if (newDraftOrderId) {
+                window.location.href = `account?view=drafts`;
+            } else {
+                console.error('Failed to create a new draft order.');
+            }
+        } catch (error) {
+            console.error('Error during reorder:', error);
+        }
+    }
+
+    async function createDraftOrder(customerId, lineItems, shippingAddress) {
+        const formattedCustomerId = customerId.startsWith('gid://shopify/Customer/')
+            ? customerId
+            : `gid://shopify/Customer/${customerId}`;
+
+        // Filter out invalid line items
+        const validLineItems = lineItems.filter(item => item.variantId && item.variantId !== 'N/A');
+
+        if (validLineItems.length === 0) {
+            console.error('No valid line items found. Draft order cannot be created.');
+            return null;
+        }
+
+        if (!shippingAddress.address1 || shippingAddress.address1 === 'undefined') {
+            console.error('Invalid shipping address. Address1 is required.');
+            return null;
+        }
+
+        try {
+            const mutation = `
+                mutation {
+                    createDraftOrder(
+                        customerId: "${formattedCustomerId}",
+                        lineItems: [
+                            ${validLineItems
+                                .map(
+                                    item => `{
+                                        variantId: "${item.variantId}",
+                                        quantity: ${item.quantity}
+                                    }`
+                                )
+                                .join(',')}
+                        ],
+                        shippingAddress: {
+                            address1: "${shippingAddress.address1}",
+                            city: "${shippingAddress.city}",
+                            province: "${shippingAddress.province}",
+                            country: "${shippingAddress.country}",
+                            zip: "${shippingAddress.zip}"
+                        }
+                    ){
+                        id
+                    }
+                }
+            `;
+
+            const response = await fetchData(mutation);
+
+            if (response?.data?.createDraftOrder?.id) {
+                const draftOrderId = response.data.createDraftOrder.id;
+                return draftOrderId; 
+            } else {
+                console.error('Failed to create draft order:', response?.errors || 'Unknown error');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error creating draft order:', error);
+            return null;
+        }
+    }
+    
     function initializeOrdersView() {
         const urlParams = new URLSearchParams(window.location.search);
         const initialView = urlParams.get('sub-view') || 'company-orders';
@@ -2417,11 +2388,79 @@
         });
     }
 
+    async function getTagData(orderID) {
+        const tagQuery = `
+            query {
+                getDraftOrderTags(draftOrderId: "${orderID}") {
+                    tag
+                }
+            }
+        `;
+
+        try {
+            const tagData = await fetchData(tagQuery);
+            const tags = tagData.data?.getDraftOrderTags || [];
+
+            const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
+            const notesTag = tags.find(tag => tag.tag.startsWith("NOTES:"));
+            const firstNameTag = tags.find(tag => tag.tag.startsWith("FirstName:"));
+            const lastNameTag = tags.find(tag => tag.tag.startsWith("LastName:"));
+            const emailTag = tags.find(tag => tag.tag.startsWith("email:"));
+            const address1Tag = tags.find(tag => tag.tag.startsWith("Address1:"));
+            const cityTag = tags.find(tag => tag.tag.startsWith("City:"));
+            const provinceTag = tags.find(tag => tag.tag.startsWith("Province:"));
+            const companyTag = tags.find(tag => tag.tag.startsWith("company:"));
+            const countryTag = tags.find(tag => tag.tag.startsWith("Country:"));
+            const zipTag = tags.find(tag => tag.tag.startsWith("Zip:"));
+
+            const firstName = firstNameTag ? firstNameTag.tag.replace("FirstName:", "").trim() : "N/A";
+            const lastName = lastNameTag ? lastNameTag.tag.replace("LastName:", "").trim() : "N/A";
+            const email = emailTag ? emailTag.tag.replace("email:", "").trim() : "N/A";
+            const address1 = address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "N/A";
+            const city = cityTag ? cityTag.tag.replace("City:", "").trim() : "N/A";
+            const province = provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "N/A";
+            const company = companyTag ? companyTag.tag.replace("company:", "").trim() : "N/A";
+            const country = countryTag ? countryTag.tag.replace("Country:", "").trim() : "N/A";
+            const zip = zipTag ? zipTag.tag.replace("Zip:", "").trim() : "N/A";
+            const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
+            const notes = notesTag ? notesTag.tag.replace("NOTES:", "").trim() : "No Notes Provided";
+
+            return {
+                firstName,
+                lastName,
+                email,
+                address1,
+                city,
+                province,
+                company,
+                country,
+                zip,
+                purchaseOrder,
+                notes
+            };
+        } catch (error) {
+            console.error("Error fetching tag data:", error);
+            return {
+                firstName: "N/A",
+                lastName: "N/A",
+                email: "N/A",
+                address1: "N/A",
+                city: "N/A",
+                province: "N/A",
+                company: "N/A",
+                country: "N/A",
+                zip: "N/A",
+                purchaseOrder: "Not Available",
+                notes: "No Notes Provided"
+            };
+        }
+    }
+
     async function populateDraftOrderTab() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
-        query getDraftOrdersByCustomerId($customerId: String!) {
-            getDraftOrdersByCustomerId(customerId: $customerId) {
+            query getDraftOrdersByCustomerId($customerId: String!, $includeTags: [String!]) {
+                getDraftOrdersByCustomerId(customerId: $customerId, includeTags: $includeTags) {
                     id
                     name
                     createdAt
@@ -2438,6 +2477,10 @@
                     }
                     lineItems {
                         quantity
+                        appliedDiscount {
+                            value
+                            valueType
+                        }
                         variant {
                             price
                             metafields {
@@ -2449,87 +2492,78 @@
                 }
             }
         `;
+        const variables = {
+            customerId: currentUserId,
+            includeTags: ["Placed"], 
+        }; 
+
         const companyOrdersTableBody = document.querySelector(".company-orders .x-w-full tbody");
         const myOrdersTableBody = document.querySelector(".my-orders .x-w-full tbody");
 
-        // loading animation for Company Orders
+        // Loading animation for Company Orders
         const companyOrdersLoadingRow = document.createElement("tr");
         const companyOrdersLoadingCell = document.createElement("td");
-        companyOrdersLoadingCell.colSpan = 6; 
+        companyOrdersLoadingCell.colSpan = 6;
         companyOrdersLoadingCell.style.textAlign = "center";
         companyOrdersLoadingCell.innerHTML = `
             <div class="loading-spinner">
-                <div class="spinner">
-                </div>
+                <div class="spinner"></div>
             </div>
         `;
         companyOrdersLoadingRow.appendChild(companyOrdersLoadingCell);
         companyOrdersTableBody.innerHTML = "";
         companyOrdersTableBody.appendChild(companyOrdersLoadingRow);
 
-        //  loading animation for My Orders
+        // Loading animation for My Orders
         const myOrdersLoadingRow = document.createElement("tr");
         const myOrdersLoadingCell = document.createElement("td");
-        myOrdersLoadingCell.colSpan = 6; 
+        myOrdersLoadingCell.colSpan = 6;
         myOrdersLoadingCell.style.textAlign = "center";
         myOrdersLoadingCell.innerHTML = `
             <div class="loading-spinner">
-                <div class="spinner">
-                </div>
+                <div class="spinner"></div>
             </div>
         `;
         myOrdersLoadingRow.appendChild(myOrdersLoadingCell);
-        myOrdersTableBody.innerHTML = ""; 
+        myOrdersTableBody.innerHTML = "";
         myOrdersTableBody.appendChild(myOrdersLoadingRow);
-        const variables = { customerId: currentUserId };
-
 
         try {
-            const data = await fetchData2(query,variables);
+            const data = await fetchData2(query, variables);
 
-            if (data && data.data && data.data.draftOrders) {
-                const orders = data.data.draftOrders.reverse();
 
+            if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
+                const orders = data.data.getDraftOrdersByCustomerId.reverse();
+            
                 const companyOrders = [];
                 const myOrders = [];
-                const currentCompanyName = orders
-                .find((order) => order.customer?.id === currentUserId)
-                ?.customer?.companyContactProfiles?.[0]?.company?.name;
+
 
                 for (const order of orders) {
                     const orderId = order.id.split('/').pop();
-                    console.log(orders);
+                    const tagData = await getTagData(orderId);
+                    const currentCompanyName = `${tagData.company}`;
+                    const purchaseOrder = order.tags?.find(tag => tag.startsWith("PO:"))?.replace("PO:", "").trim() || "Not Available";
 
-
-                    // Check if the order has the "Placed" tag
-                    const tagQuery = `{
-                        getDraftOrderTags(draftOrderId: "${orderId}") {
-                            tag
-                        }
-                    }`;
-                    const tagData = await fetchData(tagQuery);
-                    const tags = tagData.data?.getDraftOrderTags || [];
-                    const hasPlacedTag = tagData.data?.getDraftOrderTags?.some(tag => tag.tag === "Placed");
-
-                    if (!hasPlacedTag) {
-                        // Skip orders that do not have the "Placed" tag
-                        continue;
-                    }
-                    const poTag = tags.find(tag => tag.tag.startsWith("PO:"));
-                    const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
-                    
+                    // Check for the shipping fee
                     const shippingFee = await checkForShippingFee(orderId);
                     const shippingFeeValue = parseFloat(shippingFee.replace('$', '')) || 0;
 
-                    // Determine if this order belongs to the current user
-                    const orderedBy = order.customer.id === customerId
-                        ? "My Orders"
-                        : "{{ customer.first_name }} {{ customer.last_name }}" || "Company Orders";
+                    const totalPrice = order.lineItems.reduce((sum, item) => {
+                        const price = parseFloat(item.variant?.price) || 0; // Base price
+                        const discountValue = item.appliedDiscount?.value || 0;
+                        const discountType = item.appliedDiscount?.valueType;
 
-                    const totalPrice = order.lineItems.reduce(
-                        (sum, item) => sum + (item.variant?.price || 0) * item.quantity,
-                        0
-                    ) + shippingFeeValue;
+                        const finalPrice =
+                            discountType === "FIXED_AMOUNT"
+                                ? discountValue // Fixed discount gives the discounted price
+                                : discountType === "PERCENTAGE"
+                                ? price * ((100 - discountValue) / 100) // Percentage discount
+                                : price; // No discount applied
+
+                        return sum + finalPrice * item.quantity; // Add to total
+                    }, 0) + shippingFeeValue;
+
 
                     const formattedDate = new Date(order.createdAt).toLocaleDateString();
                     const orderRow = `
@@ -2537,9 +2571,9 @@
                             <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
                                 <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">${order.name || `Order #${orderId}`}</div>
                             </td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${order.customer.firstName} ${order.customer.lastName}</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.firstName} ${tagData.lastName}</td>
                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Placed</td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${purchaseOrder}</td>
+                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.purchaseOrder}</td>
                             <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$${totalPrice.toFixed(2)}</td>
                             <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
                                 <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
@@ -2555,7 +2589,7 @@
                     }
 
                     // Add to Company Orders if it matches the current company
-                    if (order.customer?.companyContactProfiles?.[0]?.company?.name === currentCompanyName) {
+                    if (`${tagData.company}` === currentCompanyName) {
                         companyOrders.push(orderRow);
                     }
                 }
@@ -2566,8 +2600,8 @@
                 // Update My Orders Table
                 myOrdersTableBody.innerHTML = myOrders.length > 0 ? myOrders.join('') : "<tr><td colspan='6'>No personal orders available.</td></tr>";
             } else {
-                companyOrdersTableBody.innerHTML = "<tr><td colspan='6'>Failed to fetch orders.</td></tr>";
-                myOrdersTableBody.innerHTML = "<tr><td colspan='6'>Failed to fetch orders.</td></tr>";
+                companyOrdersTableBody.innerHTML = "<tr><td colspan='6' class='x-p-[12px]'>No draft orders found.</td></tr>";
+                myOrdersTableBody.innerHTML = "<tr><td colspan='6' class='x-p-[12px]'>No draft orders found.</td></tr>";
             }
         } catch (error) {
             console.error("Error fetching draft orders:", error);

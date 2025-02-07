@@ -1,0 +1,34 @@
+{%- if shop.customer_accounts_enabled -%}
+{% comment %} <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="x-flex x-items-center">
+  <div class="x-p-[8px] x-px-[16px] x-border-[1px] x-border-[#9E0B0F] x-text-black x-text-center hover:x-text-white hover:x-bg-[#9E0B0F] x-rounded-sm x-transition-colors x-ease-in-out x-duration-300 md:x-flex x-hidden x-mr-[12px]">
+    {% if customer %}
+        MY ACCOUNT
+    {% else %}
+        SIGN IN / REGISTER
+    {% endif %}
+  </div>
+</a> {% endcomment %}
+
+<a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset">
+    {%- if section.settings.enable_customer_avatar -%}
+      <account-icon">
+        {%- if customer and customer.has_avatar? -%}
+          {{ customer | avatar }}
+        {%- else -%}
+          <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+        {%- endif -%}
+      </account-icon>
+    {%- else -%}
+      <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+    {%- endif -%}
+    <span class="visually-hidden">
+      {%- liquid
+        if customer
+          echo 'customer.account_fallback' | t
+        else
+          echo 'customer.log_in' | t
+        endif
+      -%}
+    </span>
+  </a>
+{%- endif -%}

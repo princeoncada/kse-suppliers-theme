@@ -3271,8 +3271,8 @@ video {
     width: 33.333333% !important;
   }
 
-  .lg\:x-w-2\/3 {
-    width: 66.666667% !important;
+  .lg\:x-w-3\/4 {
+    width: 75% !important;
   }
 
   .lg\:x-w-\[25\%\] {
@@ -3301,10 +3301,6 @@ video {
 
   .lg\:x-w-full {
     width: 100% !important;
-  }
-
-  .lg\:x-w-3\/4 {
-    width: 75% !important;
   }
 
   .lg\:x-max-w-\[1280px\] {

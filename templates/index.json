@@ -85,7 +85,7 @@
         "sub_header": "Your Online Portal",
         "content": "KSE Suppliers now offers online ordering for authorized dealers. Sign up today to place your orders online.",
         "button_text": "Sign Up Today",
-        "button_link": "",
+        "button_link": "shopify://pages/contact",
         "content_height": "180"
       }
     },

@@ -13,20 +13,5 @@
 
 
 <script>
-    document.addEventListener('scroll', function () {
-        const parallaxSections = document.querySelectorAll('.parallax-banner');
-        parallaxSections.forEach((parallax) => {
-            const speed = 0.3; // Adjust the speed for the desired parallax effect
-            const initialOffset = 0; // Offset to move the image down initially
-            const sectionTop = parallax.parentElement.offsetTop; // Get the top position of the parent element relative to the document
-            const scrollPosition = window.scrollY;
-            const windowHeight = window.innerHeight;
 
-            // Check if the section is in the viewport
-            if (scrollPosition + windowHeight > sectionTop && scrollPosition < sectionTop + parallax.parentElement.offsetHeight) {
-                const yPos = (scrollPosition - sectionTop) * speed + initialOffset; // Apply the initial offset
-                parallax.style.transform = `translateY(${yPos}px)`;
-            }
-        });
-    });
 </script>

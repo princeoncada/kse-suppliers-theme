@@ -2829,16 +2829,12 @@ video {
     display: none !important;
   }
 
-  .md\:x-aspect-\[16\/8\] {
-    aspect-ratio: 16/8 !important;
+  .md\:x-aspect-\[16\/6\] {
+    aspect-ratio: 16/6 !important;
   }
 
   .md\:x-aspect-auto {
     aspect-ratio: auto !important;
-  }
-
-  .md\:x-aspect-\[16\/6\] {
-    aspect-ratio: 16/6 !important;
   }
 
   .md\:x-h-\[20px\] {
@@ -3322,14 +3318,6 @@ video {
 
   .lg\:x-h-\[560px\] {
     height: 560px !important;
-  }
-
-  .lg\:x-max-h-\[\] {
-    max-height:  !important;
-  }
-
-  .lg\:x-max-h-\[425px\] {
-    max-height: 425px !important;
   }
 
   .lg\:x-max-h-\[500px\] {

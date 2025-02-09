@@ -22,9 +22,10 @@
         <div class="x-relative x-border-t-[5px] x-border-[#951828]">
             <div
                 class="swiper-pagination x-absolute x-right-0 x-bottom-0 x-z-[1] x-flex x-justify-center x-items-center x-gap-[12px] md:x-gap-[14px] x-h-full">
+                &nbsp;
             </div>
             <div
-                class="hero-swiper-controls x-z-[1] x-text-[#360d13] x-text-[32px] md:x-text-[52px] x-inline-flex x-relative x-mt-[-1px]">
+                class="hero-swiper-controls x-z-[1] x-text-[#360d13] x-text-[32px] md:x-text-[52px] x-inline-flex x-relative x-mt-[-1px] {% if section.settings.hide_controls %} x-invisible {% endif %}">
                 <button
                     class="prev-button x-w-[40px] md:x-w-[56px] x-aspect-square x-flex x-items-center x-justify-center x-border-[1px] x-border-[#951828] x-ml-[-1px]"><i
                         class='bx bx-chevron-left'></i></button>
@@ -99,6 +100,13 @@
 {%  schema %} 
 {
     "name": "Slideshow Banner (KSE)",
+    "settings": [
+        {
+            "id": "hide_controls",
+            "type": "checkbox",
+            "label": "Hide Controls"
+        }
+    ],
     "blocks": [
         {
             "type": "banner_slide",

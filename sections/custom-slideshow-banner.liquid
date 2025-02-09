@@ -1,0 +1,122 @@
+<section>
+    <div>
+        <div
+            class="hero-banner-swiper x-w-full x-aspect-[1/1.3] md:x-aspect-[16/6] lg:x-aspect-[16/5] lg:x-max-h-[500px] x-relative x-overflow-hidden">
+            <div class="swiper-wrapper">
+                {% for block in section.blocks  %}
+                    {% case block.type %}
+                        {% when 'banner_slide' %}
+                            <div class="swiper-slide x-overflow-hidden x-h-full">
+                                <div class="x-w-full x-h-full x-block md:x-hidden" style="background-image: url('{{ block.settings.mobile_image | img_url: 'master' }}'); background-size: cover; background-position: center;">
+                                    &nbsp;
+                                </div>
+                                <div class="x-w-full x-h-full md:x-block x-hidden" style="background-image: url('{{ block.settings.desktop_image | img_url: 'master' }}'); background-size: cover; background-position: center;">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        {% else %}
+                    {% endcase %}
+                {% endfor  %}
+            </div>
+        </div>
+        <div class="x-relative x-border-t-[5px] x-border-[#951828]">
+            <div
+                class="swiper-pagination x-absolute x-right-0 x-bottom-0 x-z-[1] x-flex x-justify-center x-items-center x-gap-[12px] md:x-gap-[14px] x-h-full">
+            </div>
+            <div
+                class="hero-swiper-controls x-z-[1] x-text-[#360d13] x-text-[32px] md:x-text-[52px] x-inline-flex x-relative x-mt-[-1px]">
+                <button
+                    class="prev-button x-w-[40px] md:x-w-[56px] x-aspect-square x-flex x-items-center x-justify-center x-border-[1px] x-border-[#951828] x-ml-[-1px]"><i
+                        class='bx bx-chevron-left'></i></button>
+                <button
+                    class="next-button x-w-[40px] md:x-w-[56px] x-aspect-square x-flex x-items-center x-justify-center x-border-[1px] x-border-[#951828] x-ml-[-1px]"><i
+                        class='bx bx-chevron-right'></i></button>
+                <button
+                    class="autoplay-button x-w-[40px] md:x-w-[56px] x-aspect-square x-flex x-items-center x-justify-center x-border-[1px] x-border-[#951828] x-ml-[-1px]"><i
+                        class='bx bx-pause'></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        margin: 0 !important;
+        border: 1px solid #8f8f8f !important;
+        background-color: white !important;
+        opacity: 1 !important;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: #951828 !important;
+        border-color: #951828 !important;
+    }
+
+    @media (min-width: 990px) {
+        .swiper-pagination-bullet {
+            width: 20px !important;
+            height: 20px !important;
+        }
+    }
+</style>
+
+<script>
+    let swiper = new Swiper('.hero-banner-swiper', {
+        slidesPerView: 1,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.hero-swiper-controls .next-button',
+            prevEl: '.hero-swiper-controls .prev-button',
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        effect: 'fade'
+    });
+
+    const autoplayButton = $('.autoplay-button');
+    let isAutoplayRunning = true;
+
+    autoplayButton.on('click', function () {
+        if (isAutoplayRunning) {
+            swiper.autoplay.stop();
+            autoplayButton.html('<i class="bx bx-play"></i>');
+        } else {
+            swiper.autoplay.start();
+            autoplayButton.html('<i class="bx bx-pause"></i>');
+        }
+        isAutoplayRunning = !isAutoplayRunning;
+    });
+</script>
+
+{%  schema %} 
+{
+    "name": "Slideshow Banner (KSE)",
+    "blocks": [
+        {
+            "type": "banner_slide",
+            "name": "Banner Slide",
+            "settings": [
+                {
+                    "id": "mobile_image",
+                    "type": "image_picker",
+                    "label": "Mobile Image"
+                },
+                {
+                    "id": "desktop_image",
+                    "type": "image_picker",
+                    "label": "Desktop Image"
+                }
+            ]
+        }
+    ]
+}
+
+{% endschema %}

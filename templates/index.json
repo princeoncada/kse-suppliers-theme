@@ -9,9 +9,9 @@
  */
 {
   "sections": {
-    "image-banner": {
-      "type": "a-image-banner",
-      "settings": {}
+    "slideshow-banner": {
+        "type": "custom-slideshow-banner",
+        "settings": {}
     },
     "categories": {
       "type": "a-categories",
@@ -95,7 +95,7 @@
     }
   },
   "order": [
-    "image-banner",
+    "slideshow-banner",
     "categories",
     "content-1",
     "parallax-1",

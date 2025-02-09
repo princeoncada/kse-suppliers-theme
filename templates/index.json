@@ -10,8 +10,36 @@
 {
   "sections": {
     "slideshow-banner": {
-        "type": "custom-slideshow-banner",
-        "settings": {}
+      "type": "custom-slideshow-banner",
+      "blocks": {
+        "banner_slide_6yNdJR": {
+          "type": "banner_slide",
+          "settings": {
+            "mobile_image": "shopify://shop_images/closeup-courier-attaching-address-label-package-while-working-office.jpg",
+            "desktop_image": "shopify://shop_images/closeup-courier-attaching-address-label-package-while-working-office.jpg"
+          }
+        },
+        "banner_slide_QzyfgC": {
+          "type": "banner_slide",
+          "settings": {
+            "mobile_image": "shopify://shop_images/close-up-warehouse-view_1.png",
+            "desktop_image": "shopify://shop_images/close-up-warehouse-view_1.png"
+          }
+        },
+        "banner_slide_XqikKk": {
+          "type": "banner_slide",
+          "settings": {
+            "mobile_image": "shopify://shop_images/industrial-port-container-yard.jpg",
+            "desktop_image": "shopify://shop_images/industrial-port-container-yard.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "banner_slide_6yNdJR",
+        "banner_slide_QzyfgC",
+        "banner_slide_XqikKk"
+      ],
+      "settings": {}
     },
     "categories": {
       "type": "a-categories",

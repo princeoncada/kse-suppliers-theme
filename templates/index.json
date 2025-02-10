@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "video-banner": {
+      "type": "custom-video-banner",
+      "settings": {}
+    },
     "slideshow-banner": {
       "type": "custom-slideshow-banner",
       "blocks": {
@@ -123,6 +127,7 @@
     }
   },
   "order": [
+    "video-banner",
     "slideshow-banner",
     "categories",
     "content-1",

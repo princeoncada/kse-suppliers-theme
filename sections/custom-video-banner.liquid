@@ -1,0 +1,26 @@
+<div class="x-h-[500px] md:x-h-[80vh] x-bg-red-500 x-overflow-hidden x-relative">
+
+    {{ section.settings.mobile_video | video_tag: image_size: '1000x', autoplay: true, muted: true, loop: true, class: 'x-block md:x-hidden x-absolute x-top-1/2 x-left-1/2 x-w-auto x-h-full
+    x-min-w-full x-min-h-full x-transform x--translate-x-1/2 x--translate-y-1/2 x-object-cover' }}
+    {{ section.settings.desktop_video | video_tag: image_size: '1000x', autoplay: true, muted: true, loop: true, class: 'md:x-block x-hidden x-absolute x-top-1/2 x-left-1/2 x-w-auto x-h-full
+    x-min-w-full x-min-h-full x-transform x--translate-x-1/2 x--translate-y-1/2 x-object-cover' }}
+
+</div>
+
+{% schema %}
+{
+    "name": "Video Banner (KSE)",
+    "settings": [
+        {
+            "type":"video",
+            "id":"mobile_video",
+            "label":"Mobile Video"
+        },
+        {
+            "type":"video",
+            "id":"desktop_video",
+            "label":"Desktop Video"
+        }
+    ]
+}
+{% endschema %}

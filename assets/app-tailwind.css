@@ -887,6 +887,10 @@ video {
   aspect-ratio: 1 / 1 !important;
 }
 
+.x-aspect-video {
+  aspect-ratio: 16 / 9 !important;
+}
+
 .x-h-0 {
   height: 0px !important;
 }
@@ -955,6 +959,10 @@ video {
   height: 480px !important;
 }
 
+.x-h-\[500px\] {
+  height: 500px !important;
+}
+
 .x-h-\[50px\] {
   height: 50px !important;
 }
@@ -977,6 +985,10 @@ video {
 
 .x-min-h-\[16px\] {
   min-height: 16px !important;
+}
+
+.x-min-h-full {
+  min-height: 100% !important;
 }
 
 .x-w-0 {
@@ -1109,6 +1121,10 @@ video {
 
 .x-min-w-\[16px\] {
   min-width: 16px !important;
+}
+
+.x-min-w-full {
+  min-width: 100% !important;
 }
 
 .x-max-w-\[100\%\] {
@@ -1465,12 +1481,20 @@ video {
   margin-bottom: calc(8px * var(--tw-space-y-reverse)) !important;
 }
 
+.x-overflow-auto {
+  overflow: auto !important;
+}
+
 .x-overflow-hidden {
   overflow: hidden !important;
 }
 
 .x-overflow-x-auto {
   overflow-x: auto !important;
+}
+
+.x-overflow-x-hidden {
+  overflow-x: hidden !important;
 }
 
 .x-text-wrap {
@@ -1960,6 +1984,11 @@ video {
 .x-object-fill {
   -o-object-fit: fill !important;
      object-fit: fill !important;
+}
+
+.x-object-center {
+  -o-object-position: center !important;
+     object-position: center !important;
 }
 
 .x-p-0 {
@@ -2837,6 +2866,10 @@ video {
     aspect-ratio: auto !important;
   }
 
+  .md\:x-h-\[100vh\] {
+    height: 100vh !important;
+  }
+
   .md\:x-h-\[20px\] {
     height: 20px !important;
   }
@@ -2859,6 +2892,14 @@ video {
 
   .md\:x-h-full {
     height: 100% !important;
+  }
+
+  .md\:x-h-\[180vh\] {
+    height: 180vh !important;
+  }
+
+  .md\:x-h-\[80vh\] {
+    height: 80vh !important;
   }
 
   .md\:x-max-h-\[480px\] {

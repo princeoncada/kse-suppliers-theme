@@ -12,6 +12,7 @@
     "video-banner": {
       "type": "custom-video-banner",
       "settings": {
+        "background_color": "#951828",
         "mobile_video": "shopify://files/videos/MicroLux-Video.mp4",
         "desktop_video": "shopify://files/videos/KSE FRONTPAGE VIDEO.mp4"
       }

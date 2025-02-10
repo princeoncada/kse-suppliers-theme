@@ -16,22 +16,6 @@
         "desktop_video": "shopify://files/videos/KSE FRONTPAGE VIDEO.mp4"
       }
     },
-    "categories": {
-      "type": "a-categories",
-      "settings": {}
-    },
-    "content-1": {
-      "type": "a-content-1",
-      "settings": {}
-    },
-    "parallax-1": {
-      "type": "a-parallax-1",
-      "settings": {}
-    },
-    "stats": {
-      "type": "a-stats",
-      "settings": {}
-    },
     "benefits": {
       "type": "custom-benefits",
       "blocks": {
@@ -92,6 +76,22 @@
         "content_height": "180"
       }
     },
+    "categories": {
+      "type": "a-categories",
+      "settings": {}
+    },
+    "content-1": {
+      "type": "a-content-1",
+      "settings": {}
+    },
+    "parallax-1": {
+      "type": "a-parallax-1",
+      "settings": {}
+    },
+    "stats": {
+      "type": "a-stats",
+      "settings": {}
+    },
     "image-banner-2": {
       "type": "a-image-banner-2",
       "settings": {}
@@ -99,11 +99,11 @@
   },
   "order": [
     "video-banner",
+    "benefits",
     "categories",
     "content-1",
     "parallax-1",
     "stats",
-    "benefits",
     "image-banner-2"
   ]
 }

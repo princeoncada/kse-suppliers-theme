@@ -21,7 +21,7 @@
         </div>
         <div class="x-relative x-border-t-[5px] x-border-[#951828]">
             <div
-                class="swiper-pagination x-absolute x-right-0 x-bottom-0 x-z-[1] x-flex x-justify-center x-items-center x-gap-[12px] md:x-gap-[14px] x-h-full">
+                class="hero-swiper-pagination x-absolute x-right-0 x-bottom-0 x-z-[1] x-flex x-justify-center x-items-center x-gap-[12px] md:x-gap-[14px] x-h-full">
                 &nbsp;
             </div>
             <div
@@ -41,7 +41,7 @@
 </section>
 
 <style>
-    .swiper-pagination-bullet {
+    .hero-swiper-pagination .swiper-pagination-bullet {
         width: 12px !important;
         height: 12px !important;
         margin: 0 !important;
@@ -50,13 +50,13 @@
         opacity: 1 !important;
     }
 
-    .swiper-pagination-bullet-active {
+    .hero-swiper-pagination .swiper-pagination-bullet-active {
         background-color: #951828 !important;
         border-color: #951828 !important;
     }
 
     @media (min-width: 990px) {
-        .swiper-pagination-bullet {
+        .hero-swiper-pagination .swiper-pagination-bullet {
             width: 20px !important;
             height: 20px !important;
         }
@@ -64,11 +64,11 @@
 </style>
 
 <script>
-    let swiper = new Swiper('.hero-banner-swiper', {
+    let heroSwiper = new Swiper('.hero-banner-swiper', {
         slidesPerView: 1,
         loop: true,
         pagination: {
-            el: '.swiper-pagination',
+            el: '.hero-swiper-pagination',
             clickable: true,
         },
         navigation: {
@@ -87,10 +87,10 @@
 
     autoplayButton.on('click', function () {
         if (isAutoplayRunning) {
-            swiper.autoplay.stop();
+            heroSwiper.autoplay.stop();
             autoplayButton.html('<i class="bx bx-play"></i>');
         } else {
-            swiper.autoplay.start();
+            heroSwiper.autoplay.start();
             autoplayButton.html('<i class="bx bx-pause"></i>');
         }
         isAutoplayRunning = !isAutoplayRunning;

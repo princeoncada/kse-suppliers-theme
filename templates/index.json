@@ -11,7 +11,10 @@
   "sections": {
     "video-banner": {
       "type": "custom-video-banner",
-      "settings": {}
+      "settings": {
+        "mobile_video": "shopify://files/videos/MicroLux-Video.mp4",
+        "desktop_video": "shopify://files/videos/TEST VIDEO.mp4"
+      }
     },
     "slideshow-banner": {
       "type": "custom-slideshow-banner",
@@ -43,7 +46,9 @@
         "banner_slide_QzyfgC",
         "banner_slide_XqikKk"
       ],
-      "settings": {}
+      "settings": {
+        "hide_controls": false
+      }
     },
     "categories": {
       "type": "a-categories",

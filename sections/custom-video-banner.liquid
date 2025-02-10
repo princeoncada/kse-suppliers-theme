@@ -3,7 +3,7 @@
     {{ section.settings.mobile_video | video_tag: image_size: '1000x', autoplay: true, muted: true, loop: true, class: 'x-block md:x-hidden x-absolute x-top-1/2 x-left-1/2 x-w-auto x-h-full
     x-min-w-full x-min-h-full x-transform x--translate-x-1/2 x--translate-y-1/2 x-object-cover' }}
     {{ section.settings.desktop_video | video_tag: image_size: '1000x', autoplay: true, muted: true, loop: true, class: 'md:x-block x-hidden x-absolute x-top-1/2 x-left-1/2 x-w-auto x-h-full
-    x-min-w-full x-min-h-full x-transform x--translate-x-1/2 x--translate-y-1/2 x-object-cover' }}
+    x-min-w-full x-min-h-full x-transform x--translate-x-1/2 x--translate-y-1/2 md:x-object-cover lg:x-object-scale-down' }}
 
 </div>
 

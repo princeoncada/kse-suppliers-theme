@@ -36,6 +36,13 @@
             "content_text": "Every item is stored carefully in place, lined up in aisles ready to be shipped."
           }
         },
+        "slide_fkfTXz": {
+          "type": "slide",
+          "settings": {
+            "header_text": "Header Text",
+            "content_text": "Content Text"
+          }
+        },
         "slide_HRPdJa": {
           "type": "slide",
           "settings": {
@@ -64,6 +71,7 @@
       "block_order": [
         "slide_6K8BHT",
         "slide_RkhCH6",
+        "slide_fkfTXz",
         "slide_HRPdJa",
         "slide_pWRGx9",
         "slide_Lia4WH"
@@ -71,7 +79,7 @@
       "settings": {
         "header": "What KSE Can Do For You",
         "sub_header": "Be Part of Our Drop Shipping Program!",
-        "content": "KSE Suppliers provides smooth buying and shipping of products to customers under YOUR OWN BRANDING, improving the customer experience.",
+        "content": "We provide smooth buying and shipping of products to customers under \"Your own branding\", enhancing your customers experience.",
         "button_text": "Sign Up Today",
         "button_link": "shopify://pages/contact",
         "content_height": "180"

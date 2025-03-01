@@ -25,6 +25,10 @@
       "block_order": [
         "announcement-bar-0"
       ],
+      "custom_css": [
+        ".utility-bar {background-color: #951828;}",
+        ".announcement-bar__message > span {text-transform: uppercase; color: white;}"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "show_line_separator": true,

@@ -7,18 +7,13 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
-      "type": "about-us-main",
+      "type": "custom-about-us"
+    }
   },
-  "who-we-serve":{
-    "type": "who-we-serve-main",
-  },
-},
   "order": [
-"main",
-"who-we-serve"
+    "main"
   ]
 }
-

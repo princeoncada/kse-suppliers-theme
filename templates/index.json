@@ -89,14 +89,6 @@
       "type": "a-categories",
       "settings": {}
     },
-    "content-1": {
-      "type": "a-content-1",
-      "settings": {}
-    },
-    "parallax-1": {
-      "type": "a-parallax-1",
-      "settings": {}
-    },
     "stats": {
       "type": "a-stats",
       "settings": {}

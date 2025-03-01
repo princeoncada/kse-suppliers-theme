@@ -1,12 +1,12 @@
 <div>
     <div class="x-py-[16px] md:x-py-[64px] x-text-center x-flex x-flex-col x-gap-[16px] md:x-gap-[64px]">
-        <div class="x-text-[36px]" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true" data-aos-delay="100">
-            Categories
+        <div class="x-text-[36px] x-uppercase" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true" data-aos-delay="100">
+            Shop by Categories
         </div>
         <div class="category-carousel x-shadow-none" data-flickity='{ "groupCells": true, "wrapAround": true }'>
             {% for collection in collections %}
                 <a href="{{ collection.url }}" class="carousel-cell x-p-[24px] x-flex x-flex-col x-gap-[24px] x-mr-[16px] x-rounded-[8px] x-border-[1.5px] x-border-gray-300">
-                    <div class="x-text-[18px]">{{ collection.title }}</div>
+                    <div class="x-text-[18px] x-font-bold">{{ collection.title }}</div>
                     <div class="x-h-full x-w-full x-flex x-justify-center x-items-center">
                         <img src="{{ collection.image.src | image_url: width: 400, height: 400 }}" alt="{{ collection.image.alt }}" width="350px" height="350px"/>
                     </div>

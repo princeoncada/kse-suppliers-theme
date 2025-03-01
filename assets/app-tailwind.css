@@ -1288,20 +1288,12 @@ video {
   row-gap: 20px !important;
 }
 
-.x-gap-y-\[4px\] {
-  row-gap: 4px !important;
-}
-
-.x-gap-y-\[32px\] {
-  row-gap: 32px !important;
-}
-
-.x-gap-y-\[36px\] {
-  row-gap: 36px !important;
-}
-
 .x-gap-y-\[40px\] {
   row-gap: 40px !important;
+}
+
+.x-gap-y-\[4px\] {
+  row-gap: 4px !important;
 }
 
 .x-space-y-4 > :not([hidden]) ~ :not([hidden]) {
@@ -2186,10 +2178,6 @@ video {
 
 .x-leading-normal {
   line-height: 1.5 !important;
-}
-
-.x-leading-\[\] {
-  line-height:  !important;
 }
 
 .x-tracking-\[-1px\] {

@@ -720,10 +720,6 @@ video {
   margin-bottom: 20px !important;
 }
 
-.x-mb-\[24px\] {
-  margin-bottom: 24px !important;
-}
-
 .x-mb-\[30px\] {
   margin-bottom: 30px !important;
 }
@@ -848,10 +844,6 @@ video {
   height: 130% !important;
 }
 
-.x-h-\[138px\] {
-  height: 138px !important;
-}
-
 .x-h-\[150px\] {
   height: 150px !important;
 }
@@ -896,10 +888,6 @@ video {
   height: 480px !important;
 }
 
-.x-h-\[500px\] {
-  height: 500px !important;
-}
-
 .x-h-\[50px\] {
   height: 50px !important;
 }
@@ -918,6 +906,10 @@ video {
 
 .x-min-h-\[16px\] {
   min-height: 16px !important;
+}
+
+.x-min-h-\[500px\] {
+  min-height: 500px !important;
 }
 
 .x-min-h-full {
@@ -1022,10 +1014,6 @@ video {
 
 .x-w-\[80\%\] {
   width: 80% !important;
-}
-
-.x-w-\[90px\] {
-  width: 90px !important;
 }
 
 .x-w-auto {
@@ -1384,6 +1372,10 @@ video {
 
 .x-rounded-\[8px\] {
   border-radius: 8px !important;
+}
+
+.x-rounded-\[clamp\(8px\,10\%\,16px\)\] {
+  border-radius: clamp(8px,10%,16px) !important;
 }
 
 .x-rounded-full {
@@ -2480,6 +2472,11 @@ video {
     margin-right: auto !important;
   }
 
+  .md\:x-my-\[20px\] {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
   .md\:x-mb-\[10px\] {
     margin-bottom: 10px !important;
   }
@@ -2540,10 +2537,6 @@ video {
     height: 20px !important;
   }
 
-  .md\:x-h-\[240px\] {
-    height: 240px !important;
-  }
-
   .md\:x-h-\[400px\] {
     height: 400px !important;
   }
@@ -2558,10 +2551,6 @@ video {
 
   .md\:x-h-\[732px\] {
     height: 732px !important;
-  }
-
-  .md\:x-h-\[80vh\] {
-    height: 80vh !important;
   }
 
   .md\:x-h-full {
@@ -2767,11 +2756,6 @@ video {
 
   .md\:x-border-none {
     border-style: none !important;
-  }
-
-  .md\:x-object-cover {
-    -o-object-fit: cover !important;
-       object-fit: cover !important;
   }
 
   .md\:x-p-\[0px\] {
@@ -3099,10 +3083,6 @@ video {
     aspect-ratio: 16/5 !important;
   }
 
-  .lg\:x-h-\[480px\] {
-    height: 480px !important;
-  }
-
   .lg\:x-h-\[541px\] {
     height: 541px !important;
   }
@@ -3213,11 +3193,6 @@ video {
 
   .lg\:x-gap-\[96px\] {
     gap: 96px !important;
-  }
-
-  .lg\:x-object-scale-down {
-    -o-object-fit: scale-down !important;
-       object-fit: scale-down !important;
   }
 
   .lg\:x-p-\[40px\] {

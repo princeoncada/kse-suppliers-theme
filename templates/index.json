@@ -36,13 +36,6 @@
             "content_text": "Every item is stored carefully in place, lined up in aisles ready to be shipped."
           }
         },
-        "slide_fkfTXz": {
-          "type": "slide",
-          "settings": {
-            "header_text": "Header Text",
-            "content_text": "Content Text"
-          }
-        },
         "slide_HRPdJa": {
           "type": "slide",
           "settings": {
@@ -71,7 +64,6 @@
       "block_order": [
         "slide_6K8BHT",
         "slide_RkhCH6",
-        "slide_fkfTXz",
         "slide_HRPdJa",
         "slide_pWRGx9",
         "slide_Lia4WH"

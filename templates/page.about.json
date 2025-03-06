@@ -16,13 +16,6 @@
           "type": "hero_banner",
           "settings": {}
         },
-        "cta_button_n6RQDH": {
-          "type": "cta_button",
-          "settings": {
-            "button_text": "Download the Medline overview",
-            "button_url": ""
-          }
-        },
         "challenges_jjP6AV": {
           "type": "challenges",
           "settings": {}
@@ -39,31 +32,20 @@
           "type": "integration",
           "settings": {}
         },
-        "culture_P3QrUj": {
-          "type": "culture",
-          "settings": {}
-        },
-        "history_MCtR4n": {
-          "type": "history",
-          "settings": {}
-        },
         "cta_button_rNYYCn": {
           "type": "cta_button",
           "settings": {
-            "button_text": "Medline is making news. Learn more.",
+            "button_text": "KSE Suppliers latest updates. Learn more.",
             "button_url": ""
           }
         }
       },
       "block_order": [
         "hero_banner_FeM6Bj",
-        "cta_button_n6RQDH",
         "challenges_jjP6AV",
         "solutions_JpCUfB",
         "difference_nDPURN",
         "integration_7gbqjT",
-        "culture_P3QrUj",
-        "history_MCtR4n",
         "cta_button_rNYYCn"
       ],
       "settings": {}

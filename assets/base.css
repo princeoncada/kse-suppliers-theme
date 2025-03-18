@@ -2693,7 +2693,7 @@ details[open] .modal-overlay::after {
   overflow: hidden;
   display: flex;
   align-items: center;
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.7);
 }
 
 .search-modal__close-button {

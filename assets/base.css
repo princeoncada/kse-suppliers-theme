@@ -2689,9 +2689,11 @@ details[open] .modal-overlay::after {
 
 .search-modal__form {
   width: 100%;
-  border-radius: 25px;
+  border-radius: 50px;
   overflow: hidden;
-  border: 1px solid #000000;
+  display: flex;
+  align-items: center;
+  border: 1px solid #000000; 
 }
 
 .search-modal__close-button {

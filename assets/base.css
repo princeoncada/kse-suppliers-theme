@@ -649,17 +649,19 @@ h3 .icon-arrow,
 
 /* base-details-summary */
 summary {
-  cursor: pointer;
-  list-style: none;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align text and caret to the left */
+  gap: 10px; /* Ensures space between text and caret */
+  width: 100%; /* Makes it take full width */
 }
 
 summary .icon-caret {
-  position: absolute;
+  position: relative; /* Keep it aligned */
   height: 0.6rem;
-  right: 1.5rem;
-  top: calc(50% - 0.2rem);
+  margin-left: 4px; /* Ensures space between text and caret */
 }
+
 
 summary::-webkit-details-marker {
   display: none;
@@ -1621,9 +1623,9 @@ details[open] > .share-button__fallback {
   left: var(--inputs-border-width);
   border: 0.1rem solid transparent;
   border-radius: var(--inputs-radius);
-  /* box-shadow: 0 0 0 var(--inputs-border-width) rgba(var(--color-foreground), var(--inputs-border-opacity)); */
-  transition: box-shadow var(--duration-short) ease;
+  box-shadow: 0 0 0 var(--inputs-border-width) rgba(var(--color-foreground), var(--inputs-border-opacity));
   box-shadow: none !important;
+  transition: box-shadow var(--duration-short) ease;
   z-index: 1;
 }
 
@@ -1662,7 +1664,7 @@ details[open] > .share-button__fallback {
 .customer .field input:focus,
 .customer select:focus,
 .localization-form__select:focus.localization-form__select:after {
-  /* box-shadow: 0 0 0 calc(0.1rem + var(--inputs-border-width)) rgba(var(--color-foreground)); */
+  box-shadow: 0 0 0 calc(0.1rem + var(--inputs-border-width)) rgba(var(--color-foreground));
   outline: 0;
   border-radius: var(--inputs-radius);
 }
@@ -2669,7 +2671,7 @@ details[open] .modal-overlay::after {
 
 .search-modal {
   opacity: 0;
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  /* border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08); */
   min-height: calc(100% + var(--inputs-margin-offset) + (2 * var(--inputs-border-width)));
   height: 100%;
 }
@@ -2699,7 +2701,7 @@ details[open] .modal-overlay::after {
   overflow: hidden;
   display: flex;
   align-items: center;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3); /* Adjust border styling */
 }
 
 .search-modal__close-button {
@@ -2774,6 +2776,9 @@ details[open] > .header__submenu {
   margin-left: -1.2rem;
   grid-area: navigation;
   display: none;
+  flex: 1; /* Makes all menu items take equal width */
+  min-width: 160px; /* Prevents them from being too small */
+  text-align: center;
 }
 
 .header--top-center .header__inline-menu,
@@ -2804,12 +2809,18 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item {
+  flex: 1;
   padding: 1.2rem;
   font-size: 15px;
   font-weight: bold;
   text-decoration: none;
+  min-width: 160px;
+  align-items: center; 
   color: rgba(var(--color-foreground), 0.75);
 }
+
+
+
 
 .header__submenu .list-menu__item {
   font-size: 13px; /* Slightly smaller for dropdown items */

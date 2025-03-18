@@ -2799,8 +2799,15 @@ details[open] > .header__submenu {
 
 .header__menu-item {
   padding: 1.2rem;
+  font-size: 15px;
+  font-weight: bold;
   text-decoration: none;
   color: rgba(var(--color-foreground), 0.75);
+}
+
+.header__submenu .list-menu__item {
+  font-size: 13px; /* Slightly smaller for dropdown items */
+  font-weight: normal;
 }
 
 .header__menu-item:hover {

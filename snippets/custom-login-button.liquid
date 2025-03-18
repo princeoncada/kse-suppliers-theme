@@ -1,6 +1,6 @@
 {%- if shop.customer_accounts_enabled -%}
  <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="x-flex x-items-center">
-  <div class="x-p-[8px] x-px-[16px] x-border-[1px] x-border-[#9E0B0F] x-text-black x-text-center hover:x-text-white hover:x-bg-[#9E0B0F] 
+  <div class="x-p-[8px] x-px-[16px] x-border-[1px] x-border-[#000000] x-text-black x-text-center hover:x-text-white hover:x-bg-[#9E0B0F] 
   x-rounded-full x-transition-colors x-ease-in-out x-duration-300 md:x-flex x-hidden x-mr-[12px] 
   x-whitespace-nowrap x-w-auto">
   {% if customer %}

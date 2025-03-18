@@ -2509,9 +2509,15 @@ input[type='checkbox'] {
 /* Header icons */
 .header__icons {
   display: flex;
-  grid-area: icons;
-  justify-self: end;
-  padding-right: 0.8rem;
+  align-items: center; /* Align items properly */
+  gap: 10px; /* Adds space between button & icons */
+  flex-wrap: nowrap; /* Prevents line breaks */
+  min-width: fit-content; /* Ensures it doesn't shrink */
+}
+
+.header__icons a {
+  flex-shrink: 0; /* Prevents button from shrinking */
+  white-space: nowrap; /* Forces text to stay in one line */
 }
 
 .header__icons .shopify-app-block {

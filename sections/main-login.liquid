@@ -162,9 +162,16 @@
         {{ 'customer.login_page.sign_in' | t }}
       </button>
 
-      <a href="{{ routes.account_register_url }}">
-        {{ 'customer.login_page.create_account' | t }}
-      </a>
+      <div class="x-flex x-flex-col x-items-center x-mt-4">
+        <span>Don't have an account?</span>
+        <a href="{{ routes.account_register_url }}">
+          Register for One
+        </a>
+      </div>
+      
+      
+      
+      
     {%- endform -%}
   </div>
 

@@ -2829,10 +2829,15 @@ details[open] > .header__submenu {
 
 
 
-
+/* adjusted for now */
 .header__submenu .list-menu__item {
-  font-size: 13px; /* Slightly smaller for dropdown items */
+  font-size: 13px; 
   font-weight: normal;
+  text-align: left !important; 
+  white-space: normal; 
+  display: flex; 
+  align-items: center; 
+  padding: 10px 15px; 
 }
 
 .header__menu-item:hover {

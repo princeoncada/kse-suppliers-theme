@@ -630,6 +630,10 @@ video {
   right: 0px !important;
 }
 
+.x-right-3 {
+  right: 0.75rem !important;
+}
+
 .x-top-1 {
   top: 0.25rem !important;
 }
@@ -750,6 +754,10 @@ video {
 
 .x-mt-0 {
   margin-top: 0px !important;
+}
+
+.x-mt-4 {
+  margin-top: 1rem !important;
 }
 
 .x-mt-\[-1px\] {
@@ -1213,6 +1221,10 @@ video {
   gap: 2.5rem !important;
 }
 
+.x-gap-2 {
+  gap: 0.5rem !important;
+}
+
 .x-gap-4 {
   gap: 1rem !important;
 }
@@ -1313,6 +1325,12 @@ video {
   row-gap: 4px !important;
 }
 
+.x-space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0 !important;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse)) !important;
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse))) !important;
+}
+
 .x-space-y-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0 !important;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse))) !important;
@@ -1373,6 +1391,10 @@ video {
 
 .x-overflow-x-auto {
   overflow-x: auto !important;
+}
+
+.x-whitespace-nowrap {
+  white-space: nowrap !important;
 }
 
 .x-text-wrap {
@@ -1979,6 +2001,10 @@ video {
   padding-left: 8px !important;
 }
 
+.x-pr-10 {
+  padding-right: 2.5rem !important;
+}
+
 .x-pr-\[20px\] {
   padding-right: 20px !important;
 }
@@ -2320,9 +2346,19 @@ video {
   color: rgb(0 0 0 / var(--tw-text-opacity)) !important;
 }
 
+.x-text-blue-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(59 130 246 / var(--tw-text-opacity)) !important;
+}
+
 .x-text-gray-400 {
   --tw-text-opacity: 1 !important;
   color: rgb(156 163 175 / var(--tw-text-opacity)) !important;
+}
+
+.x-text-gray-500 {
+  --tw-text-opacity: 1 !important;
+  color: rgb(107 114 128 / var(--tw-text-opacity)) !important;
 }
 
 .x-text-kse {

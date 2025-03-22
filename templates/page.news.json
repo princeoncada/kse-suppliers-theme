@@ -1,0 +1,10 @@
+{
+    "name": "News",
+    "sections": {
+      "main": {
+        "type": "main-page"
+      }
+    },
+    "order": ["main"]
+  }
+  

@@ -1,1 +1,156 @@
-<div>hello</div>
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "NEWSLETTER"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "news_item",
+      "name": "News Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "News Image"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "March 20, 2025"
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Headline",
+          "default": "The Headline of the Latest News: Lorem Ipsum is simply dummy text"
+        },
+        {
+            "type": "textarea",
+            "id": "content",
+            "label": "Content",
+            "default": "Full article content goes here..."
+          }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="x-bg-white x-py-[40px] x-px-[16px] custom-md:x-px-[24px] custom-lg:x-px-[32px]">
+    <div class="x-max-w-[1280px] x-mx-auto">
+      <h2 class="x-text-center x-text-[28px] x-font-bold x-uppercase x-text-kse x-mb-[32px]">
+        {{ section.settings.heading }}
+      </h2>
+  
+      <div class="x-flex x-flex-col md:x-flex-row x-flex-wrap x-justify-center x-items-center x-gap-x-[24px] x-gap-y-[40px]">
+        {% for block in section.blocks limit: 3 %}
+            {% if block.type == 'news_item' %}
+              {% assign modal_id = 'newsletter-modal-' | append: forloop.index %}
+              <div>
+                <!-- Clickable Card -->
+                <div
+                    onclick="openModal('{{ modal_id }}')"
+                    class="x-cursor-pointer x-bg-white x-border x-rounded x-shadow-sm x-w-[350px] x-h-[368px] x-transition-all x-duration-300 x-ease-in-out hover:x-shadow-lg hover:x--translate-y-[4px] active:x-translate-y-[1px] active:x-scale-[0.98]"
+                  >
+                {% if block.settings.image != blank %}
+                    <div class="x-w-[348px] x-h-[250px] x-overflow-hidden x-mx-auto">
+                      <img
+                        src="{{ block.settings.image | img_url: '468x350', scale: 2 }}"
+                        alt="News Image"
+                        class="x-w-full x-h-full x-object-cover"
+                      >
+                    </div>
+                  {% endif %}
+                  <div class="x-p-[16px]">
+                    <p class="x-text-[12px] x-text-kse x-font-semibold x-mb-[8px]">
+                      {{ block.settings.date }}
+                    </p>
+                    <h3 class="x-text-[14px] x-font-semibold x-leading-snug">
+                      {{ block.settings.headline }}
+                    </h3>
+                  </div>
+                </div>
+          
+                <!-- Modal -->
+                <div
+                    id="{{ modal_id }}"
+                    class="x-hidden x-fixed x-inset-0 x-bg-black/50 x-z-50"
+                    onclick="backgroundClose(event, '{{ modal_id }}')"
+                  >
+                    <div class="x-bg-white x-rounded x-shadow-lg x-max-w-[600px] x-w-[90%] x-p-[24px] x-relative x-mx-auto x-mt-[5%]">
+                  
+                      {% if block.settings.image != blank %}
+                        <div class="x-w-full x-aspect-[3/2] x-mb-[16px]">
+                          <img
+                            src="{{ block.settings.image | img_url: '800x600', scale: 2 }}"
+                            class="x-w-full x-h-full x-object-cover x-rounded"
+                            alt="Modal Image"
+                          >
+                        </div>
+                      {% endif %}
+                  
+                      <p class="x-text-[12px] x-text-kse x-font-semibold x-mb-[8px]">
+                        {{ block.settings.date }}
+                      </p>
+                      <h3 class="x-text-[20px] x-font-bold x-mb-[16px]">
+                        {{ block.settings.headline }}
+                      </h3>
+                      <div class="x-text-[14px] x-leading-relaxed x-whitespace-pre-line">
+                        {{ block.settings.content }}
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+            {% endif %}
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      const modal = document.getElementById(id)
+      modal.classList.remove('x-hidden')
+      modal.classList.add('x-flex', 'x-items-center', 'x-justify-center')
+      document.body.style.overflow = 'hidden'
+    }
+  
+    function closeModal(id) {
+      const modal = document.getElementById(id)
+      modal.classList.add('x-hidden')
+      modal.classList.remove('x-flex', 'x-items-center', 'x-justify-center')
+      document.body.style.overflow = ''
+    }
+  
+    // Close on ESC key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        document.querySelectorAll('[id^="newsletter-modal-"]').forEach(function(modal) {
+          modal.classList.add('x-hidden')
+          modal.classList.remove('x-flex', 'x-items-center', 'x-justify-center')
+        })
+        document.body.style.overflow = ''
+      }
+    })
+  
+    // Close when clicking background
+    function backgroundClose(event, id) {
+      if (event.target.id === id) {
+        closeModal(id)
+      }
+    }
+  </script>

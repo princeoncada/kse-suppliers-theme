@@ -1,10 +1,56 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "name": "News",
-    "sections": {
-      "main": {
-        "type": "custom-news"
+  "sections": {
+    "main": {
+      "type": "custom-news",
+      "blocks": {
+        "news_item_Cee9h4": {
+          "type": "news_item",
+          "settings": {
+            "image": "shopify://shop_images/NURSING_HOME.jpg",
+            "date": "March 20, 2025",
+            "headline": "The Headline of the Latest News: Lorem Ipsum is simply dummy text",
+            "content": "Full article content goes here..."
+          }
+        },
+        "news_item_EDWETh": {
+          "type": "news_item",
+          "settings": {
+            "image": "shopify://shop_images/CORRECTIONAL_FACILITIES.jpg",
+            "date": "March 20, 2025",
+            "headline": "The Headline of the Latest News: Lorem Ipsum is simply dummy text",
+            "content": "Full article content goes here..."
+          }
+        },
+        "news_item_jVxxi4": {
+          "type": "news_item",
+          "settings": {
+            "image": "shopify://shop_images/TRANSITIONAL_HOUSING.png",
+            "date": "March 20, 2025",
+            "headline": "The Headline of the Latest News: Lorem Ipsum is simply dummy text",
+            "content": "Full article content goes here..."
+          }
+        }
+      },
+      "block_order": [
+        "news_item_Cee9h4",
+        "news_item_EDWETh",
+        "news_item_jVxxi4"
+      ],
+      "settings": {
+        "heading": "NEWSLETTER"
       }
-    },
-    "order": ["main"]
-  }
-  
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

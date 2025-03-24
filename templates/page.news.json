@@ -24,19 +24,19 @@
         "news_item_EDWETh": {
           "type": "news_item",
           "settings": {
-            "image": "shopify://shop_images/CORRECTIONAL_FACILITIES.jpg",
+            "image": "shopify://shop_images/gown_ad_no_footer.png",
             "date": "March 20, 2025",
-            "headline": "The Headline of the Latest News: Lorem Ipsum is simply dummy text",
-            "content": "Full article content goes here..."
+            "headline": "IGPR & IGPIVR Fully in Stock with Enhanced New Design!",
+            "content": ""
           }
         },
         "news_item_jVxxi4": {
           "type": "news_item",
           "settings": {
-            "image": "shopify://shop_images/TRANSITIONAL_HOUSING.png",
+            "image": "shopify://shop_images/no_footer_-_tcr.png",
             "date": "March 20, 2025",
-            "headline": "The Headline of the Latest News: Lorem Ipsum is simply dummy text",
-            "content": "Full article content goes here..."
+            "headline": "Solid Color Towels and Wash Cloths | New Color!",
+            "content": "Introducing Gray to our TCR Collection."
           }
         }
       },

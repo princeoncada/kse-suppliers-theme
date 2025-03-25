@@ -2,6 +2,8 @@ class MainSearch extends SearchForm {
   constructor() {
     super();
     this.allSearchInputs = document.querySelectorAll('input[type="search"]');
+    this.searchForContainer = document.querySelector('.predictive-search__search-for');
+    this.searchForLink = this.searchForContainer?.querySelector('a');
     this.setupEventListeners();
   }
 
@@ -24,6 +26,17 @@ class MainSearch extends SearchForm {
   onInput(event) {
     const target = event.target;
     this.keepInSync(target.value, target);
+
+    // Show "Search for…" link
+    if (!this.searchForContainer || !this.searchForLink) return;
+    const term = target.value.trim();
+    if (term.length > 0) {
+      this.searchForContainer.style.display = 'block';
+      this.searchForLink.textContent = `Search for “${term}”`;
+      this.searchForLink.href = `/search?q=${encodeURIComponent(term)}`;
+    } else {
+      this.searchForContainer.style.display = 'none';
+    }
   }
 
   onInputFocus() {

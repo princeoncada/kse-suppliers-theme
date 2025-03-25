@@ -207,23 +207,19 @@
             </div>
     
             {%- if settings.predictive_search_enabled -%}
-              <div class="predictive-search-wrapper">
-                <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
-                  {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
             
-                  {%- if search.terms != blank -%}
-                    <div class="predictive-search__item predictive-search__item--term" style="padding: 1rem;">
-                      <a href="{{ routes.search_url }}?q={{ search.terms | escape }}" class="predictive-search__item__link">
-                        Search for “{{ search.terms | escape }}”
-                      </a>
-                    </div>
-                  {%- endif -%}
-                </div>
-            
-                <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true">
-                  
-                </span>
+                {%- if search.terms != blank -%}
+                  <div class="predictive-search__item predictive-search__item--term" style="padding: 1rem;">
+                    <a href="{{ routes.search_url }}?q={{ search.terms | escape }}" class="predictive-search__item__link">
+                      Search for “{{ search.terms | escape }}”
+                    </a>
+                  </div>
+                {%- endif -%}
               </div>
+            
+              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
             {%- endif -%}
           </form>
           {%- if settings.predictive_search_enabled -%}
@@ -689,3 +685,4 @@
   ]
 }
 {% endschema %}
+

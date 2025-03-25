@@ -1,10 +1,56 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "name": "News",
-    "sections": {
-      "main": {
-        "type": "custom-news"
+  "sections": {
+    "main": {
+      "type": "custom-news",
+      "blocks": {
+        "news_item_Cee9h4": {
+          "type": "news_item",
+          "settings": {
+            "image": "shopify://shop_images/ContainersTypesSizes_Picture_By_Chanaka-1024x668.png",
+            "date": "March 20, 2025",
+            "headline": "Tariffs & Global Trade Impact",
+            "content": "At KSE Suppliers, we are committed to providing our customers with the best products at the \nmost competitive prices. With ongoing changes in global trade policies, including tariffs on imported goods, \nwe want to assure you that we are closely monitoring the market to minimize any potential impact on \npricing and supply chain efficiency.\n\nRecent shifts in international trade regulations have led to increased tariffs on various imports, particularly\nfrom key manufacturing regions. These changes can influence costs across the industry, but at KSE, we are \nstrategically planning ahead to ensure price stability and product availability for our customers.\n\nAs a leading supplier of institutional linen, we leverage our extensive network, diversified sourcing strategies, \nand strong industry partnerships to stay ahead of market fluctuations—so you can continue to rely on us \nfor consistent quality, reliability, and cost-effectiveness.\n\nWe will continue to keep you informed of any developments and remain dedicated to securing the best deals \nfor you. If you have any questions or concerns about how this may affect your orders, please \nreach out—we’re here to help.\n\nKSE Suppliers Team"
+          }
+        },
+        "news_item_EDWETh": {
+          "type": "news_item",
+          "settings": {
+            "image": "shopify://shop_images/gown_ad_no_footer.png",
+            "date": "March 20, 2025",
+            "headline": "IGPR & IGPIVR Fully in Stock with Enhanced New Design!",
+            "content": ""
+          }
+        },
+        "news_item_jVxxi4": {
+          "type": "news_item",
+          "settings": {
+            "image": "shopify://shop_images/no_footer_-_tcr.png",
+            "date": "March 20, 2025",
+            "headline": "Solid Color Towels and Wash Cloths | New Color!",
+            "content": "Introducing Gray to our TCR Collection."
+          }
+        }
+      },
+      "block_order": [
+        "news_item_Cee9h4",
+        "news_item_EDWETh",
+        "news_item_jVxxi4"
+      ],
+      "settings": {
+        "heading": "NEWSLETTER"
       }
-    },
-    "order": ["main"]
-  }
-  
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

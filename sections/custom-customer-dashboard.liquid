@@ -2174,7 +2174,8 @@
             const address1 = address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "N/A";
             const city = cityTag ? cityTag.tag.replace("City:", "").trim() : "N/A";
             const province = provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "N/A";
-            const company = companyTag ? companyTag.tag.replace("company:", "").trim() : "N/A";
+            const rawCompany = companyTag ? companyTag.tag.replace("company:", "").trim() : "";
+            const company = rawCompany !== "" ? rawCompany : "N/A";
             const country = countryTag ? countryTag.tag.replace("Country:", "").trim() : "N/A";
             const zip = zipTag ? zipTag.tag.replace("Zip:", "").trim() : "N/A";
             const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
@@ -2419,7 +2420,8 @@
             const address1 = address1Tag ? address1Tag.tag.replace("Address1:", "").trim() : "N/A";
             const city = cityTag ? cityTag.tag.replace("City:", "").trim() : "N/A";
             const province = provinceTag ? provinceTag.tag.replace("Province:", "").trim() : "N/A";
-            const company = companyTag ? companyTag.tag.replace("company:", "").trim() : "N/A";
+            const rawCompany = companyTag ? companyTag.tag.replace("company:", "").trim() : "";
+            const company = rawCompany !== "" ? rawCompany : "N/A";
             const country = countryTag ? countryTag.tag.replace("Country:", "").trim() : "N/A";
             const zip = zipTag ? zipTag.tag.replace("Zip:", "").trim() : "N/A";
             const purchaseOrder = poTag ? poTag.tag.replace("PO:", "").trim() : "Not Available";
@@ -2459,8 +2461,8 @@
     async function populateDraftOrderTab() {
         const currentUserId = `gid://shopify/Customer/${customerId}`;
         const query = `
-            query getDraftOrdersByCustomerId($customerId: String!, $includeTags: [String!]) {
-                getDraftOrdersByCustomerId(customerId: $customerId, includeTags: $includeTags) {
+            query getAllDraftOrdersWithTags($includeTags: [String!]) {
+                getAllDraftOrdersWithTags(includeTags: $includeTags) {
                     id
                     name
                     createdAt
@@ -2493,122 +2495,120 @@
             }
         `;
         const variables = {
-            customerId: currentUserId,
-            includeTags: ["Placed"], 
-        }; 
+            includeTags: ["Placed"],
+        };
 
         const companyOrdersTableBody = document.querySelector(".company-orders .x-w-full tbody");
         const myOrdersTableBody = document.querySelector(".my-orders .x-w-full tbody");
 
-        // Loading animation for Company Orders
-        const companyOrdersLoadingRow = document.createElement("tr");
-        const companyOrdersLoadingCell = document.createElement("td");
-        companyOrdersLoadingCell.colSpan = 6;
-        companyOrdersLoadingCell.style.textAlign = "center";
-        companyOrdersLoadingCell.innerHTML = `
-            <div class="loading-spinner">
-                <div class="spinner"></div>
-            </div>
-        `;
-        companyOrdersLoadingRow.appendChild(companyOrdersLoadingCell);
-        companyOrdersTableBody.innerHTML = "";
-        companyOrdersTableBody.appendChild(companyOrdersLoadingRow);
+        const createLoadingRow = () => {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 6;
+            cell.style.textAlign = "center";
+            cell.innerHTML = `<div class="loading-spinner"><div class="spinner">&nbsp;</div></div>`;
+            row.appendChild(cell);
+            return row;
+        };
 
-        // Loading animation for My Orders
-        const myOrdersLoadingRow = document.createElement("tr");
-        const myOrdersLoadingCell = document.createElement("td");
-        myOrdersLoadingCell.colSpan = 6;
-        myOrdersLoadingCell.style.textAlign = "center";
-        myOrdersLoadingCell.innerHTML = `
-            <div class="loading-spinner">
-                <div class="spinner"></div>
-            </div>
-        `;
-        myOrdersLoadingRow.appendChild(myOrdersLoadingCell);
+        companyOrdersTableBody.innerHTML = "";
+        companyOrdersTableBody.appendChild(createLoadingRow());
+
         myOrdersTableBody.innerHTML = "";
-        myOrdersTableBody.appendChild(myOrdersLoadingRow);
+        myOrdersTableBody.appendChild(createLoadingRow());
 
         try {
             const data = await fetchData2(query, variables);
+            const orders = data?.data?.getAllDraftOrdersWithTags?.reverse() || [];
 
+            const companyOrders = [];
+            const myOrders = [];
+            let currentCompanyName = null;
 
-            if (data?.data?.getDraftOrdersByCustomerId?.length > 0) {
-                const orders = data.data.getDraftOrdersByCustomerId.reverse();
-            
-                const companyOrders = [];
-                const myOrders = [];
-
-
-                for (const order of orders) {
+            // Step 1: Get current user's company name
+            for (const order of orders) {
+                if (order.customer?.id === currentUserId) {
                     const orderId = order.id.split('/').pop();
                     const tagData = await getTagData(orderId);
-                    const currentCompanyName = `${tagData.company}`;
-                    const purchaseOrder = order.tags?.find(tag => tag.startsWith("PO:"))?.replace("PO:", "").trim() || "Not Available";
 
-                    // Check for the shipping fee
-                    const shippingFee = await checkForShippingFee(orderId);
-                    const shippingFeeValue = parseFloat(shippingFee.replace('$', '')) || 0;
-
-                    const totalPrice = order.lineItems.reduce((sum, item) => {
-                        const price = parseFloat(item.variant?.price) || 0; // Base price
-                        const discountValue = item.appliedDiscount?.value || 0;
-                        const discountType = item.appliedDiscount?.valueType;
-
-                        const finalPrice =
-                            discountType === "FIXED_AMOUNT"
-                                ? discountValue // Fixed discount gives the discounted price
-                                : discountType === "PERCENTAGE"
-                                ? price * ((100 - discountValue) / 100) // Percentage discount
-                                : price; // No discount applied
-
-                        return sum + finalPrice * item.quantity; // Add to total
-                    }, 0) + shippingFeeValue;
-
-
-                    const formattedDate = new Date(order.createdAt).toLocaleDateString();
-                    const orderRow = `
-                        <tr class="md:x-text-center">
-                            <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
-                                <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">${order.name || `Order #${orderId}`}</div>
-                            </td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.firstName} ${tagData.lastName}</td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Placed</td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.purchaseOrder}</td>
-                            <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$${totalPrice.toFixed(2)}</td>
-                            <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
-                                <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
-                                    <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="${orderId}">VIEW</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-
-                    // Add to My Orders if it matches the current user
-                    if (order.customer?.id === currentUserId) {
-                        myOrders.push(orderRow);
-                    }
-
-                    // Add to Company Orders if it matches the current company
-                    if (`${tagData.company}` === currentCompanyName) {
-                        companyOrders.push(orderRow);
+                    if (tagData.company && tagData.company !== "N/A") {
+                        currentCompanyName = tagData.company;
+                        break;
                     }
                 }
-
-                // Update Company Orders Table
-                companyOrdersTableBody.innerHTML = companyOrders.length > 0 ? companyOrders.join('') : "<tr><td colspan='6'>No company orders available.</td></tr>";
-
-                // Update My Orders Table
-                myOrdersTableBody.innerHTML = myOrders.length > 0 ? myOrders.join('') : "<tr><td colspan='6'>No personal orders available.</td></tr>";
-            } else {
-                companyOrdersTableBody.innerHTML = "<tr><td colspan='6' class='x-p-[12px]'>No draft orders found.</td></tr>";
-                myOrdersTableBody.innerHTML = "<tr><td colspan='6' class='x-p-[12px]'>No draft orders found.</td></tr>";
             }
+
+            if (!currentCompanyName) {
+                console.warn("Could not find a company for the current user.");
+            }
+
+            // Step 2: Process orders
+            for (const order of orders) {
+                const orderId = order.id.split('/').pop();
+                const tagData = await getTagData(orderId);
+
+                const shippingFee = await checkForShippingFee(orderId);
+                const shippingFeeValue = parseFloat(shippingFee.replace('$', '')) || 0;
+
+                const totalPrice = order.lineItems.reduce((sum, item) => {
+                    const price = parseFloat(item.variant?.price) || 0;
+                    const discountValue = item.appliedDiscount?.value || 0;
+                    const discountType = item.appliedDiscount?.valueType;
+
+                    const finalPrice =
+                        discountType === "FIXED_AMOUNT"
+                            ? discountValue
+                            : discountType === "PERCENTAGE"
+                            ? price * ((100 - discountValue) / 100)
+                            : price;
+
+                    return sum + finalPrice * item.quantity;
+                }, 0) + shippingFeeValue;
+
+                const orderRow = `
+                    <tr class="md:x-text-center">
+                        <td class="x-sticky x-left-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-text-center x-h-[10px]">
+                            <div class="x-h-full x-w-full x-flex x-items-center x-justify-center shadow-right">${order.name || `Order #${orderId}`}</div>
+                        </td>
+                        <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.firstName} ${tagData.lastName}</td>
+                        <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">Placed</td>
+                        <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">${tagData.purchaseOrder}</td>
+                        <td class="x-p-3 x-border-b x-border-gray-300 x-text-nowrap md:x-text-wrap">$${totalPrice.toFixed(2)}</td>
+                        <td class="x-sticky x-right-0 x-bg-white x-p-0 x-border-b x-border-gray-300 x-h-[10px]">
+                            <div class="x-flex x-flex-col lg:x-flex-row x-gap-[8px] x-p-[8px] x-h-full x-w-full x-items-center x-justify-center shadow-left">
+                                <button class="view-order-btn x-bg-red-800 x-text-white x-py-1 x-px-3 x-rounded x-w-full" data-order="${orderId}">VIEW</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+                // My Orders
+                if (order.customer?.id === currentUserId) {
+                    myOrders.push(orderRow);
+                }
+
+                // Company Orders
+                if (tagData.company !== "N/A" && tagData.company === currentCompanyName) {
+                    companyOrders.push(orderRow);
+                }
+            }
+
+            companyOrdersTableBody.innerHTML = companyOrders.length > 0
+                ? companyOrders.join('')
+                : "<tr><td colspan='6'>No company orders available.</td></tr>";
+
+            myOrdersTableBody.innerHTML = myOrders.length > 0
+                ? myOrders.join('')
+                : "<tr><td colspan='6'>No personal orders available.</td></tr>";
+
         } catch (error) {
             console.error("Error fetching draft orders:", error);
             companyOrdersTableBody.innerHTML = "<tr><td colspan='6'>An error occurred while fetching orders.</td></tr>";
             myOrdersTableBody.innerHTML = "<tr><td colspan='6'>An error occurred while fetching orders.</td></tr>";
         }
     }
+
+
 
     function clearSubViewButtonStyles() {
         $('.sub-view-button').removeClass('x-underline');
